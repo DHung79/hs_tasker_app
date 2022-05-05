@@ -3,10 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../core/authentication/auth.dart';
 import '../../core/user/user.dart';
-import '../../locator.dart';
 import '../../main.dart';
-import '../../routes/app_router_delegate.dart';
-import '../../theme/validatorText.dart';
+import '../../theme/validator_text.dart';
 
 class PageTemplate extends StatefulWidget {
   final Widget child;

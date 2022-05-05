@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:validators/validators.dart';
 import '../../core/authentication/auth.dart';
 import '../../main.dart';
-import '../../theme/validatorText.dart';
+import '../../theme/validator_text.dart';
 
 class LoginForm extends StatefulWidget {
   final AuthenticationState? state;
-  LoginForm({this.state});
+  const LoginForm({Key? key, this.state}) : super(key: key);
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -16,7 +16,7 @@ class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  bool _passwordSecure = true;
+  // bool _passwordSecure = true;
   String? _errorMessage = '';
   AutovalidateMode _autovalidate = AutovalidateMode.disabled;
   bool? _isKeepSession = false;
@@ -94,7 +94,7 @@ class _LoginFormState extends State<LoginForm> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: TextFormField(
-                          obscureText: _passwordSecure,
+                          obscureText: true,
                           controller: passwordController,
                           onSaved: (value) {
                             passwordController.text = value!.trim();

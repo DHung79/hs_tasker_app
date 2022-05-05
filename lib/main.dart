@@ -19,8 +19,8 @@ export '../core/logger/logger.dart';
 export 'theme/app_colors.dart';
 export 'theme/app_text_theme.dart';
 export 'locales/i18n.dart';
-export 'utils/screenUtil.dart';
-export 'locales/i18nKey.dart';
+export 'utils/screen_util.dart';
+export 'locales/i18n_key.dart';
 
 Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 // Page index

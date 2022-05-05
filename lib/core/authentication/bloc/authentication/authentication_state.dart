@@ -40,7 +40,7 @@ class AuthenticationFailure extends AuthenticationState {
   final String message;
   final String errorCode;
 
-  AuthenticationFailure({
+  const AuthenticationFailure({
     required this.message,
     required this.errorCode,
   });
@@ -54,7 +54,7 @@ class LoginLastUser extends AuthenticationState {
   final bool isKeepSession;
   final String? forgotPasswordEmail;
 
-  LoginLastUser({
+  const LoginLastUser({
     required this.username,
     required this.isKeepSession,
     this.forgotPasswordEmail,

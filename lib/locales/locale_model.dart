@@ -7,24 +7,24 @@ const List<Locale> supportedLocales = <Locale>[
 ];
 
 const List<AppLocale> appLocales = <AppLocale>[
-  AppLocale.English,
-  AppLocale.Vietnamese,
+  AppLocale.english,
+  AppLocale.vietnamese,
   // AppLocale.Thai,
 ];
 
-enum AppLocale { English, Vietnamese }
+enum AppLocale { english, vietnamese }
 
 class LocaleModel extends ChangeNotifier {
-  AppLocale appLocale = AppLocale.Vietnamese;
+  AppLocale appLocale = AppLocale.vietnamese;
   Locale currentLocale = supportedLocales[1];
 
   void toggleLocale(AppLocale newAppLocale) {
     if (newAppLocale == appLocale) return;
     switch (newAppLocale) {
-      case AppLocale.English:
+      case AppLocale.english:
         currentLocale = supportedLocales[0];
         break;
-      case AppLocale.Vietnamese:
+      case AppLocale.vietnamese:
         currentLocale = supportedLocales[1];
         break;
       // case AppLocale.Thai:

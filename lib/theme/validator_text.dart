@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../locales/i18nKey.dart';
 import '../main.dart';
-import '../utils/screenUtil.dart';
 
 class ValidatorText {
   static String empty({required String fieldName}) {

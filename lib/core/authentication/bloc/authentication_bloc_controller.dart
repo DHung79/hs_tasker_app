@@ -3,7 +3,7 @@ import '../../authentication/bloc/authentication/authentication_bloc.dart';
 class AuthenticationBlocController {
   AuthenticationBlocController._();
 
-  static AuthenticationBlocController _instance =
+  static final AuthenticationBlocController _instance =
       AuthenticationBlocController._();
 
   factory AuthenticationBlocController() => _instance;

@@ -72,7 +72,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     //     ),
                     //   ),
                     // ),
-                    Spacer(),
+                    const Spacer(),
                     Center(
                       child: ListView(
                         shrinkWrap: true,
@@ -83,7 +83,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               horizontal: 24,
                             ),
                             child: Text(
-                              '${ScreenUtil.t(I18nKey.signInTitle1)!.toUpperCase()}',
+                              ScreenUtil.t(I18nKey.signInTitle1)!.toUpperCase(),
                               style: AppStyle.h3.copyWith(
                                 fontSize: 20,
                                 // color: AppColor.subTitle,
@@ -94,7 +94,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         ],
                       ),
                     ),
-                    !isKeyboardPopUp ? SizedBox(height: 64) : Spacer(),
+                    !isKeyboardPopUp ? const SizedBox(height: 64) : const Spacer(),
                     // AppButton(
                     //   title:
                     //       '${ScreenUtil.t(I18nKey.forgotPassword)!.toUpperCase()}',
@@ -102,7 +102,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     //     navigateTo(ForgotPasswordRoute);
                     //   },
                     // ),
-                    Spacer(),
+                    const Spacer(),
                   ],
                 );
               }),

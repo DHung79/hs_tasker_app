@@ -18,7 +18,7 @@ class UserSignUp extends AuthenticationEvent {
   final String email;
   final String password;
 
-  UserSignUp({required this.email, required this.password});
+  const UserSignUp({required this.email, required this.password});
 
   @override
   List<Object> get props => [email, password];
@@ -30,7 +30,7 @@ class UserLogin extends AuthenticationEvent {
   final bool keepSession;
   final bool isMobile;
 
-  UserLogin({
+  const UserLogin({
     required this.email,
     required this.password,
     required this.keepSession,

@@ -6,7 +6,7 @@ class AuthenticationRepository {
 
   Future<dynamic> signUpWithEmailAndPassword(
       String? email, String? password) async {
-    await Future.delayed(Duration(seconds: 1)); // simulate a network delay
+    await Future.delayed(const Duration(seconds: 1)); // simulate a network delay
     final response = await provider
         .signUpWithEmailAndPassword({'email': email, 'password': password});
     return response;
@@ -14,7 +14,7 @@ class AuthenticationRepository {
 
   Future<dynamic> loginWithEmailAndPassword(
       String? email, String? password, bool? isMobile) async {
-    await Future.delayed(Duration(seconds: 1)); // simulate a network delay
+    await Future.delayed(const Duration(seconds: 1)); // simulate a network delay
 
     final body = convert.jsonEncode({
       'email': email,

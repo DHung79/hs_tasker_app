@@ -7,26 +7,92 @@ import '../../auth.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationBloc() : super(AuthenticationInitial());
-  final AuthenticationRepository authenticationService =
-      AuthenticationRepository();
-  @override
-  Stream<AuthenticationState> mapEventToState(
-      AuthenticationEvent event) async* {
-    final SharedPreferences sharedPreferences = await prefs;
-    if (event is AppLoadedup) {
-      yield* _mapAppSignUpLoadedState(event);
-    }
+  AuthenticationBloc() : super(AuthenticationInitial()) {
+    final AuthenticationRepository authenticationService =
+        AuthenticationRepository();
+    on<AppLoadedup>((event, emit) async {
+      final SharedPreferences sharedPreferences = await prefs;
+      emit(AuthenticationLoading());
+      try {
+        if (sharedPreferences.getString('authtoken') != null) {
+          emit(AppAutheticated());
+        } else {
+          emit(AuthenticationStart());
+        }
+      } on Error catch (e) {
+        emit(AuthenticationFailure(
+          message: e.toString(),
+          errorCode: '',
+        ));
+      }
+    });
 
-    if (event is UserSignUp) {
-      yield* _mapUserSignUpToState(event);
-    }
+    on<UserSignUp>((event, emit) async {
+      final SharedPreferences sharedPreferences = await prefs;
+      emit(AuthenticationLoading());
+      try {
+        final data = await authenticationService.signUpWithEmailAndPassword(
+            event.email, event.password);
+        if (data["error"] == null) {
+          final currentUser = UserData.fromJson(data);
+          if (currentUser.id! > 0) {
+            sharedPreferences.setString('authtoken', currentUser.token!);
+            emit(AppAutheticated());
+          } else {
+            emit(AuthenticationNotAuthenticated());
+          }
+        } else {
+          emit(AuthenticationFailure(
+            message: data["error_message"],
+            errorCode: data["error_code"].toString(),
+          ));
+        }
+      } on Error catch (e) {
+        emit(AuthenticationFailure(
+          message: e.toString(),
+          errorCode: '',
+        ));
+      }
+    });
 
-    if (event is UserLogin) {
-      yield* _mapUserLoginState(event);
-    }
+    on<UserLogin>((event, emit) async {
+      final SharedPreferences sharedPreferences = await prefs;
+      emit(AuthenticationLoading());
+      try {
+        final data = await authenticationService.loginWithEmailAndPassword(
+          event.email,
+          event.password,
+          event.isMobile,
+        );
+        if (data["error_message"] == null) {
+          final currentUser = Token.fromJson(data);
+          if (currentUser.id.isNotEmpty) {
+            final _now = DateTime.now().millisecondsSinceEpoch;
+            sharedPreferences.setString('authtoken', currentUser.token);
+            sharedPreferences.setString('last_username', event.email);
+            sharedPreferences.setString('last_userpassword', event.password);
+            sharedPreferences.setBool('keep_session', event.keepSession);
+            sharedPreferences.setInt('login_time', _now);
+            emit(AppAutheticated());
+          } else {
+            emit(AuthenticationNotAuthenticated());
+          }
+        } else {
+          emit(AuthenticationFailure(
+            message: data["error_message"],
+            errorCode: data["error_code"].toString(),
+          ));
+        }
+      } on Error catch (e) {
+        emit(AuthenticationFailure(
+          message: e.toString(),
+          errorCode: '',
+        ));
+      }
+    });
 
-    if (event is ResetPassword) {
+    on<ResetPassword>((event, emit) async {
+      final SharedPreferences sharedPreferences = await prefs;
       try {
         final data = await authenticationService.resetPassword(
           event.email,
@@ -36,253 +102,172 @@ class AuthenticationBloc
         if (data is ApiResponse) {
           if (data.error == null) {
             sharedPreferences.remove('forgot_password_email');
-            yield ForgotPasswordState();
+            emit(ForgotPasswordState());
           } else {
-            yield AuthenticationFailure(
+            emit(AuthenticationFailure(
               message: data.error!.errorMessage,
               errorCode: data.error!.errorCode,
-            );
+            ));
           }
         } else {
           if (data["error_message"] == null) {
-            yield ForgotPasswordState();
+            emit(ForgotPasswordState());
           } else {
-            yield AuthenticationFailure(
+            emit(AuthenticationFailure(
               message: data["error_message"],
               errorCode: data["error_code"].toString(),
-            );
+            ));
           }
         }
       } on Error catch (e) {
-        yield AuthenticationFailure(
+        emit(AuthenticationFailure(
           message: e.toString(),
           errorCode: '',
-        );
+        ));
       }
-    }
+    });
 
-    if (event is ForgotPassword) {
+    on<ForgotPassword>((event, emit) async {
+      final SharedPreferences sharedPreferences = await prefs;
       try {
         final data = await authenticationService.forgotPassword(event.email);
         if (data is ApiResponse) {
           if (data.error == null) {
             sharedPreferences.setString('forgot_password_email', event.email);
-            yield ResetPasswordState();
+            emit(ResetPasswordState());
           } else {
-            yield AuthenticationFailure(
+            emit(AuthenticationFailure(
               message: data.error!.errorMessage,
               errorCode: data.error!.errorCode,
-            );
+            ));
           }
         } else {
           if (data["error_message"] == null) {
-            yield ResetPasswordState();
+            emit(ResetPasswordState());
           } else {
-            yield AuthenticationFailure(
+            emit(AuthenticationFailure(
               message: data["error_message"],
               errorCode: data["error_code"].toString(),
-            );
+            ));
           }
         }
       } on Error catch (e) {
-        yield AuthenticationFailure(
+        emit(AuthenticationFailure(
           message: e.toString(),
           errorCode: '',
-        );
+        ));
       }
-    }
+    });
 
-    if (event is UserLanguage) {
-      yield* _mapUserLanguageState(event);
-    }
+    on<UserLanguage>((event, emit) async {
+      final SharedPreferences sharedPreferences = await prefs;
+      emit(AuthenticationLoading());
 
-    if (event is UserLogOut) {
+      try {
+        if (sharedPreferences.getString('authtoken') != null) {
+          sharedPreferences.setString('last_lang', event.lang);
+          emit(AppAutheticated());
+        } else {
+          emit(AuthenticationStart());
+        }
+      } on Error catch (e) {
+        emit(AuthenticationFailure(
+          message: e.toString(),
+          errorCode: '',
+        ));
+      }
+    });
+
+    on<UserLogOut>((event, emit) async {
       // await authenticationService.signOut({'fcmToken': currentFcmToken});
       _cleanupCache();
-      yield UserLogoutState();
-    }
+      emit(UserLogoutState());
+    });
 
-    if (event is GetUserData) {
+    on<GetUserData>((event, emit) async {
+      final SharedPreferences sharedPreferences = await prefs;
+
       final token = sharedPreferences.getString('authtoken');
       if (token == null || token.isEmpty) {
         _cleanupCache();
-        yield AuthenticationStart();
+        emit(AuthenticationStart());
       } else {
-        yield* _mapGetUserDataState(event, token);
+        await sharedPreferences.reload();
+        // Expire local if the time is over 24h
+        final _keepSesstion =
+            sharedPreferences.getBool('keep_session') ?? false;
+        var _isExpired = false;
+        if (!_keepSesstion) {
+          final _loginTime = sharedPreferences.getInt('login_time');
+          const _aDay = 24 * 60 * 60 * 1000;
+          if (_loginTime == null) {
+            _isExpired = true;
+          } else if (DateTime.now().millisecondsSinceEpoch - _loginTime >
+              _aDay) {
+            _isExpired = true;
+          }
+        }
+        if (_isExpired) {
+          // if (currentFcmToken != null && currentFcmToken!.isNotEmpty) {
+          //   await authenticationService.removeFcmToken(currentFcmToken!);
+          // }
+          _cleanupCache();
+          emit(UserTokenExpired());
+        } else {
+          final userJson = sharedPreferences.getString('userJson');
+          if (userJson != null && userJson.isNotEmpty) {
+            try {
+              Map<String, dynamic> json = convert.jsonDecode(userJson);
+              final account = UserModel.fromJson(json);
+              account.password =
+                  sharedPreferences.getString('last_userpassword') ?? '';
+              final lang = sharedPreferences.getString('last_lang') ?? 'vi';
+
+              emit(SetUserData(currentUser: account, currentLang: lang));
+              return;
+            } on Error catch (e) {
+              emit(AuthenticationFailure(
+                message: e.toString(),
+                errorCode: '',
+              ));
+            }
+          }
+          final account = await UserBloc().fetchDataById('me');
+          // ignore: unnecessary_null_comparison
+          if (account == null) {
+            _cleanupCache();
+            emit(UserTokenExpired());
+          } else {
+            final json = account.toJson();
+            final jsonStr = convert.jsonEncode(json);
+            sharedPreferences.setString('userJson', jsonStr);
+            account.password =
+                sharedPreferences.getString('last_userpassword') ?? '';
+            final lang = sharedPreferences.getString('last_lang') ?? 'vi';
+            emit(SetUserData(currentUser: account, currentLang: lang));
+          }
+        }
       }
-    }
+    });
 
-    if (event is TokenExpired) {
+    on<TokenExpired>((event, emit) async {
       _cleanupCache();
-      yield UserTokenExpired();
-    }
+      emit(UserTokenExpired());
+    });
 
-    if (event is GetLastUser) {
+    on<GetLastUser>((event, emit) async {
+      final SharedPreferences sharedPreferences = await prefs;
+
       final username = sharedPreferences.getString('last_username') ?? '';
       final keepSession = sharedPreferences.getBool('keep_session') ?? false;
       final forgotPasswordEmail =
           sharedPreferences.getString('forgot_password_email') ?? '';
-      yield LoginLastUser(
+      emit(LoginLastUser(
         username: username,
         isKeepSession: keepSession,
         forgotPasswordEmail: forgotPasswordEmail,
-      );
-    }
-  }
-
-  Stream<AuthenticationState> _mapAppSignUpLoadedState(
-      AppLoadedup event) async* {
-    yield AuthenticationLoading();
-    try {
-      final SharedPreferences sharedPreferences = await prefs;
-      if (sharedPreferences.getString('authtoken') != null) {
-        yield AppAutheticated();
-      } else {
-        yield AuthenticationStart();
-      }
-    } on Error catch (e) {
-      yield AuthenticationFailure(
-        message: e.toString(),
-        errorCode: '',
-      );
-    }
-  }
-
-  Stream<AuthenticationState> _mapUserLanguageState(UserLanguage event) async* {
-    yield AuthenticationLoading();
-    try {
-      final SharedPreferences sharedPreferences = await prefs;
-      if (sharedPreferences.getString('authtoken') != null) {
-        sharedPreferences.setString('last_lang', event.lang);
-        yield AppAutheticated();
-      } else {
-        yield AuthenticationStart();
-      }
-    } on Error catch (e) {
-      yield AuthenticationFailure(
-        message: e.toString(),
-        errorCode: '',
-      );
-    }
-  }
-
-  Stream<AuthenticationState> _mapUserSignUpToState(UserSignUp event) async* {
-    final SharedPreferences sharedPreferences = await prefs;
-    yield AuthenticationLoading();
-    try {
-      final data = await authenticationService.signUpWithEmailAndPassword(
-          event.email, event.password);
-
-      if (data["error"] == null) {
-        final currentUser = UserData.fromJson(data);
-        if (currentUser.id! > 0) {
-          sharedPreferences.setString('authtoken', currentUser.token!);
-          yield AppAutheticated();
-        } else {
-          yield AuthenticationNotAuthenticated();
-        }
-      } else {
-        yield AuthenticationFailure(
-          message: data["error_message"],
-          errorCode: data["error_code"].toString(),
-        );
-      }
-    } on Error catch (e) {
-      yield AuthenticationFailure(
-        message: e.toString(),
-        errorCode: '',
-      );
-    }
-  }
-
-  Stream<AuthenticationState> _mapUserLoginState(UserLogin event) async* {
-    final SharedPreferences sharedPreferences = await prefs;
-    yield AuthenticationLoading();
-    try {
-      final data = await authenticationService.loginWithEmailAndPassword(
-        event.email,
-        event.password,
-        event.isMobile,
-      );
-      if (data["error_message"] == null) {
-        final currentUser = Token.fromJson(data);
-        if (currentUser.id.isNotEmpty) {
-          final _now = DateTime.now().millisecondsSinceEpoch;
-          sharedPreferences.setString('authtoken', currentUser.token);
-          sharedPreferences.setString('last_username', event.email);
-          sharedPreferences.setString('last_userpassword', event.password);
-          sharedPreferences.setBool('keep_session', event.keepSession);
-          sharedPreferences.setInt('login_time', _now);
-          yield AppAutheticated();
-        } else {
-          yield AuthenticationNotAuthenticated();
-        }
-      } else {
-        yield AuthenticationFailure(
-          message: data["error_message"],
-          errorCode: data["error_code"].toString(),
-        );
-      }
-    } on Error catch (e) {
-      yield AuthenticationFailure(
-        message: e.toString(),
-        errorCode: '',
-      );
-    }
-  }
-
-  Stream<AuthenticationState> _mapGetUserDataState(
-      GetUserData event, String id) async* {
-    final SharedPreferences sharedPreferences = await prefs;
-    await sharedPreferences.reload();
-    // Expire local if the time is over 24h
-    final _keepSesstion = sharedPreferences.getBool('keep_session') ?? false;
-    var _isExpired = false;
-    if (!_keepSesstion) {
-      final _loginTime = sharedPreferences.getInt('login_time');
-      final _aDay = 24 * 60 * 60 * 1000;
-      if (_loginTime == null) {
-        _isExpired = true;
-      } else if (DateTime.now().millisecondsSinceEpoch - _loginTime > _aDay) {
-        _isExpired = true;
-      }
-    }
-    if (_isExpired) {
-      // if (currentFcmToken != null && currentFcmToken!.isNotEmpty) {
-      //   await authenticationService.removeFcmToken(currentFcmToken!);
-      // }
-      _cleanupCache();
-      yield UserTokenExpired();
-    } else {
-      final userJson = sharedPreferences.getString('userJson');
-      if (userJson != null && userJson.isNotEmpty) {
-        try {
-          Map<String, dynamic> json = convert.jsonDecode(userJson);
-          final account = UserModel.fromJson(json);
-          account.password =
-              sharedPreferences.getString('last_userpassword') ?? '';
-          final lang = sharedPreferences.getString('last_lang') ?? 'vi';
-
-          yield SetUserData(currentUser: account, currentLang: lang);
-          return;
-        } on Error {
-        } on Exception {}
-      }
-      final account = await UserBloc().fetchDataById('me');
-      // ignore: unnecessary_null_comparison
-      if (account == null) {
-        _cleanupCache();
-        yield UserTokenExpired();
-      } else {
-        final json = account.toJson();
-        final jsonStr = convert.jsonEncode(json);
-        sharedPreferences.setString('userJson', jsonStr);
-        account.password =
-            sharedPreferences.getString('last_userpassword') ?? '';
-        final lang = sharedPreferences.getString('last_lang') ?? 'vi';
-        yield SetUserData(currentUser: account, currentLang: lang);
-      }
-    }
+      ));
+    });
   }
 
   _cleanupCache() async {

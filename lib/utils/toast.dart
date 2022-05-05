@@ -1,10 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_text_theme.dart';
 
-enum ToastType { Success, Warning, Failure }
+enum ToastType { success, warning, failure }
 
 class Toast {
   static void success({required String message}) {

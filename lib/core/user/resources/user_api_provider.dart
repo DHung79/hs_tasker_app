@@ -12,7 +12,7 @@ class UserApiProvider {
   }) async {
     var path =
         ApiConstants.apiDomain + ApiConstants.apiVersion + ApiConstants.users;
-    if (params.length > 0) {
+    if (params.isNotEmpty) {
       var queries = <String>[];
       params.forEach((key, value) => queries.add('$key=$value'));
       path += '?' + queries.join('&');
