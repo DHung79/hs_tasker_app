@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
-import '../theme/app_text_theme.dart';
+import '../main.dart';
 
 enum ToastType { success, warning, failure }
 
@@ -11,7 +10,7 @@ class Toast {
         duration: const Duration(seconds: 1),
         // backgroundColor: AppColor.success,
         position: ToastPosition.bottom,
-        textStyle: AppStyle.contentWhite,
+        textStyle: AppTextTheme.contentWhite,
         textPadding: const EdgeInsets.all(8.0));
   }
 
@@ -20,7 +19,7 @@ class Toast {
         duration: const Duration(seconds: 1),
         // backgroundColor: AppColor.error,
         position: ToastPosition.bottom,
-        textStyle: AppStyle.contentWhite,
+        textStyle: AppTextTheme.contentWhite,
         textPadding: const EdgeInsets.all(8.0));
   }
 
@@ -29,7 +28,7 @@ class Toast {
         duration: const Duration(seconds: 1),
         // backgroundColor: AppColor.warn,
         position: ToastPosition.bottom,
-        textStyle: AppStyle.contentWhite,
+        textStyle: AppTextTheme.contentWhite,
         textPadding: const EdgeInsets.all(8.0));
   }
 }

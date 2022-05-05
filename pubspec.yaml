@@ -28,6 +28,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   validators: ^3.0.0
   rxdart: ^0.27.3
+  google_fonts: ^2.3.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

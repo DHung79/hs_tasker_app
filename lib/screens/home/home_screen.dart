@@ -57,6 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
       width: 200,
       height: 200,
       color: Colors.red,
+      child: TextButton(
+        child: const Text('back to login'),
+        onPressed: () {
+          AuthenticationBlocController().authenticationBloc.add(UserLogOut());
+        },
+      ),
     );
   }
 

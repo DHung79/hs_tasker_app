@@ -4,6 +4,7 @@ import 'package:validators/validators.dart';
 import '../../core/authentication/auth.dart';
 import '../../main.dart';
 import '../../theme/validator_text.dart';
+import '../../widgets/jt_text_form_field.dart';
 
 class LoginForm extends StatefulWidget {
   final AuthenticationState? state;
@@ -20,6 +21,7 @@ class _LoginFormState extends State<LoginForm> {
   String? _errorMessage = '';
   AutovalidateMode _autovalidate = AutovalidateMode.disabled;
   bool? _isKeepSession = false;
+  bool _passwordSecure = true;
 
   @override
   void didChangeDependencies() {
@@ -63,9 +65,11 @@ class _LoginFormState extends State<LoginForm> {
                   key: _key,
                   child: Column(
                     children: [
+                      _buildErrorMessage(),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6),
-                        child: TextFormField(
+                        child: JTTextFormField(
+                          hintText: 'TÀI KHOẢN',
                           keyboardType: TextInputType.emailAddress,
                           controller: emailController,
                           onSaved: (value) {
@@ -93,9 +97,16 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: TextFormField(
-                          obscureText: true,
+                        child: JTTextFormField(
+                          hintText: 'MẬT KHẨU',
+                          isPassword: true,
+                          obscureText: _passwordSecure,
                           controller: passwordController,
+                          passwordIconOnPressed: () {
+                            setState(() {
+                              _passwordSecure = !_passwordSecure;
+                            });
+                          },
                           onSaved: (value) {
                             passwordController.text = value!.trim();
                           },
@@ -125,13 +136,45 @@ class _LoginFormState extends State<LoginForm> {
                           },
                         ),
                       ),
-                      _buildErrorMessage(),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Container(
+                          constraints: const BoxConstraints(maxHeight: 18),
+                          child: InkWell(
+                            child: Text(
+                              ScreenUtil.t(I18nKey.forgotPassword)!,
+                              style: AppTextTheme.forgotPassword,
+                            ),
+                            onTap: () => _login(),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         child: TextButton(
-                          child:
-                              Text(ScreenUtil.t(I18nKey.signIn)!.toUpperCase()),
+                          style: TextButton.styleFrom(
+                            minimumSize: const Size.fromHeight(52),
+                            backgroundColor: Colors.white,
+                          ),
+                          child: Text(
+                            ScreenUtil.t(I18nKey.signIn)!.toUpperCase(),
+                            style: AppTextTheme.login,
+                          ),
                           onPressed: () => _login(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            minimumSize: const Size.fromHeight(52),
+                            backgroundColor: Colors.white,
+                          ),
+                          child: Text(
+                            'ĐĂNG KÍ',
+                            style: AppTextTheme.login,
+                          ),
+                          onPressed: () {},
                         ),
                       ),
                     ],

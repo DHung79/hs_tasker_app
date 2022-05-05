@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
-class AppStyle {
+class AppTextTheme {
   static TextStyle h0 = TextStyle(
     fontSize: 30,
     color: AppColor.text1,
@@ -107,5 +108,23 @@ class AppStyle {
   static TextStyle contentWhite = TextStyle(
     fontSize: 16,
     color: AppColor.text2,
+  );
+
+  static TextStyle jTTextFormField = GoogleFonts.lexend(
+    fontWeight: FontWeight.w500,
+    color: AppColor.text2,
+  );
+
+  static TextStyle forgotPassword = GoogleFonts.lexend(
+    fontWeight: FontWeight.w400,
+    color: Colors.white,
+    fontSize: 14,
+    decoration: TextDecoration.underline,
+  );
+
+  static TextStyle login = GoogleFonts.lexend(
+    fontWeight: FontWeight.w700,
+    color: AppColor.primary1,
+    fontSize: 16,
   );
 }

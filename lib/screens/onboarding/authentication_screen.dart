@@ -24,7 +24,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     ScreenUtil.init(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Theme.of(context).cardColor,
+      backgroundColor: AppColor.primary1,
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
         bloc: AuthenticationBlocController().authenticationBloc,
         listener: (context, state) {
@@ -40,61 +40,21 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 bool isKeyboardPopUp = size.maxHeight < 560;
                 return Column(
                   children: [
-                    // Align(
-                    //   alignment: Alignment.topRight,
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.all(24),
-                    //     child: SizedBox(
-                    //       width: 150,
-                    //       height: 30,
-                    //       child: InkWell(
-                    //         child: Row(
-                    //           mainAxisAlignment: MainAxisAlignment.center,
-                    //           children: [
-                    //             Padding(
-                    //               padding: EdgeInsets.only(right: 10),
-                    //               child: Icon(
-                    //                 Icons.language,
-                    //                 size: 24,
-                    //                 color: AppColor.hintColor,
-                    //               ),
-                    //             ),
-                    //             Text(
-                    //               _getLanguage(),
-                    //               style: AppStyle.hintText2,
-                    //             ),
-                    //           ],
-                    //         ),
-                    //         onTap: () {
-                    //           // navigateTo(LanguageRoute);
-                    //         },
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    const Spacer(),
+                    Image.asset(
+                      'assets/images/logo.png',
+                      fit: BoxFit.fitWidth,
+                    ),
                     Center(
                       child: ListView(
                         shrinkWrap: true,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 24,
-                              horizontal: 24,
-                            ),
-                            child: Text(
-                              ScreenUtil.t(I18nKey.signInTitle1)!.toUpperCase(),
-                              style: AppStyle.h3.copyWith(
-                                fontSize: 20,
-                                // color: AppColor.subTitle,
-                              ),
-                            ),
-                          ),
                           LoginForm(state: state),
                         ],
                       ),
                     ),
-                    !isKeyboardPopUp ? const SizedBox(height: 64) : const Spacer(),
+                    !isKeyboardPopUp
+                        ? const SizedBox(height: 64)
+                        : const Spacer(),
                     // AppButton(
                     //   title:
                     //       '${ScreenUtil.t(I18nKey.forgotPassword)!.toUpperCase()}',

@@ -52,6 +52,7 @@ class SvgIcons {
   static SvgIconData google = SvgIconData(path: 'assets/svg/27717.svg');
   static SvgIconData barChart = SvgIconData(path: 'assets/svg/27718.svg');
   static SvgIconData star = SvgIconData(path: 'assets/svg/27720.svg');
+  static SvgIconData password = SvgIconData(path: 'assets/svg/27721.svg');
 }
 
 class SvgIcon extends StatelessWidget {
