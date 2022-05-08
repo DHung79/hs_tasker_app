@@ -82,4 +82,37 @@ class AuthenticationProvider {
     );
     return response;
   }
+
+  signInWithFacebook(dynamic body) async {
+    final url =
+        ApiConstants.apiDomain + ApiConstants.apiVersion + '/login/facebook';
+    final response = await RestApiHandlerData.login(
+      path: url,
+      body: body,
+      headers: ApiHelper.headers(null),
+    );
+    return response;
+  }
+
+  signInWithGoogle(dynamic body) async {
+    final url =
+        ApiConstants.apiDomain + ApiConstants.apiVersion + '/login/google';
+    final response = await RestApiHandlerData.login(
+      path: url,
+      body: body,
+      headers: ApiHelper.headers(null),
+    );
+    return response;
+  }
+
+  taskerLogin(dynamic body) async {
+    final url =
+        ApiConstants.apiDomain + ApiConstants.apiVersion + '/login/tasker';
+    final response = await RestApiHandlerData.login(
+      path: url,
+      body: body,
+      headers: ApiHelper.headers(null),
+    );
+    return response;
+  }
 }

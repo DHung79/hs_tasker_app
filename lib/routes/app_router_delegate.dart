@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hs_tasker_app/screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:hs_tasker_app/screens/home/home_screen.dart';
 import 'package:hs_tasker_app/screens/onboarding/authentication_screen.dart';
 import '../screens/not_found/page_not_found_screen.dart';
@@ -51,6 +52,14 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
     //authentication
     if (route == authenticationRoute) {
       return const AuthenticationScreen();
+    }
+
+    if (route == forgotPasswordRoute) {
+      return const ForgotPasswordScreen();
+    }
+
+    if (route == resetPasswordRoute) {
+      return const ForgotPasswordScreen();
     }
 
     // if (route == roleRoute) {

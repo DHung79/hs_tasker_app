@@ -14,8 +14,14 @@ class AppRoutePath {
       : name = authenticationRoute,
         routeId = '',
         isUnknown = false;
+
   AppRoutePath.home()
       : name = homeRoute,
+        routeId = '',
+        isUnknown = false;
+
+  AppRoutePath.forgotPassword()
+      : name = forgotPasswordRoute,
         routeId = '',
         isUnknown = false;
 
@@ -47,6 +53,9 @@ class AppRoutePath {
     }
     if (name == homeRoute) {
       return AppRoutePath.home();
+    }
+    if (name == forgotPasswordRoute) {
+      return AppRoutePath.forgotPassword();
     }
     // if (name == roleRoute) {
     //   return AppRoutePath.roles();

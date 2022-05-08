@@ -29,6 +29,7 @@ dependencies:
   validators: ^3.0.0
   rxdart: ^0.27.3
   google_fonts: ^2.3.2
+  fluttertoast: ^8.0.9
 dev_dependencies:
   flutter_test:
     sdk: flutter

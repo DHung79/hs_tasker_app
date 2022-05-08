@@ -2,6 +2,7 @@ import 'package:hs_tasker_app/core/user/model/user_model.dart';
 
 import '../../authentication/models/status.dart';
 import '../../logger/logger.dart';
+import '../../service/service.dart';
 
 class ApiError implements Exception {
   String _errorCode = '';
@@ -50,6 +51,21 @@ class BaseModel {
     }
     if (T == UserModel) {
       return UserModel.fromJson(json) as T;
+    }
+    if (T == ServiceModel) {
+      return ServiceModel.fromJson(json) as T;
+    }
+    if (T == CategoryModel) {
+      return CategoryModel.fromJson(json) as T;
+    }
+    if (T == TranslationModel) {
+      return TranslationModel.fromJson(json) as T;
+    }
+    if (T == OptionsModel) {
+      return OptionsModel.fromJson(json) as T;
+    }
+    if (T == UnitModel) {
+      return UnitModel.fromJson(json) as T;
     }
 
     logError("Unknown BaseModel class: $T");

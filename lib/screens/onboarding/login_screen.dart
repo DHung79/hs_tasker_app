@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hs_tasker_app/routes/route_names.dart';
 import 'package:validators/validators.dart';
 import '../../core/authentication/auth.dart';
 import '../../main.dart';
@@ -64,6 +65,7 @@ class _LoginFormState extends State<LoginForm> {
                   autovalidateMode: _autovalidate,
                   key: _key,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _buildErrorMessage(),
                       Padding(
@@ -145,7 +147,7 @@ class _LoginFormState extends State<LoginForm> {
                               ScreenUtil.t(I18nKey.forgotPassword)!,
                               style: AppTextTheme.forgotPassword,
                             ),
-                            onTap: () => _login(),
+                            onTap: () => navigateTo(forgotPasswordRoute),
                           ),
                         ),
                       ),
@@ -203,9 +205,6 @@ class _LoginFormState extends State<LoginForm> {
               keepSession: _isKeepSession!,
               isMobile: true,
             ),
-          );
-      AuthenticationBlocController().authenticationBloc.add(
-            UserLanguage(lang: App.of(context)!.currentLocale.languageCode),
           );
     } else {
       setState(() {

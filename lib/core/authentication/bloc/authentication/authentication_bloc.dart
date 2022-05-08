@@ -59,10 +59,9 @@ class AuthenticationBloc
       final SharedPreferences sharedPreferences = await prefs;
       emit(AuthenticationLoading());
       try {
-        final data = await authenticationService.loginWithEmailAndPassword(
+        final data = await authenticationService.taskerLogin(
           event.email,
           event.password,
-          event.isMobile,
         );
         if (data["error_message"] == null) {
           final currentUser = Token.fromJson(data);

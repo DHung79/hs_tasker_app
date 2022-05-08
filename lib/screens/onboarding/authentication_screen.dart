@@ -23,7 +23,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColor.primary1,
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
         bloc: AuthenticationBlocController().authenticationBloc,
@@ -37,31 +37,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           builder: (BuildContext context, AuthenticationState state) {
             return SafeArea(
               child: LayoutBuilder(builder: (context, size) {
-                bool isKeyboardPopUp = size.maxHeight < 560;
                 return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      'assets/images/logo.png',
-                      fit: BoxFit.fitWidth,
-                    ),
-                    Center(
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: [
-                          LoginForm(state: state),
-                        ],
+                    SizedBox(
+                      height: size.maxHeight / 3,
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        fit: BoxFit.fitWidth,
                       ),
                     ),
-                    !isKeyboardPopUp
-                        ? const SizedBox(height: 64)
-                        : const Spacer(),
-                    // AppButton(
-                    //   title:
-                    //       '${ScreenUtil.t(I18nKey.forgotPassword)!.toUpperCase()}',
-                    //   onPressed: () {
-                    //     navigateTo(ForgotPasswordRoute);
-                    //   },
-                    // ),
+                    LoginForm(state: state),
                     const Spacer(),
                   ],
                 );
