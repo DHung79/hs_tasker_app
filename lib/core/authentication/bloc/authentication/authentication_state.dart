@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:hs_tasker_app/core/user/user.dart';
 
+import '../../../rest/models/rest_api_response.dart';
+
 abstract class AuthenticationState extends Equatable {
   const AuthenticationState();
 
@@ -24,8 +26,8 @@ class ForgotPasswordState extends AuthenticationState {}
 
 class UserTokenExpired extends AuthenticationState {}
 
-class SetUserData extends AuthenticationState {
-  final UserModel currentUser;
+class SetUserData<T extends BaseModel> extends AuthenticationState {
+  final T currentUser;
 
   const SetUserData({required this.currentUser});
 

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../core/authentication/auth.dart';
-import '../../core/user/user.dart';
+import '../../core/tasker/tasker.dart';
 import '../../main.dart';
 import '../../theme/validator_text.dart';
 
 class PageTemplate extends StatefulWidget {
   final Widget child;
   final PageState? pageState;
-  final void Function(UserModel?) onUserFetched;
+  final void Function(TaskerModel?) onUserFetched;
   final Widget? navItem;
   final Widget? tabTitle;
   final int? currentTab;
@@ -46,11 +46,11 @@ class PageTemplate extends StatefulWidget {
 
 class _PageTemplateState extends State<PageTemplate> {
   late AuthenticationBloc _authenticationBloc;
-  Future<UserModel>? _currentUser;
+  Future<TaskerModel>? _currentUser;
 // int _totalNotifications;
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   bool showNoti = false;
-  final _userBloc = UserBloc();
+  final _taskerBloc = TaskerBloc();
 
   @override
   void initState() {
@@ -61,7 +61,7 @@ class _PageTemplateState extends State<PageTemplate> {
 
   @override
   void dispose() {
-    _userBloc.dispose();
+    _taskerBloc.dispose();
     super.dispose();
   }
 
@@ -88,7 +88,7 @@ class _PageTemplateState extends State<PageTemplate> {
           navigateTo(authenticationRoute);
         } else if (state is AppAutheticated) {
           _authenticationBloc.add(GetUserData());
-        } else if (state is SetUserData) {
+        } else if (state is SetUserData<TaskerModel>) {
           _currentUser = Future.value(state.currentUser);
         }
       },
@@ -119,7 +119,7 @@ class _PageTemplateState extends State<PageTemplate> {
                 return BlocListener<AuthenticationBloc, AuthenticationState>(
                   bloc: AuthenticationBlocController().authenticationBloc,
                   listener: (BuildContext context, AuthenticationState state) {
-                    if (state is SetUserData) {
+                    if (state is SetUserData<TaskerModel>) {
                       widget.pageState!.currentUser = Future.value(
                         state.currentUser,
                       );
@@ -148,7 +148,7 @@ class _PageTemplateState extends State<PageTemplate> {
 }
 
 class PageContent extends StatelessWidget {
-  final AsyncSnapshot<UserModel> userSnapshot;
+  final AsyncSnapshot<TaskerModel> userSnapshot;
   final PageState pageState;
   final void Function()? onFetch;
   final Widget child;
@@ -190,5 +190,5 @@ class PageContent extends StatelessWidget {
 
 class PageState {
   bool isInitData = false;
-  Future<UserModel>? currentUser;
+  Future<TaskerModel>? currentUser;
 }

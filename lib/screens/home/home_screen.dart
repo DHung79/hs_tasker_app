@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/authentication/auth.dart';
+import '../../core/tasker/tasker.dart';
 import '../../core/user/user.dart';
 import '../../main.dart';
 import '../layout_template/content_screen.dart';
@@ -39,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
       showAppBar: false,
       child: FutureBuilder(
           future: _pageState.currentUser,
-          builder: (context, AsyncSnapshot<UserModel> snapshot) {
+          builder: (context, AsyncSnapshot<TaskerModel> snapshot) {
             return PageContent(
               userSnapshot: snapshot,
               pageState: _pageState,
@@ -52,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildContent(AsyncSnapshot<UserModel> snapshot) {
+  Widget _buildContent(AsyncSnapshot<TaskerModel> snapshot) {
     return Container(
       width: 200,
       height: 200,

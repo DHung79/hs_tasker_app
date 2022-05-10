@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:hs_tasker_app/core/logger/logger.dart';
 import 'package:http/http.dart' as http;
 import '../../authentication/auth.dart';
 import '../models/rest_api_response.dart';
@@ -292,7 +293,7 @@ class ApiBaseHelper {
     if (response.statusCode == 200) {
       var token = response.headers['x-auth-token'];
       var map = json.decode(response.body.toString());
-      var id = map['_id'] ?? '';
+      var id = map['tasker']['_id'] ?? '';
       return {'token': token, 'id': id};
     } else if (response.statusCode >= 400 && response.statusCode < 500) {
       return json.decode(response.body.toString());
@@ -309,6 +310,7 @@ class ApiBaseHelper {
   }
 
   _returnLogoutResponse(http.Response response) {
+    logDebug('response: ${response.toString()}');
     if (response.statusCode == 200) {
       var map = json.decode(response.body.toString());
       return map;

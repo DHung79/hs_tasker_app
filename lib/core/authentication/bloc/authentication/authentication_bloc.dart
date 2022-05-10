@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import '../../../../../main.dart';
-import '../../../user/user.dart';
+import '../../../tasker/tasker.dart';
 import '../../auth.dart';
 
 class AuthenticationBloc
@@ -64,6 +64,7 @@ class AuthenticationBloc
           event.password,
         );
         if (data["error_message"] == null) {
+          logDebug('data: $data');
           final currentUser = Token.fromJson(data);
           if (currentUser.id.isNotEmpty) {
             final _now = DateTime.now().millisecondsSinceEpoch;
@@ -158,25 +159,6 @@ class AuthenticationBloc
       }
     });
 
-    on<UserLanguage>((event, emit) async {
-      final SharedPreferences sharedPreferences = await prefs;
-      emit(AuthenticationLoading());
-
-      try {
-        if (sharedPreferences.getString('authtoken') != null) {
-          sharedPreferences.setString('last_lang', event.lang);
-          emit(AppAutheticated());
-        } else {
-          emit(AuthenticationStart());
-        }
-      } on Error catch (e) {
-        emit(AuthenticationFailure(
-          message: e.toString(),
-          errorCode: '',
-        ));
-      }
-    });
-
     on<UserLogOut>((event, emit) async {
       // await authenticationService.signOut({'fcmToken': currentFcmToken});
       _cleanupCache();
@@ -217,7 +199,7 @@ class AuthenticationBloc
           if (userJson != null && userJson.isNotEmpty) {
             try {
               Map<String, dynamic> json = convert.jsonDecode(userJson);
-              final account = UserModel.fromJson(json);
+              final account = TaskerModel.fromJson(json);
               // account.password =
               //     sharedPreferences.getString('last_userpassword') ?? '';
 
@@ -230,7 +212,7 @@ class AuthenticationBloc
               ));
             }
           }
-          final account = await UserBloc().fetchDataById('me');
+          final account = await TaskerBloc().getProfile();
           // ignore: unnecessary_null_comparison
           if (account == null) {
             _cleanupCache();
