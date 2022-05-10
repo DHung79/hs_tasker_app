@@ -26,12 +26,11 @@ class UserTokenExpired extends AuthenticationState {}
 
 class SetUserData extends AuthenticationState {
   final UserModel currentUser;
-  final String currentLang;
 
-  const SetUserData({required this.currentUser, required this.currentLang});
+  const SetUserData({required this.currentUser});
 
   @override
-  List<Object> get props => [currentUser, currentLang];
+  List<Object> get props => [currentUser];
 }
 
 class AuthenticationNotAuthenticated extends AuthenticationState {}

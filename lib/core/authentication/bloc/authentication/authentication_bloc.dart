@@ -218,11 +218,10 @@ class AuthenticationBloc
             try {
               Map<String, dynamic> json = convert.jsonDecode(userJson);
               final account = UserModel.fromJson(json);
-              account.password =
-                  sharedPreferences.getString('last_userpassword') ?? '';
-              final lang = sharedPreferences.getString('last_lang') ?? 'vi';
+              // account.password =
+              //     sharedPreferences.getString('last_userpassword') ?? '';
 
-              emit(SetUserData(currentUser: account, currentLang: lang));
+              emit(SetUserData(currentUser: account));
               return;
             } on Error catch (e) {
               emit(AuthenticationFailure(
@@ -240,10 +239,9 @@ class AuthenticationBloc
             final json = account.toJson();
             final jsonStr = convert.jsonEncode(json);
             sharedPreferences.setString('userJson', jsonStr);
-            account.password =
-                sharedPreferences.getString('last_userpassword') ?? '';
-            final lang = sharedPreferences.getString('last_lang') ?? 'vi';
-            emit(SetUserData(currentUser: account, currentLang: lang));
+            // account.password =
+            //     sharedPreferences.getString('last_userpassword') ?? '';
+            emit(SetUserData(currentUser: account));
           }
         }
       }

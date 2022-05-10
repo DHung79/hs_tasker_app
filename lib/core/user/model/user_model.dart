@@ -2,32 +2,32 @@ import '../../base/models/common_model.dart';
 import '../../rest/models/rest_api_response.dart';
 
 class UserModel extends BaseModel {
-  final bool _admin;
-  final bool _security;
-  final bool _superadmin;
-  final String _lang;
+  final List _roles;
   final String __id;
-  final int _createdTime;
-  final String _fullName;
+  final String _name;
   final String _email;
   final String _phoneNumber;
-  final String _gender;
   final String _address;
-  String _password;
+  final String _authGoogleId;
+  final bool _admin;
+  final String _gender;
+  final int _createdTime;
+  final int _updatedTime;
+  // String _password;
 
   UserModel.fromJson(Map<String, dynamic> json)
-      : _admin = json['admin'] ?? false,
-        _security = json['security'] ?? false,
-        _superadmin = json['superadmin'] ?? false,
-        _lang = json['lang'] ?? '',
+      : _roles = json['roles'] ?? [],
         __id = json['_id'] ?? '',
-        _password = '',
-        _createdTime = json['created_time'],
-        _fullName = json['fullname'] ?? '',
+        _name = json['name'] ?? '',
         _email = json['email'] ?? '',
-        _phoneNumber = json['phone_number'] ?? '',
+        _phoneNumber = json['phoneNumber'] ?? '',
+        _address = json['address'] ?? '',
+        _authGoogleId = json['authGoogleId'] ?? '',
+        _admin = json['admin'] ?? false,
         _gender = json['gender'] ?? '',
-        _address = json['address'] ?? '' {
+        _createdTime = json['created_time'],
+        // _password = '',
+        _updatedTime = json['updated_time'] {
     // _roles.addAll(BaseModel.mapList<RoleModel>(
     //   json: json,
     //   key: 'roles',
@@ -39,100 +39,80 @@ class UserModel extends BaseModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'admin': _admin,
-        'security': _security,
-        'superadmin': _superadmin,
-        'lang': _lang,
+        'roles': _roles,
         '_id': __id,
-        'created_time': _createdTime,
-        'fullname': _fullName,
+        'name': _name,
         'email': _email,
-        'phone_number': _phoneNumber,
-        'gender': _gender,
+        'phoneNumber': _phoneNumber,
         'address': _address,
-        // 'modules': _modules.map((e) => e.toJson()).toList(),
-        // 'roles': _roles.map((e) => e.toJson()).toList(),
+        'authGoogleId': _authGoogleId,
+        'admin': _admin,
+        'gender': _gender,
+        'created_time': _createdTime,
+        'updated_time': _updatedTime,
       };
 
-  bool get isAdmin => _admin;
-  bool get isSecurity => _security;
-  bool get isSuperadmin => _superadmin;
-  String get lang => _lang;
+  List get roles => _roles;
   String get id => __id;
-  int get createdTime => _createdTime;
-  String get fullName => _fullName;
+  String get name => _name;
   String get email => _email;
   String get phoneNumber => _phoneNumber;
-  String get gender => _gender;
   String get address => _address;
-  String get password => _password;
-  set password(value) {
-    _password = value;
-  }
-  // List<ModuleModel> get modules => _modules;
-  // List<RoleModel> get roles => _roles;
+  String get authGoogleId => _authGoogleId;
+  bool get isAdmin => _admin;
+  String get gender => _gender;
+  int get createdTime => _createdTime;
+  int get updatedTime => _updatedTime;
+  // String get password => _password;
+  // set password(value) {
+  //   _password = value;
+  // }
 }
 
 class EditUserModel extends EditBaseModel {
   String id = ''; // For editing
-  String lang = '';
-  String email = '';
-  String fullName = '';
+  String name = '';
   String password = '';
   String address = '';
   String phoneNumber = '';
   String gender = '';
-  bool admin = false;
-  bool security = false;
 
   EditUserModel.fromModel(UserModel? user) {
     id = user?.id ?? '';
-    lang = user?.lang ?? '';
-    email = user?.email ?? '';
-    fullName = user?.fullName ?? '';
+    name = user?.name ?? '';
     password = '';
     address = user?.address ?? '';
     phoneNumber = user?.phoneNumber ?? '';
     gender = user?.gender ?? 'Male';
-    admin = user?.isAdmin ?? false;
-    security = user?.isSecurity ?? false;
   }
 
-  Map<String, dynamic> toEditInfoJson() {
+  Map<String, dynamic> toEditProfileJson() {
     Map<String, dynamic> params = {
-      'fullname': fullName,
-      'email': email,
+      'name': name,
       'phone_number': phoneNumber,
       'gender': gender,
       'address': address,
     };
-    if (lang.isNotEmpty) {
-      params['lang'] = lang;
-    }
     return params;
   }
 
   Map<String, dynamic> toEditJson() {
     Map<String, dynamic> params = {
       'id': id,
-      'fullname': fullName,
-      'email': email,
+      'name': name,
       'phone_number': phoneNumber,
       'gender': gender,
       'address': address,
     };
-    if (lang.isNotEmpty) {
-      params['lang'] = lang;
-    }
     return params;
   }
 }
 
-class UserListModel extends BaseModel {
+class ListUserModel extends BaseModel {
   List<UserModel> _data = [];
   Paging _metaData = Paging.fromJson({});
 
-  UserListModel.fromJson(Map<String, dynamic> parsedJson) {
+  ListUserModel.fromJson(Map<String, dynamic> parsedJson) {
     List<UserModel> tmp = [];
     for (int i = 0; i < parsedJson['data'].length; i++) {
       var result = BaseModel.fromJson<UserModel>(parsedJson['data'][i]);

@@ -3,6 +3,7 @@ import 'package:hs_tasker_app/core/user/model/user_model.dart';
 import '../../authentication/models/status.dart';
 import '../../logger/logger.dart';
 import '../../service/service.dart';
+import '../../tasker/model/tasker_model.dart';
 
 class ApiError implements Exception {
   String _errorCode = '';
@@ -52,9 +53,22 @@ class BaseModel {
     if (T == UserModel) {
       return UserModel.fromJson(json) as T;
     }
+    if (T == ListUserModel) {
+      return ListUserModel.fromJson(json) as T;
+    }
+    if (T == TaskerModel) {
+      return TaskerModel.fromJson(json) as T;
+    }
+    if (T == ListTaskerModel) {
+      return ListTaskerModel.fromJson(json) as T;
+    }
     if (T == ServiceModel) {
       return ServiceModel.fromJson(json) as T;
     }
+    if (T == ListServiceModel) {
+      return ListServiceModel.fromJson(json) as T;
+    }
+
     if (T == CategoryModel) {
       return CategoryModel.fromJson(json) as T;
     }
@@ -120,9 +134,9 @@ class BaseModel {
 
 class EditBaseModel {
   static T fromModel<T extends EditBaseModel>(BaseModel model) {
-    // if (T == EditAccountModel) {
-    //   return EditAccountModel.fromModel(model as AccountModel) as T;
-    // }
+    if (T == EditServiceModel) {
+      return EditServiceModel.fromModel(model as ServiceModel) as T;
+    }
     // if (model is EditRoleModel) {
     //   return EditRoleModel.fromModel(model as RoleModel) as T;
     // }
@@ -137,7 +151,10 @@ class EditBaseModel {
   }
 
   static Map<String, dynamic> toCreateJson(EditBaseModel model) {
-    // if (model is EditAccountModel) {
+    if (model is EditServiceModel) {
+      return model.toCreateJson();
+    }
+    // if (model is EditUserModel) {
     //   return model.toCreateJson();
     // }
     // if (model is EditRoleModel) {
@@ -146,26 +163,23 @@ class EditBaseModel {
     return {};
   }
 
-  static Map<String, dynamic> toEditInfoJson(EditBaseModel model) {
-    // if (model is EditAccountModel) {
-    //   return model.toEditInfoJson();
-    // }
+  static Map<String, dynamic> toEditProfileJson(EditBaseModel model) {
+    if (model is EditUserModel) {
+      return model.toEditProfileJson();
+    }
     return {};
   }
 
   static Map<String, dynamic> toEditJson(EditBaseModel model) {
-    // if (model is EditAccountModel) {
-    //   return model.toEditJson();
-    // }
-    // if (model is EditRoleModel) {
-    //   return model.toEditJson();
-    // }
-    // if (model is EditVehicleModel) {
-    //   return model.toEditJson();
-    // }
-    // if (model is EditFaceRoleModel) {
-    //   return model.toEditJson();
-    // }
+    if (model is EditServiceModel) {
+      return model.toEditJson();
+    }
+    if (model is EditUserModel) {
+      return model.toEditJson();
+    }
+    if (model is EditTaskerModel) {
+      return model.toEditJson();
+    }
     return {};
   }
 }

@@ -22,8 +22,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   // bool _passwordSecure = true;
   String? _errorMessage = '';
   AutovalidateMode _autovalidate = AutovalidateMode.disabled;
-  bool? _isKeepSession = false;
-  bool _passwordSecure = true;
 
   @override
   void didChangeDependencies() {

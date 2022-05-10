@@ -56,70 +56,69 @@ class ServiceModel extends BaseModel {
   CategoryModel get categoryModel => _categoryModel;
   int get createdTime => _createdTime;
   int get updatedTime => _updatedTime;
-  List<TranslationModel> get translation => _translations;
+  List<TranslationModel> get translations => _translations;
   List<OptionsModel> get options => _options;
 }
 
-// class EditServiceModel extends EditBaseModel {
-//   String id = ''; // For editing
-//   String lang = '';
-//   String email = '';
-//   String fullName = '';
-//   String password = '';
-//   String address = '';
-//   String phoneNumber = '';
-//   String gender = '';
-//   bool admin = false;
-//   bool security = false;
+class EditServiceModel extends EditBaseModel {
+  String id = ''; // For editing
+  String name = '';
+  String code = '';
+  String image = '';
+  bool isValid = false;
+  CategoryModel? categoryModel;
+  int createdTime = 0;
+  int updatedTime = 0;
+  List<TranslationModel> translations = [];
+  List<OptionsModel> options = [];
 
-//   EditServiceModel.fromModel(ServiceModel? user) {
-//     id = user?.id ?? '';
-//     lang = user?.lang ?? '';
-//     email = user?.email ?? '';
-//     fullName = user?.fullName ?? '';
-//     password = '';
-//     address = user?.address ?? '';
-//     phoneNumber = user?.phoneNumber ?? '';
-//     gender = user?.gender ?? 'Male';
-//     admin = user?.isAdmin ?? false;
-//     security = user?.isSecurity ?? false;
-//   }
+  EditServiceModel.fromModel(ServiceModel? model) {
+    id = model?.id ?? '';
+    name = model?.name ?? '';
+    code = model?.code ?? '';
+    image = model?.image ?? '';
+    isValid = model?.isValid ?? false;
+    categoryModel = model?.categoryModel;
+    createdTime = model?.createdTime ?? 0;
+    updatedTime = model?.updatedTime ?? 0;
+    translations = model?.translations ?? [];
+    options = model?.options ?? [];
+  }
 
-//   Map<String, dynamic> toEditInfoJson() {
-//     Map<String, dynamic> params = {
-//       'fullname': fullName,
-//       'email': email,
-//       'phone_number': phoneNumber,
-//       'gender': gender,
-//       'address': address,
-//     };
-//     if (lang.isNotEmpty) {
-//       params['lang'] = lang;
-//     }
-//     return params;
-//   }
+  Map<String, dynamic> toCreateJson() {
+    Map<String, dynamic> params = {
+      'name': name,
+      'code': code,
+      'image': image,
+      'isValid': isValid,
+      'categoryModel': categoryModel,
+      'translations': translations,
+      'options': options,
+    };
 
-//   Map<String, dynamic> toEditJson() {
-//     Map<String, dynamic> params = {
-//       'id': id,
-//       'fullname': fullName,
-//       'email': email,
-//       'phone_number': phoneNumber,
-//       'gender': gender,
-//       'address': address,
-//     };
-//     if (lang.isNotEmpty) {
-//       params['lang'] = lang;
-//     }
-//     return params;
-//   }
-// }
+    return params;
+  }
 
-class ServiceListModel extends BaseModel {
+  Map<String, dynamic> toEditJson() {
+    Map<String, dynamic> params = {
+      'id': id,
+      'name': name,
+      'code': code,
+      'image': image,
+      'isValid': isValid,
+      'categoryModel': categoryModel,
+      'translations': translations,
+      'options': options,
+    };
+    return params;
+  }
+}
+
+class ListServiceModel extends BaseModel {
   List<ServiceModel> _data = [];
   Paging _metaData = Paging.fromJson({});
 
-  ServiceListModel.fromJson(Map<String, dynamic> parsedJson) {
+  ListServiceModel.fromJson(Map<String, dynamic> parsedJson) {
     List<ServiceModel> tmp = [];
     for (int i = 0; i < parsedJson['data'].length; i++) {
       var result = BaseModel.fromJson<ServiceModel>(parsedJson['data'][i]);

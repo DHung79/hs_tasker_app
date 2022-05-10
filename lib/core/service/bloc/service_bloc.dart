@@ -6,11 +6,11 @@ import '../service.dart';
 
 class ServiceBloc {
   final _repository = ServiceRepository();
-  final BehaviorSubject<ApiResponse<ServiceListModel?>> _allDataFetcher =
-      BehaviorSubject<ApiResponse<ServiceListModel>>();
+  final BehaviorSubject<ApiResponse<ListServiceModel?>> _allDataFetcher =
+      BehaviorSubject<ApiResponse<ListServiceModel>>();
   final _allDataState = BehaviorSubject<BlocState>();
 
-  Stream<ApiResponse<ServiceListModel?>> get allData => _allDataFetcher.stream;
+  Stream<ApiResponse<ListServiceModel?>> get allData => _allDataFetcher.stream;
   Stream<BlocState> get allDataState => _allDataState.stream;
   bool _isFetching = false;
 
@@ -21,7 +21,7 @@ class ServiceBloc {
     _allDataState.sink.add(BlocState.fetching);
     try {
       // Await response from server.
-      final data = await _repository.fetchAllData<ServiceListModel>(
+      final data = await _repository.fetchAllData<ListServiceModel>(
           params: params!);
       if (_allDataFetcher.isClosed) return;
       if (data.error != null) {

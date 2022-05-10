@@ -6,11 +6,11 @@ import '../user.dart';
 
 class UserBloc {
   final _repository = UserRepository();
-  final BehaviorSubject<ApiResponse<UserListModel?>> _allDataFetcher =
-      BehaviorSubject<ApiResponse<UserListModel>>();
+  final BehaviorSubject<ApiResponse<ListUserModel?>> _allDataFetcher =
+      BehaviorSubject<ApiResponse<ListUserModel>>();
   final _allDataState = BehaviorSubject<BlocState>();
 
-  Stream<ApiResponse<UserListModel?>> get allData => _allDataFetcher.stream;
+  Stream<ApiResponse<ListUserModel?>> get allData => _allDataFetcher.stream;
   Stream<BlocState> get allDataState => _allDataState.stream;
   bool _isFetching = false;
 
@@ -21,7 +21,7 @@ class UserBloc {
     _allDataState.sink.add(BlocState.fetching);
     try {
       // Await response from server.
-      final data = await _repository.fetchAllData<UserListModel, EditUserModel>(
+      final data = await _repository.fetchAllData<ListUserModel, EditUserModel>(
           params: params!);
       if (_allDataFetcher.isClosed) return;
       if (data.error != null) {
