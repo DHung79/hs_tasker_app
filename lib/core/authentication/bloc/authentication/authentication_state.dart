@@ -1,6 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:hs_tasker_app/core/user/user.dart';
-
 import '../../../rest/models/rest_api_response.dart';
 
 abstract class AuthenticationState extends Equatable {

@@ -145,7 +145,7 @@ class _LoginFormState extends State<LoginForm> {
                           child: InkWell(
                             child: Text(
                               ScreenUtil.t(I18nKey.forgotPassword)!,
-                              style: AppTextTheme.forgotPassword,
+                              style: AppTextTheme.link(Colors.white),
                             ),
                             onTap: () => navigateTo(forgotPasswordRoute),
                           ),
@@ -160,7 +160,7 @@ class _LoginFormState extends State<LoginForm> {
                           ),
                           child: Text(
                             ScreenUtil.t(I18nKey.signIn)!.toUpperCase(),
-                            style: AppTextTheme.login,
+                            style: AppTextTheme.headerTitle(AppColor.primary1),
                           ),
                           onPressed: () => _login(),
                         ),
@@ -174,7 +174,7 @@ class _LoginFormState extends State<LoginForm> {
                           ),
                           child: Text(
                             'ĐĂNG KÍ',
-                            style: AppTextTheme.login,
+                            style: AppTextTheme.headerTitle(AppColor.primary1),
                           ),
                           onPressed: () {},
                         ),

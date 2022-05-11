@@ -32,9 +32,10 @@ class _ErrorMessageState extends State<ErrorMessage> {
                 child: Padding(
                   child: Text(
                     widget.errorMessage,
-                    style: AppTextTheme.title1.copyWith(
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: AppColor.text1,
                       fontStyle: FontStyle.italic,
-                      color: AppColor.test1,
                     ),
                   ),
                   padding:

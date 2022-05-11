@@ -28,15 +28,19 @@ class _PageNotFoundScreenState extends State<PageNotFoundScreen> {
         elevation: 0,
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Icon(
             Icons.report_gmailerrorred_outlined,
             size: 120,
           ),
-          const SizedBox(height: 60),
-          Text(
-            'Không tìm thấy trang!',
-            style: Theme.of(context).textTheme.headline1,
+          const SizedBox(height: 30),
+          Center(
+            child: Text(
+              'Không tìm thấy trang!',
+              style: AppTextTheme.bigText(Colors.black),
+            ),
           ),
         ],
       ),

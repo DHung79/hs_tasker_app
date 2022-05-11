@@ -10,7 +10,10 @@ class Toast {
         duration: const Duration(seconds: 1),
         // backgroundColor: AppColor.success,
         position: ToastPosition.bottom,
-        textStyle: AppTextTheme.contentWhite,
+        textStyle: TextStyle(
+          fontSize: 16,
+          color: AppColor.text2,
+        ),
         textPadding: const EdgeInsets.all(8.0));
   }
 
@@ -19,7 +22,10 @@ class Toast {
         duration: const Duration(seconds: 1),
         // backgroundColor: AppColor.error,
         position: ToastPosition.bottom,
-        textStyle: AppTextTheme.contentWhite,
+        textStyle: TextStyle(
+          fontSize: 16,
+          color: AppColor.text2,
+        ),
         textPadding: const EdgeInsets.all(8.0));
   }
 
@@ -28,7 +34,10 @@ class Toast {
         duration: const Duration(seconds: 1),
         // backgroundColor: AppColor.warn,
         position: ToastPosition.bottom,
-        textStyle: AppTextTheme.contentWhite,
+        textStyle: TextStyle(
+          fontSize: 16,
+          color: AppColor.text2,
+        ),
         textPadding: const EdgeInsets.all(8.0));
   }
 }

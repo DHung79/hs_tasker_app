@@ -17,6 +17,7 @@ class AppColor {
   static Color text5 = hexToColor('#FFB146');
   static Color text6 = hexToColor('#C687AB');
   static Color text7 = hexToColor('#9DB3C0');
+  static Color text8 = hexToColor('#80949F');
 
   static Color shadow = hexToColor('#4F758C');
 
@@ -24,6 +25,12 @@ class AppColor {
   static Color shade2 = hexToColor('#F9F9F9');
   static Color shade3 = hexToColor('#F4E7EE');
   static Color shade4 = hexToColor('#FFF5E8');
+  static Color shade5 = hexToColor('#21A99F');
+  static Color shade6 = hexToColor('#008BCB');
+  static Color shade7 = hexToColor('#E4F7FF');
+  static Color shade8 = hexToColor('#E3FFFD');
+  static Color shade9 = hexToColor('#66C719');
+  static Color shade10 = hexToColor('#EEFCFA');
 
   static Color inactive1 = hexToColor('#E1E5E7');
   static Color inactive2 = hexToColor('#F5F6F6');
@@ -32,13 +39,6 @@ class AppColor {
   static Color others2 = hexToColor('#4EFF80');
   static Color test1 = hexToColor('#BB3553');
   static Color test2 = hexToColor('#FDC552');
-  static Color test3 = hexToColor('#008BCB');
-  static Color test4 = hexToColor('#E4F7FF');
-  static Color test5 = hexToColor('#21A99F');
-  static Color test6 = hexToColor('#E3FFFD');
-  static Color test7 = hexToColor('#66C719');
-  static Color test8 = hexToColor('#80949F');
-  static Color test9 = hexToColor('#EEFCFA');
 }
 
 Color hexToColor(String hex) {

@@ -21,6 +21,7 @@ class PageTemplate extends StatefulWidget {
   final Widget? flexibleSpace;
   final bool showAppBar;
   final void Function() onFetch;
+  final Widget? appBar;
 
   const PageTemplate({
     Key? key,
@@ -38,6 +39,7 @@ class PageTemplate extends StatefulWidget {
     this.flexibleSpace,
     this.showAppBar = true,
     required this.onFetch,
+    this.appBar,
   }) : super(key: key);
 
   @override
@@ -101,15 +103,16 @@ class _PageTemplateState extends State<PageTemplate> {
             appBar: widget.showAppBar
                 ? PreferredSize(
                     preferredSize: Size.fromHeight(widget.appBarHeight),
-                    child: AppBar(
-                      backgroundColor: Colors.white,
-                      flexibleSpace: widget.flexibleSpace,
-                      centerTitle: widget.currentTab != 0,
-                      leading: widget.leading,
-                      actions: widget.actions,
-                      title: widget.tabTitle,
-                      elevation: widget.elevation,
-                    ),
+                    child: widget.appBar ??
+                        AppBar(
+                          backgroundColor: Colors.white,
+                          flexibleSpace: widget.flexibleSpace,
+                          centerTitle: widget.currentTab != 0,
+                          leading: widget.leading,
+                          actions: widget.actions,
+                          title: widget.tabTitle,
+                          elevation: widget.elevation,
+                        ),
                   )
                 : null,
             drawer: widget.drawer,

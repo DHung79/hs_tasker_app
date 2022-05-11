@@ -46,14 +46,17 @@ class JTToast {
           children: [
             Icon(
               Icons.check_circle_sharp,
-              color: AppColor.test5,
+              color: AppColor.shade5,
               size: 26,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 13),
               child: Text(
                 message,
-                style: AppTextTheme.title4,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppColor.text1,
+                ),
               ),
             ),
           ],

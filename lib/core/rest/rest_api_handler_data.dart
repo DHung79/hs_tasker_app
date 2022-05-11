@@ -1,5 +1,3 @@
-import 'package:hs_tasker_app/core/logger/logger.dart';
-
 import 'api_helpers/api_base_helper.dart';
 import 'models/rest_api_response.dart';
 

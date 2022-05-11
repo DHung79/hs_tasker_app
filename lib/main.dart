@@ -22,6 +22,8 @@ export 'locales/i18n.dart';
 export 'utils/screen_util.dart';
 export 'locales/i18n_key.dart';
 
+int notiBadges = 0;
+
 Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 // Page index
 GlobalKey globalKey = GlobalKey();

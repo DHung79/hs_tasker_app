@@ -8,16 +8,16 @@ class SvgIconData {
 
 class SvgIcons {
   static SvgIconData close = SvgIconData(path: 'assets/svg/17072.svg');
-  // static SvgIconData arrowBack = SvgIconData(path: 'assets/svg/17073.svg');
+  static SvgIconData arrowBack = SvgIconData(path: 'assets/svg/17073.svg');
   static SvgIconData check = SvgIconData(path: 'assets/svg/17074.svg');
-  static SvgIconData location = SvgIconData(path: 'assets/svg/17075.svg');
+  // static SvgIconData location = SvgIconData(path: 'assets/svg/17075.svg');
   static SvgIconData home = SvgIconData(path: 'assets/svg/17076.svg');
   static SvgIconData bell = SvgIconData(path: 'assets/svg/17077.svg');
   static SvgIconData keyboardLeft = SvgIconData(path: 'assets/svg/17078.svg');
-  static SvgIconData arrowBack = SvgIconData(path: 'assets/svg/17079.svg');
+  // static SvgIconData arrowBack = SvgIconData(path: 'assets/svg/17079.svg');
   static SvgIconData time = SvgIconData(path: 'assets/svg/17080.svg');
   static SvgIconData calendar = SvgIconData(path: 'assets/svg/17081.svg');
-  // static SvgIconData location = SvgIconData(path: 'assets/svg/17082.svg');
+  static SvgIconData location = SvgIconData(path: 'assets/svg/17082.svg');
   static SvgIconData edit = SvgIconData(path: 'assets/svg/17083.svg');
   static SvgIconData delete = SvgIconData(path: 'assets/svg/17084.svg');
   static SvgIconData editOutline = SvgIconData(path: 'assets/svg/17085.svg');

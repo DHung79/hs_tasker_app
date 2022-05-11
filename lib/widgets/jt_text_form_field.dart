@@ -70,7 +70,7 @@ class _JTTextFormFieldState extends State<JTTextFormField> {
             borderRadius: BorderRadius.circular(4),
           ),
           hintText: widget.hintText,
-          hintStyle: AppTextTheme.jTTextFormField,
+          hintStyle: AppTextTheme.mediumBodyText(Colors.white),
         ),
         controller: widget.controller,
         onSaved: widget.onSaved,

@@ -105,7 +105,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             ),
                             child: Text(
                               'ĐĂNG KÍ',
-                              style: AppTextTheme.login,
+                              style:
+                                  AppTextTheme.headerTitle(AppColor.primary1),
                             ),
                             onPressed: () => _forgotPassword,
                           ),
