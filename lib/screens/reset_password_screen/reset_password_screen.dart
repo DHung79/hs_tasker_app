@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/routes/route_names.dart';
-import 'package:validators/validators.dart';
 import '../../core/authentication/auth.dart';
 import '../../main.dart';
 import '../../theme/validator_text.dart';
 import '../../widgets/jt_text_form_field.dart';
 import '../../widgets/jt_toast.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _checkPasswordController = TextEditingController();
+  bool _newPasswordSecure = true;
+  bool _checkPasswordSecure = true;
   String? _errorMessage = '';
   AutovalidateMode _autovalidate = AutovalidateMode.disabled;
 
@@ -32,34 +34,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     ScreenUtil.init(context);
     return Scaffold(
       backgroundColor: AppColor.primary1,
-      appBar: AppBar(
-        backgroundColor: AppColor.primary1,
-        elevation: 0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: InkWell(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              child: Container(
-                width: 44,
-                height: 44,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.close,
-                  color: Colors.black,
-                ),
-              ),
-              onTap: () {
-                navigateTo(authenticationRoute);
-              },
-            ),
-          ),
-        ],
-      ),
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
         bloc: AuthenticationBlocController().authenticationBloc,
         listener: (context, state) async {
@@ -89,7 +63,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     children: [
                       Center(
                         child: Text(
-                          ScreenUtil.t(I18nKey.forgotPassword)!,
+                          'Đặt mật khẩu mới',
                           style: AppTextTheme.bigText(Colors.white),
                         ),
                       ),
@@ -100,11 +74,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6),
                         child: JTTextFormField(
-                          hintText: 'NHẬP EMAIL',
-                          keyboardType: TextInputType.emailAddress,
-                          controller: _emailController,
+                          hintText: 'NHẬP MẬT KHẨU MỚI',
+                          isPassword: true,
+                          obscureText: _newPasswordSecure,
+                          controller: _newPasswordController,
+                          passwordIconOnPressed: () {
+                            setState(() {
+                              _newPasswordSecure = !_newPasswordSecure;
+                            });
+                          },
                           onSaved: (value) {
-                            _emailController.text = value!.trim();
+                            _newPasswordController.text = value!.trim();
                           },
                           onChanged: (value) {
                             setState(() {
@@ -114,17 +94,57 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             });
                           },
                           validator: (value) {
-                            if (value!.isEmpty || value.trim().isEmpty) {
+                            if (value!.isEmpty) {
                               return ValidatorText.empty(
-                                  fieldName: ScreenUtil.t(I18nKey.email)!);
+                                  fieldName: ScreenUtil.t(I18nKey.password)!);
                             }
-                            if (!isEmail(value.trim())) {
-                              return ValidatorText.invalidFormat(
-                                  fieldName: ScreenUtil.t(I18nKey.email)!);
+                            if (value.length < 6) {
+                              return ValidatorText.atLeast(
+                                  fieldName: ScreenUtil.t(I18nKey.password)!,
+                                  atLeast: 6);
+                            }
+                            if (value.length > 50) {
+                              return ValidatorText.moreThan(
+                                  fieldName: ScreenUtil.t(I18nKey.password)!,
+                                  moreThan: 50);
                             }
                             return null;
                           },
-                          onFieldSubmitted: (value) => _forgotPassword(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: JTTextFormField(
+                          hintText: 'NHẬP LẠI',
+                          isPassword: true,
+                          obscureText: _checkPasswordSecure,
+                          controller: _checkPasswordController,
+                          passwordIconOnPressed: () {
+                            setState(() {
+                              _checkPasswordSecure = !_checkPasswordSecure;
+                            });
+                          },
+                          onSaved: (value) {
+                            _checkPasswordController.text = value!.trim();
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              if (_errorMessage!.isNotEmpty) {
+                                _errorMessage = '';
+                              }
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return ValidatorText.empty(
+                                  fieldName: ScreenUtil.t(I18nKey.password)!);
+                            }
+                            if (value != _newPasswordController.text) {
+                              return 'Mật khẩu không khớp';
+                            }
+
+                            return null;
+                          },
                         ),
                       ),
                       Padding(
@@ -159,10 +179,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     });
     if (_key.currentState!.validate()) {
       _key.currentState!.save();
-      // AuthenticationBlocController().authenticationBloc.add(
-      //       ForgotPassword(email: emailController.text),
-      //     );
-      navigateTo(otpRoute);
+      navigateTo(authenticationRoute);
     } else {
       setState(() {
         _autovalidate = AutovalidateMode.always;

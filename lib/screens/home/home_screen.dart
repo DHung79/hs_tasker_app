@@ -1,7 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:hs_tasker_app/theme/button_theme.dart';
-import 'package:hs_tasker_app/theme/svg_constants.dart';
 import '../../core/authentication/auth.dart';
 import '../../core/tasker/tasker.dart';
 import '../../core/user/user.dart';
@@ -190,7 +188,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      onTap: () {},
+      onTap: () {
+        // navigateTo(forgotPasswordRoute);
+        AuthenticationBlocController().authenticationBloc.add(UserLogOut());
+      },
     );
   }
 

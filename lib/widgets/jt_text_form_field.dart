@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hs_tasker_app/main.dart';
-import '../theme/svg_constants.dart';
+import '/main.dart';
 
 class JTTextFormField extends StatefulWidget {
   final TextEditingController? controller;
@@ -12,6 +11,7 @@ class JTTextFormField extends StatefulWidget {
   final bool obscureText;
   final Function()? passwordIconOnPressed;
   final String? hintText;
+  final Function(String)? onFieldSubmitted;
   const JTTextFormField({
     Key? key,
     this.controller,
@@ -23,6 +23,7 @@ class JTTextFormField extends StatefulWidget {
     this.passwordIconOnPressed,
     this.hintText,
     this.obscureText = false,
+    this.onFieldSubmitted,
   }) : super(key: key);
 
   @override
@@ -39,6 +40,14 @@ class _JTTextFormFieldState extends State<JTTextFormField> {
         obscureText: widget.obscureText,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
+          errorBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              width: 3.0,
+              color: AppColor.text7,
+            ),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          errorStyle: AppTextTheme.subText(AppColor.others1),
           suffixIcon: widget.isPassword
               ? TextButton(
                   child: widget.obscureText
@@ -76,6 +85,7 @@ class _JTTextFormFieldState extends State<JTTextFormField> {
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
         validator: widget.validator,
+        onFieldSubmitted: widget.onFieldSubmitted,
       ),
     );
   }

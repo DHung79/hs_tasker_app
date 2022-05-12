@@ -15,6 +15,11 @@ class AppRoutePath {
         routeId = '',
         isUnknown = false;
 
+  AppRoutePath.register()
+      : name = registerRoute,
+        routeId = '',
+        isUnknown = false;
+
   AppRoutePath.home()
       : name = homeRoute,
         routeId = '',
@@ -22,6 +27,16 @@ class AppRoutePath {
 
   AppRoutePath.forgotPassword()
       : name = forgotPasswordRoute,
+        routeId = '',
+        isUnknown = false;
+
+  AppRoutePath.resetPassword()
+      : name = forgotPasswordRoute,
+        routeId = '',
+        isUnknown = false;
+
+  AppRoutePath.otp()
+      : name = otpRoute,
         routeId = '',
         isUnknown = false;
 
@@ -51,11 +66,20 @@ class AppRoutePath {
     if (name == authenticationRoute) {
       return AppRoutePath.authentication();
     }
+    if (name == registerRoute) {
+      return AppRoutePath.register();
+    }
     if (name == homeRoute) {
       return AppRoutePath.home();
     }
     if (name == forgotPasswordRoute) {
       return AppRoutePath.forgotPassword();
+    }
+    if (name == resetPasswordRoute) {
+      return AppRoutePath.resetPassword();
+    }
+    if (name == otpRoute) {
+      return AppRoutePath.otp();
     }
     // if (name == roleRoute) {
     //   return AppRoutePath.roles();

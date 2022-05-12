@@ -16,9 +16,8 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  // bool _passwordSecure = true;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   String? _errorMessage = '';
   AutovalidateMode _autovalidate = AutovalidateMode.disabled;
   bool? _isKeepSession = false;
@@ -45,7 +44,7 @@ class _LoginFormState extends State<LoginForm> {
         if (state is AuthenticationFailure) {
           _showError(state.errorCode);
         } else if (state is LoginLastUser) {
-          emailController.text = state.username;
+          _emailController.text = state.username;
           setState(() {
             _isKeepSession = state.isKeepSession;
           });
@@ -66,6 +65,7 @@ class _LoginFormState extends State<LoginForm> {
                   key: _key,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       _buildErrorMessage(),
                       Padding(
@@ -73,9 +73,9 @@ class _LoginFormState extends State<LoginForm> {
                         child: JTTextFormField(
                           hintText: 'TÀI KHOẢN',
                           keyboardType: TextInputType.emailAddress,
-                          controller: emailController,
+                          controller: _emailController,
                           onSaved: (value) {
-                            emailController.text = value!.trim();
+                            _emailController.text = value!.trim();
                           },
                           onChanged: (value) {
                             setState(() {
@@ -103,14 +103,14 @@ class _LoginFormState extends State<LoginForm> {
                           hintText: 'MẬT KHẨU',
                           isPassword: true,
                           obscureText: _passwordSecure,
-                          controller: passwordController,
+                          controller: _passwordController,
                           passwordIconOnPressed: () {
                             setState(() {
                               _passwordSecure = !_passwordSecure;
                             });
                           },
                           onSaved: (value) {
-                            passwordController.text = value!.trim();
+                            _passwordController.text = value!.trim();
                           },
                           onChanged: (value) {
                             setState(() {
@@ -139,13 +139,17 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Container(
-                          constraints: const BoxConstraints(maxHeight: 18),
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Center(
                           child: InkWell(
-                            child: Text(
-                              ScreenUtil.t(I18nKey.forgotPassword)!,
-                              style: AppTextTheme.link(Colors.white),
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                ScreenUtil.t(I18nKey.forgotPassword)!,
+                                style: AppTextTheme.link(Colors.white),
+                              ),
                             ),
                             onTap: () => navigateTo(forgotPasswordRoute),
                           ),
@@ -153,28 +157,30 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            minimumSize: const Size.fromHeight(52),
-                            backgroundColor: Colors.white,
-                          ),
+                        child: AppButtonTheme.fillRounded(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                          constraints: const BoxConstraints(minHeight: 52),
                           child: Text(
                             ScreenUtil.t(I18nKey.signIn)!.toUpperCase(),
-                            style: AppTextTheme.headerTitle(AppColor.primary1),
+                            style: AppTextTheme.headerTitle(
+                              AppColor.primary1,
+                            ),
                           ),
                           onPressed: () => _login(),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            minimumSize: const Size.fromHeight(52),
-                            backgroundColor: Colors.white,
-                          ),
+                        child: AppButtonTheme.fillRounded(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                          constraints: const BoxConstraints(minHeight: 52),
                           child: Text(
                             'ĐĂNG KÍ',
-                            style: AppTextTheme.headerTitle(AppColor.primary1),
+                            style: AppTextTheme.headerTitle(
+                              AppColor.primary1,
+                            ),
                           ),
                           onPressed: () {},
                         ),
@@ -200,8 +206,8 @@ class _LoginFormState extends State<LoginForm> {
       _key.currentState!.save();
       AuthenticationBlocController().authenticationBloc.add(
             UserLogin(
-              email: emailController.text,
-              password: passwordController.text,
+              email: _emailController.text,
+              password: _passwordController.text,
               keepSession: _isKeepSession!,
               isMobile: true,
             ),
@@ -213,33 +219,14 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
-  _buildErrorMessage() {
+  Widget _buildErrorMessage() {
     return _errorMessage != null && _errorMessage!.isNotEmpty
         ? Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                minWidth: double.infinity,
-                minHeight: 24,
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4.0),
-                  border: Border.all(
-                    color: Theme.of(context).errorColor,
-                    width: 1,
-                  ),
-                ),
-                child: Padding(
-                  child: Text(
-                    _errorMessage!,
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        fontStyle: FontStyle.italic,
-                        color: Theme.of(context).errorColor),
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
-                ),
+            padding: const EdgeInsets.only(bottom: 24),
+            child: Center(
+              child: Text(
+                _errorMessage!,
+                style: AppTextTheme.normalHeaderTitle(AppColor.others1),
               ),
             ),
           )

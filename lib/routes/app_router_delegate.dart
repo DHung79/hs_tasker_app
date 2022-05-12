@@ -3,6 +3,8 @@ import 'package:hs_tasker_app/screens/forgot_password_screen/forgot_password_scr
 import 'package:hs_tasker_app/screens/home/home_screen.dart';
 import 'package:hs_tasker_app/screens/onboarding/authentication_screen.dart';
 import '../screens/not_found/page_not_found_screen.dart';
+import '../screens/otp_screen/otp_screen.dart';
+import '../screens/reset_password_screen/reset_password_screen.dart';
 import 'no_animation_transition_delegate.dart';
 import 'route_names.dart';
 import 'route_path.dart';
@@ -54,12 +56,20 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
       return const AuthenticationScreen();
     }
 
+    if (route == registerRoute) {
+      return const ResetPasswordScreen();
+    }
+
     if (route == forgotPasswordRoute) {
       return const ForgotPasswordScreen();
     }
 
     if (route == resetPasswordRoute) {
-      return const ForgotPasswordScreen();
+      return const ResetPasswordScreen();
+    }
+
+    if (route == otpRoute) {
+      return const OTPScreen();
     }
 
     // if (route == roleRoute) {

@@ -91,7 +91,7 @@ class AppTextTheme {
     return GoogleFonts.lexend(
       fontWeight: FontWeight.w400,
       color: color,
-      fontSize: 14,
+      fontSize: 12,
     );
   }
 
