@@ -307,4 +307,5 @@ class I18nKey {
   static const another = 'another';
   static const accountLoggedOutOfDevice = 'accountLoggedOutOfDevice';
   static const allowed = 'allowed';
+  static const registerContent = 'registerContent';
 }

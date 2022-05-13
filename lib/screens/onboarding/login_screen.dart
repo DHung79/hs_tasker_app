@@ -182,7 +182,7 @@ class _LoginFormState extends State<LoginForm> {
                               AppColor.primary1,
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () => navigateTo(registerRoute),
                         ),
                       ),
                     ],
