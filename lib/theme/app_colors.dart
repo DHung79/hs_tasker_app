@@ -39,6 +39,10 @@ class AppColor {
   static Color others2 = hexToColor('#4EFF80');
   static Color test1 = hexToColor('#BB3553');
   static Color test2 = hexToColor('#FDC552');
+
+  //
+  static Color newBackground = hexToColor('#E5E5E5');
+
 }
 
 Color hexToColor(String hex) {

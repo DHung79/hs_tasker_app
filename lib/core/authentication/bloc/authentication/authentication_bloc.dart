@@ -63,8 +63,8 @@ class AuthenticationBloc
           event.email,
           event.password,
         );
+        logDebug('data: $data');
         if (data["error_message"] == null) {
-          logDebug('data: $data');
           final currentUser = Token.fromJson(data);
           if (currentUser.id.isNotEmpty) {
             final _now = DateTime.now().millisecondsSinceEpoch;

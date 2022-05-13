@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../core/authentication/auth.dart';
 import '../../core/tasker/tasker.dart';
 import '../../core/user/user.dart';
@@ -15,17 +16,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _pageState = PageState();
-  final _userBloc = UserBloc();
   @override
   void initState() {
     AuthenticationBlocController().authenticationBloc.add(AppLoadedup());
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _userBloc.dispose();
-    super.dispose();
   }
 
   @override
@@ -189,8 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       onTap: () {
-        // navigateTo(forgotPasswordRoute);
-        AuthenticationBlocController().authenticationBloc.add(UserLogOut());
+        navigateTo(taskerProfileRoute);
       },
     );
   }

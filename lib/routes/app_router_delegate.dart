@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hs_tasker_app/screens/forgot_password_screen/forgot_password_screen.dart';
-import 'package:hs_tasker_app/screens/home/home_screen.dart';
-import 'package:hs_tasker_app/screens/onboarding/authentication_screen.dart';
-import 'package:hs_tasker_app/screens/register_screen/register_screen.dart';
+import '/screens/forgot_password_screen/forgot_password_screen.dart';
+import '/screens/home/home_screen.dart';
+import '/screens/onboarding/authentication_screen.dart';
+import '/screens/register_screen/register_screen.dart';
+import '/screens/tasker_profile/tasker_profile_screen.dart';
 import '../screens/not_found/page_not_found_screen.dart';
 import '../screens/otp_screen/otp_screen.dart';
 import '../screens/reset_password_screen/reset_password_screen.dart';
@@ -71,6 +72,10 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
 
     if (route == otpRoute) {
       return const OTPScreen();
+    }
+
+    if (route == taskerProfileRoute) {
+      return const TaskerProfileScreen();
     }
 
     // if (route == roleRoute) {

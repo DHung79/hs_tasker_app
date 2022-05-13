@@ -31,6 +31,9 @@ class AppRouteInforParser extends RouteInformationParser<AppRoutePath> {
     if (name == otpRoute) {
       return AppRoutePath.otp();
     }
+    if (name == taskerProfileRoute) {
+      return AppRoutePath.taskerProfile();
+    }
     // if (name == roleRoute) {
     //   return AppRoutePath.roles();
     // }

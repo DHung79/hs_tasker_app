@@ -40,6 +40,11 @@ class AppRoutePath {
         routeId = '',
         isUnknown = false;
 
+  AppRoutePath.taskerProfile()
+      : name = taskerProfileRoute,
+        routeId = '',
+        isUnknown = false;
+
   // AppRoutePath.roles()
   //     : name = roleRoute,
   //       routeId = '',
@@ -80,6 +85,9 @@ class AppRoutePath {
     }
     if (name == otpRoute) {
       return AppRoutePath.otp();
+    }
+    if (name == taskerProfileRoute) {
+      return AppRoutePath.taskerProfile();
     }
     // if (name == roleRoute) {
     //   return AppRoutePath.roles();

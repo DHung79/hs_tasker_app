@@ -53,6 +53,8 @@ class SvgIcons {
   static SvgIconData barChart = SvgIconData(path: 'assets/svg/27718.svg');
   static SvgIconData star = SvgIconData(path: 'assets/svg/27720.svg');
   static SvgIconData password = SvgIconData(path: 'assets/svg/27721.svg');
+  static SvgIconData alternateEmail = SvgIconData(path: 'assets/svg/27722.svg');
+  static SvgIconData starOutline = SvgIconData(path: 'assets/svg/27723.svg');
 }
 
 class SvgIcon extends StatelessWidget {
