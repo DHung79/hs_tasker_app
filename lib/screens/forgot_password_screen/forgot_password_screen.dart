@@ -44,13 +44,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               child: Container(
                 width: 44,
                 height: 44,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration: BoxDecoration(
+                  color: AppColor.white,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.close,
-                  color: Colors.black,
+                  color: AppColor.black,
                 ),
               ),
               onTap: () {
@@ -90,7 +90,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       Center(
                         child: Text(
                           ScreenUtil.t(I18nKey.forgotPassword)!,
-                          style: AppTextTheme.bigText(Colors.white),
+                          style: AppTextTheme.bigText(AppColor.white),
                         ),
                       ),
                       Padding(
@@ -130,7 +130,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: AppButtonTheme.fillRounded(
-                          color: Colors.white,
+                          color: AppColor.white,
                           borderRadius: BorderRadius.circular(4),
                           constraints: const BoxConstraints(minHeight: 52),
                           child: Text(

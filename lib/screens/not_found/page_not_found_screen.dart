@@ -40,7 +40,7 @@ class _PageNotFoundScreenState extends State<PageNotFoundScreen> {
           Center(
             child: Text(
               'Không tìm thấy trang!',
-              style: AppTextTheme.bigText(Colors.black),
+              style: AppTextTheme.bigText(AppColor.black),
             ),
           ),
         ],

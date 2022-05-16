@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _homePage(AsyncSnapshot<TaskerModel> snapshot) {
     final tasker = snapshot.data;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(146),
         child: _appBar(tasker!),
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _appBar(TaskerModel tasker) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.white,
       elevation: 0.16,
       flexibleSpace: Column(
         children: [
@@ -90,7 +90,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 27, 8, 27),
-                    child: _buildNoti(),
+                    child: InkWell(
+                      child: _buildNoti(),
+                      onTap: () {
+                        setState(() {
+                          notiBadges = 0;
+                          navigateTo(notificationRoute);
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -138,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Text(
                       notiBadges > 9 ? '9+' : '$notiBadges',
                       style: AppTextTheme.mediumBodyText(
-                        Colors.white,
+                        AppColor.white,
                       ),
                     ),
                   ),
@@ -151,8 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _taskerInfo(TaskerModel tasker) {
     return InkWell(
-      highlightColor: Colors.white,
-      splashColor: Colors.white,
+      highlightColor: AppColor.white,
+      splashColor: AppColor.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -234,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Expanded(
       child: AppButtonTheme.underLine(
         onPressed: onPressed,
-        lineColor: isSelected ? AppColor.primary1 : Colors.white,
+        lineColor: isSelected ? AppColor.primary1 : AppColor.white,
         lineWidth: 4,
         child: Text(
           title,
@@ -286,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ? AppColor.others1
             : AppColor.shade9;
     final Color tagTextColor = homeTabIndex == 2
-        ? Colors.white
+        ? AppColor.white
         : index != 0
             ? AppColor.primary2
             : AppColor.shade9;
@@ -364,7 +372,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     'Xem chi tiết',
                     style: homeTabIndex == 1 && index == 0
-                        ? AppTextTheme.headerTitle(Colors.white)
+                        ? AppTextTheme.headerTitle(AppColor.white)
                         : AppTextTheme.mediumHeaderTitle(AppColor.primary2),
                   ),
                   if (homeTabIndex != 1)

@@ -53,7 +53,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
   Widget _taskerProfile(AsyncSnapshot<TaskerModel> snapshot) {
     final tasker = snapshot.data;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(56),
         child: _appBar(),
@@ -64,18 +64,18 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
 
   Widget _appBar() {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.white,
       elevation: 0.16,
       flexibleSpace: Row(
         children: [
           AppButtonTheme.fillRounded(
             constraints: const BoxConstraints(minHeight: 56),
             color: Colors.transparent,
-            highlightColor: Colors.white,
+            highlightColor: AppColor.white,
             child: SvgIcon(
               SvgIcons.arrowBack,
               size: 24,
-              color: Colors.black,
+              color: AppColor.black,
             ),
             onPressed: () => navigateTo(homeRoute),
           ),
@@ -85,7 +85,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
               child: Center(
                 child: Text(
                   'Hồ sơ người dùng',
-                  style: AppTextTheme.mediumHeaderTitle(Colors.black),
+                  style: AppTextTheme.mediumHeaderTitle(AppColor.black),
                 ),
               ),
             ),
@@ -93,7 +93,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
           AppButtonTheme.fillRounded(
             constraints: const BoxConstraints(minHeight: 56),
             color: Colors.transparent,
-            highlightColor: Colors.white,
+            highlightColor: AppColor.white,
             child: SvgIcon(
               SvgIcons.logout,
               size: 24,
@@ -131,8 +131,8 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
+                        decoration: BoxDecoration(
+                          color: AppColor.white,
                           shape: BoxShape.circle,
                         ),
                         child: Center(
@@ -147,7 +147,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                         padding: const EdgeInsets.only(left: 10),
                         child: Text(
                           'Đồng ý',
-                          style: AppTextTheme.headerTitle(Colors.white),
+                          style: AppTextTheme.headerTitle(AppColor.white),
                         ),
                       ),
                     ],
@@ -170,14 +170,14 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                     children: [
                       SvgIcon(
                         SvgIcons.arrowBack,
-                        color: Colors.black,
+                        color: AppColor.black,
                         size: 24,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: Text(
                           'Trở về',
-                          style: AppTextTheme.headerTitle(Colors.black),
+                          style: AppTextTheme.headerTitle(AppColor.black),
                         ),
                       ),
                     ],
@@ -319,13 +319,13 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
               children: [
                 Text(
                   tasker.name,
-                  style: AppTextTheme.mediumHeaderTitle(Colors.black),
+                  style: AppTextTheme.mediumHeaderTitle(AppColor.black),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(
                     tasker.email,
-                    style: AppTextTheme.mediumBodyText(Colors.black),
+                    style: AppTextTheme.mediumBodyText(AppColor.black),
                   ),
                 ),
                 InkWell(
@@ -355,7 +355,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
       padding: const EdgeInsets.all(16),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.white,
           boxShadow: [
             BoxShadow(
               color: AppColor.shadow.withOpacity(0.16),
@@ -376,7 +376,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                   children: [
                     Text(
                       headerTitle,
-                      style: AppTextTheme.mediumHeaderTitle(Colors.black),
+                      style: AppTextTheme.mediumHeaderTitle(AppColor.black),
                     ),
                     InkWell(
                       child: Padding(
@@ -434,7 +434,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
           child: Center(
             child: Text(
               title,
-              style: AppTextTheme.normalText(Colors.black),
+              style: AppTextTheme.normalText(AppColor.black),
             ),
           ),
         ),
@@ -463,14 +463,14 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                   children: [
                     SvgIcon(
                       SvgIcons.starOutline,
-                      color: Colors.white,
+                      color: AppColor.white,
                       size: 24,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Text(
                         'Xem đánh giá',
-                        style: AppTextTheme.headerTitle(Colors.white),
+                        style: AppTextTheme.headerTitle(AppColor.white),
                       ),
                     ),
                   ],
@@ -487,7 +487,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                 ),
                 borderRadius: BorderRadius.circular(4),
                 outlineColor: AppColor.primary2,
-                color: Colors.white,
+                color: AppColor.white,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

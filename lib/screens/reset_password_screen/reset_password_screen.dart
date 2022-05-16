@@ -64,7 +64,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       Center(
                         child: Text(
                           'Đặt mật khẩu mới',
-                          style: AppTextTheme.bigText(Colors.white),
+                          style: AppTextTheme.bigText(AppColor.white),
                         ),
                       ),
                       Padding(
@@ -150,7 +150,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: AppButtonTheme.fillRounded(
-                          color: Colors.white,
+                          color: AppColor.white,
                           borderRadius: BorderRadius.circular(4),
                           constraints: const BoxConstraints(minHeight: 52),
                           child: Text(

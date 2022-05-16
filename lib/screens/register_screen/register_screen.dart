@@ -33,13 +33,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Container(
                 width: 44,
                 height: 44,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration: BoxDecoration(
+                  color: AppColor.white,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.close,
-                  color: Colors.black,
+                  color: AppColor.black,
                 ),
               ),
               onTap: () {
@@ -67,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                     'TRỞ THÀNH ĐỐI TÁC CỦA II HOME',
-                    style: AppTextTheme.headerTitle(Colors.white),
+                    style: AppTextTheme.headerTitle(AppColor.white),
                   ),
                 ),
                 Padding(

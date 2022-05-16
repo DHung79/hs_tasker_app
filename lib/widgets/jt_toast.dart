@@ -30,7 +30,7 @@ class JTToast {
         height: height,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          color: Colors.white,
+          color: AppColor.white,
           boxShadow: [
             BoxShadow(
               color: AppColor.shadow.withOpacity(0.2),

@@ -38,7 +38,7 @@ class _JTTextFormFieldState extends State<JTTextFormField> {
       child: TextFormField(
         keyboardType: widget.keyboardType,
         obscureText: widget.obscureText,
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: AppColor.white),
         decoration: InputDecoration(
           errorBorder: UnderlineInputBorder(
             borderSide: BorderSide(
@@ -51,13 +51,13 @@ class _JTTextFormFieldState extends State<JTTextFormField> {
           suffixIcon: widget.isPassword
               ? TextButton(
                   child: widget.obscureText
-                      ? const Icon(
+                      ? Icon(
                           Icons.remove_red_eye,
-                          color: Colors.white,
+                          color: AppColor.white,
                         )
                       : SvgIcon(
                           SvgIcons.password,
-                          color: Colors.white,
+                          color: AppColor.white,
                         ),
                   onPressed: widget.passwordIconOnPressed,
                 )
@@ -79,7 +79,7 @@ class _JTTextFormFieldState extends State<JTTextFormField> {
             borderRadius: BorderRadius.circular(4),
           ),
           hintText: widget.hintText,
-          hintStyle: AppTextTheme.mediumBodyText(Colors.white),
+          hintStyle: AppTextTheme.mediumBodyText(AppColor.white),
         ),
         controller: widget.controller,
         onSaved: widget.onSaved,

@@ -148,7 +148,7 @@ class _LoginFormState extends State<LoginForm> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 ScreenUtil.t(I18nKey.forgotPassword)!,
-                                style: AppTextTheme.link(Colors.white),
+                                style: AppTextTheme.link(AppColor.white),
                               ),
                             ),
                             onTap: () => navigateTo(forgotPasswordRoute),
@@ -158,7 +158,7 @@ class _LoginFormState extends State<LoginForm> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: AppButtonTheme.fillRounded(
-                          color: Colors.white,
+                          color: AppColor.white,
                           borderRadius: BorderRadius.circular(4),
                           constraints: const BoxConstraints(minHeight: 52),
                           child: Text(
@@ -173,7 +173,7 @@ class _LoginFormState extends State<LoginForm> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: AppButtonTheme.fillRounded(
-                          color: Colors.white,
+                          color: AppColor.white,
                           borderRadius: BorderRadius.circular(4),
                           constraints: const BoxConstraints(minHeight: 52),
                           child: Text(

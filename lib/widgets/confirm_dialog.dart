@@ -48,7 +48,7 @@ class _JTConfirmDialogState extends State<JTConfirmDialog> {
                 child: Text(
                   '${widget.headerTitle}',
                   style: widget.headerTitleStyle ??
-                      AppTextTheme.mediumHeaderTitle(Colors.black),
+                      AppTextTheme.mediumHeaderTitle(AppColor.black),
                 ),
               ),
               Padding(
@@ -63,7 +63,7 @@ class _JTConfirmDialogState extends State<JTConfirmDialog> {
                 child: Text(
                   widget.contentText,
                   style: widget.contentTextStyle ??
-                      AppTextTheme.normalText(Colors.black),
+                      AppTextTheme.normalText(AppColor.black),
                 ),
               ),
               if (widget.actionField != null) widget.actionField!,

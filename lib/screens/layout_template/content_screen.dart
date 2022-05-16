@@ -99,13 +99,13 @@ class _PageTemplateState extends State<PageTemplate> {
         builder: (context, snapshot) {
           return Scaffold(
             key: _key,
-            backgroundColor: Colors.white,
+            backgroundColor: AppColor.white,
             appBar: widget.showAppBar
                 ? PreferredSize(
                     preferredSize: Size.fromHeight(widget.appBarHeight),
                     child: widget.appBar ??
                         AppBar(
-                          backgroundColor: Colors.white,
+                          backgroundColor: AppColor.white,
                           flexibleSpace: widget.flexibleSpace,
                           centerTitle: widget.currentTab != 0,
                           leading: widget.leading,

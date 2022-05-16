@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hs_tasker_app/screens/notification_screen/notification_screen.dart';
 import '/screens/forgot_password_screen/forgot_password_screen.dart';
 import '/screens/home/home_screen.dart';
 import '/screens/onboarding/authentication_screen.dart';
@@ -76,6 +77,10 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
 
     if (route == taskerProfileRoute) {
       return const TaskerProfileScreen();
+    }
+
+    if (route == notificationRoute) {
+      return const NotificationScreen();
     }
 
     // if (route == roleRoute) {

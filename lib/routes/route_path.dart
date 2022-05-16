@@ -45,6 +45,11 @@ class AppRoutePath {
         routeId = '',
         isUnknown = false;
 
+  AppRoutePath.notifications()
+      : name = notificationRoute,
+        routeId = '',
+        isUnknown = false;
+
   // AppRoutePath.roles()
   //     : name = roleRoute,
   //       routeId = '',
@@ -88,6 +93,9 @@ class AppRoutePath {
     }
     if (name == taskerProfileRoute) {
       return AppRoutePath.taskerProfile();
+    }
+    if (name == notificationRoute) {
+      return AppRoutePath.notifications();
     }
     // if (name == roleRoute) {
     //   return AppRoutePath.roles();

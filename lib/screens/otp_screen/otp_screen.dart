@@ -54,14 +54,14 @@ class _OTPScreenState extends State<OTPScreen> {
                         Container(
                           width: 44,
                           height: 44,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
+                          decoration: BoxDecoration(
+                            color: AppColor.white,
                             shape: BoxShape.circle,
                           ),
                           child: Center(
                             child: SvgIcon(
                               SvgIcons.arrowBack,
-                              color: Colors.black,
+                              color: AppColor.black,
                               size: 24,
                             ),
                           ),
@@ -72,7 +72,7 @@ class _OTPScreenState extends State<OTPScreen> {
                           child: Center(
                             child: Text(
                               'Nhập email',
-                              style: AppTextTheme.normalText(Colors.white),
+                              style: AppTextTheme.normalText(AppColor.white),
                             ),
                           ),
                         )
@@ -117,7 +117,7 @@ class _OTPScreenState extends State<OTPScreen> {
                     Center(
                       child: Text(
                         'Nhập mã OTP',
-                        style: AppTextTheme.bigText(Colors.white),
+                        style: AppTextTheme.bigText(AppColor.white),
                       ),
                     ),
                     Padding(
@@ -130,12 +130,12 @@ class _OTPScreenState extends State<OTPScreen> {
                         appContext: context,
                         length: 4,
                         controller: _otpController,
-                        textStyle: AppTextTheme.bigText(Colors.white),
+                        textStyle: AppTextTheme.bigText(AppColor.white),
                         animationType: AnimationType.fade,
                         animationDuration: const Duration(milliseconds: 250),
                         autoFocus: true,
                         autoDismissKeyboard: false,
-                        cursorColor: Colors.white,
+                        cursorColor: AppColor.white,
                         backgroundColor: AppColor.primary1,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         inputFormatters: [
@@ -146,9 +146,9 @@ class _OTPScreenState extends State<OTPScreen> {
                           fieldWidth: 32,
                           activeFillColor: AppColor.primary1,
                           selectedFillColor: AppColor.primary1,
-                          activeColor: Colors.white,
-                          selectedColor: Colors.white,
-                          inactiveColor: Colors.white,
+                          activeColor: AppColor.white,
+                          selectedColor: AppColor.white,
+                          inactiveColor: AppColor.white,
                           inactiveFillColor: AppColor.primary1,
                         ),
                         onChanged: (value) {
@@ -177,7 +177,7 @@ class _OTPScreenState extends State<OTPScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: AppButtonTheme.fillRounded(
-                        color: Colors.white,
+                        color: AppColor.white,
                         borderRadius: BorderRadius.circular(4),
                         constraints: const BoxConstraints(minHeight: 52),
                         child: Text(
@@ -199,8 +199,8 @@ class _OTPScreenState extends State<OTPScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'Gửi lại',
-                              style:
-                                  AppTextTheme.normalHeaderTitle(Colors.white),
+                              style: AppTextTheme.normalHeaderTitle(
+                                  AppColor.white),
                             ),
                           ),
                           onTap: () {},
