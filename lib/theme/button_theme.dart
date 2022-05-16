@@ -33,6 +33,7 @@ class AppButtonTheme {
     required void Function()? onPressed,
     required Widget child,
     Color? color,
+    Color? highlightColor,
     BorderRadiusGeometry borderRadius = BorderRadius.zero,
     BoxConstraints? constraints,
   }) {
@@ -41,6 +42,7 @@ class AppButtonTheme {
       child: TextButton(
         style: TextButton.styleFrom(
           backgroundColor: color,
+          primary: highlightColor,
           shape: RoundedRectangleBorder(
             borderRadius: borderRadius,
           ),

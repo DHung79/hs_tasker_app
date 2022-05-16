@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../core/authentication/auth.dart';
 import '../../core/tasker/tasker.dart';
-import '../../core/user/user.dart';
 import '../../main.dart';
+import '../../widgets/jt_indicator.dart';
 import '../layout_template/content_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -41,24 +41,26 @@ class _HomeScreenState extends State<HomeScreen> {
               onFetch: () {
                 _fetchDataOnPage();
               },
-              child: _homePage(snapshot),
+              child:
+                  snapshot.hasData ? _homePage(snapshot) : const JTIndicator(),
             );
           }),
     );
   }
 
   Widget _homePage(AsyncSnapshot<TaskerModel> snapshot) {
+    final tasker = snapshot.data;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(146),
-        child: _appBar(),
+        child: _appBar(tasker!),
       ),
-      body: _buildContent(),
+      body: _buildContent(tasker),
     );
   }
 
-  Widget _appBar() {
+  Widget _appBar(TaskerModel tasker) {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0.16,
@@ -83,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(8, 28, 32, 24),
-                      child: _taskerInfo(),
+                      child: _taskerInfo(tasker),
                     ),
                   ),
                   Padding(
@@ -147,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _taskerInfo() {
+  Widget _taskerInfo(TaskerModel tasker) {
     return InkWell(
       highlightColor: Colors.white,
       splashColor: Colors.white,
@@ -157,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.only(bottom: 4),
             child: Text(
-              'Nguyễn Phúc Vĩnh Kỳ',
+              tasker.name,
               style: AppTextTheme.normalText(AppColor.text1),
             ),
           ),
@@ -232,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(TaskerModel? tasker) {
     return LayoutBuilder(builder: (context, size) {
       return ListView.builder(
         shrinkWrap: true,

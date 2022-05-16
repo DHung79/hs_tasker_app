@@ -3,6 +3,8 @@ import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../core/authentication/auth.dart';
 import '../../core/tasker/tasker.dart';
 import '../../main.dart';
+import '../../widgets/confirm_dialog.dart';
+import '../../widgets/jt_indicator.dart';
 import '../layout_template/content_screen.dart';
 
 class TaskerProfileScreen extends StatefulWidget {
@@ -40,20 +42,23 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
               onFetch: () {
                 _fetchDataOnPage();
               },
-              child: _taskerProfile(snapshot),
+              child: snapshot.hasData
+                  ? _taskerProfile(snapshot)
+                  : const JTIndicator(),
             );
           }),
     );
   }
 
   Widget _taskerProfile(AsyncSnapshot<TaskerModel> snapshot) {
+    final tasker = snapshot.data;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(56),
         child: _appBar(),
       ),
-      body: _buildContent(),
+      body: _buildContent(tasker!),
     );
   }
 
@@ -66,6 +71,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
           AppButtonTheme.fillRounded(
             constraints: const BoxConstraints(minHeight: 56),
             color: Colors.transparent,
+            highlightColor: Colors.white,
             child: SvgIcon(
               SvgIcons.arrowBack,
               size: 24,
@@ -87,15 +93,14 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
           AppButtonTheme.fillRounded(
             constraints: const BoxConstraints(minHeight: 56),
             color: Colors.transparent,
+            highlightColor: Colors.white,
             child: SvgIcon(
               SvgIcons.logout,
               size: 24,
               color: AppColor.primary2,
             ),
             onPressed: () {
-              AuthenticationBlocController()
-                  .authenticationBloc
-                  .add(UserLogOut());
+              _buildLogoutDialog();
             },
           ),
         ],
@@ -103,7 +108,93 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
     );
   }
 
-  Widget _buildContent() {
+  _buildLogoutDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black12,
+      builder: (BuildContext context) {
+        return JTConfirmDialog(
+          headerTitle: 'Cảnh báo',
+          contentText: 'Bạn có chắc chắn muốn đăng xuất?',
+          actionField: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+            child: Column(
+              children: [
+                AppButtonTheme.fillRounded(
+                  constraints: const BoxConstraints(
+                    minHeight: 52,
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                  color: AppColor.primary2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: SvgIcon(
+                            SvgIcons.check,
+                            color: AppColor.primary2,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          'Đồng ý',
+                          style: AppTextTheme.headerTitle(Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    AuthenticationBlocController()
+                        .authenticationBloc
+                        .add(UserLogOut());
+                  },
+                ),
+                const SizedBox(height: 16),
+                AppButtonTheme.fillRounded(
+                  constraints: const BoxConstraints(
+                    minHeight: 52,
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                  color: AppColor.shade1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgIcon(
+                        SvgIcons.arrowBack,
+                        color: Colors.black,
+                        size: 24,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          'Trở về',
+                          style: AppTextTheme.headerTitle(Colors.black),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildContent(TaskerModel tasker) {
     return LayoutBuilder(builder: (context, size) {
       return SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
@@ -111,7 +202,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
           children: [
             Container(
               constraints: const BoxConstraints(minHeight: 128),
-              child: _profileHeader(),
+              child: _profileHeader(tasker),
             ),
             Container(
               constraints: const BoxConstraints(minHeight: 204),
@@ -123,14 +214,14 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7),
                       child: _buildDetail(
-                        title: 'juliesnguyen@gmail.com',
+                        title: tasker.email,
                         svgIcon: SvgIcons.alternateEmail,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7),
                       child: _buildDetail(
-                        title: '(+84) 0335475756',
+                        title: tasker.phoneNumber,
                         svgIcon: SvgIcons.call,
                       ),
                     ),
@@ -203,7 +294,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
     });
   }
 
-  Widget _profileHeader() {
+  Widget _profileHeader(TaskerModel tasker) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -227,13 +318,13 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Nguyễn Phúc Vĩnh Kỳ',
+                  tasker.name,
                   style: AppTextTheme.mediumHeaderTitle(Colors.black),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(
-                    'vinhkygm@gmail.com',
+                    tasker.email,
                     style: AppTextTheme.mediumBodyText(Colors.black),
                   ),
                 ),
