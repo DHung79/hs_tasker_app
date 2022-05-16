@@ -70,7 +70,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
         children: [
           AppButtonTheme.fillRounded(
             constraints: const BoxConstraints(minHeight: 56),
-            color: Colors.transparent,
+            color: AppColor.transparent,
             highlightColor: AppColor.white,
             child: SvgIcon(
               SvgIcons.arrowBack,
@@ -92,7 +92,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
           ),
           AppButtonTheme.fillRounded(
             constraints: const BoxConstraints(minHeight: 56),
-            color: Colors.transparent,
+            color: AppColor.transparent,
             highlightColor: AppColor.white,
             child: SvgIcon(
               SvgIcons.logout,
@@ -100,7 +100,14 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
               color: AppColor.primary2,
             ),
             onPressed: () {
-              _buildLogoutDialog();
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                barrierColor: Colors.black12,
+                builder: (BuildContext context) {
+                  return _buildLogoutDialog();
+                },
+              );
             },
           ),
         ],
@@ -109,88 +116,81 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
   }
 
   _buildLogoutDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      barrierColor: Colors.black12,
-      builder: (BuildContext context) {
-        return JTConfirmDialog(
-          headerTitle: 'Cảnh báo',
-          contentText: 'Bạn có chắc chắn muốn đăng xuất?',
-          actionField: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-            child: Column(
-              children: [
-                AppButtonTheme.fillRounded(
-                  constraints: const BoxConstraints(
-                    minHeight: 52,
-                  ),
-                  borderRadius: BorderRadius.circular(4),
-                  color: AppColor.primary2,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColor.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: SvgIcon(
-                            SvgIcons.check,
-                            color: AppColor.primary2,
-                            size: 20,
-                          ),
-                        ),
+    return JTConfirmDialog(
+      headerTitle: 'Cảnh báo',
+      contentText: 'Bạn có chắc chắn muốn đăng xuất?',
+      actionField: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
+        child: Column(
+          children: [
+            AppButtonTheme.fillRounded(
+              constraints: const BoxConstraints(
+                minHeight: 52,
+              ),
+              borderRadius: BorderRadius.circular(4),
+              color: AppColor.primary2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColor.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: SvgIcon(
+                        SvgIcons.check,
+                        color: AppColor.primary2,
+                        size: 20,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text(
-                          'Đồng ý',
-                          style: AppTextTheme.headerTitle(AppColor.white),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  onPressed: () {
-                    AuthenticationBlocController()
-                        .authenticationBloc
-                        .add(UserLogOut());
-                  },
-                ),
-                const SizedBox(height: 16),
-                AppButtonTheme.fillRounded(
-                  constraints: const BoxConstraints(
-                    minHeight: 52,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      'Đồng ý',
+                      style: AppTextTheme.headerTitle(AppColor.white),
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(4),
-                  color: AppColor.shade1,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgIcon(
-                        SvgIcons.arrowBack,
-                        color: AppColor.black,
-                        size: 24,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text(
-                          'Trở về',
-                          style: AppTextTheme.headerTitle(AppColor.black),
-                        ),
-                      ),
-                    ],
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
+                ],
+              ),
+              onPressed: () {
+                AuthenticationBlocController()
+                    .authenticationBloc
+                    .add(UserLogOut());
+              },
             ),
-          ),
-        );
-      },
+            const SizedBox(height: 16),
+            AppButtonTheme.fillRounded(
+              constraints: const BoxConstraints(
+                minHeight: 52,
+              ),
+              borderRadius: BorderRadius.circular(4),
+              color: AppColor.shade1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgIcon(
+                    SvgIcons.arrowBack,
+                    color: AppColor.black,
+                    size: 24,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      'Trở về',
+                      style: AppTextTheme.headerTitle(AppColor.black),
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 

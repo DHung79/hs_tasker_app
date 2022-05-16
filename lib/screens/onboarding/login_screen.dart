@@ -142,8 +142,8 @@ class _LoginFormState extends State<LoginForm> {
                         padding: const EdgeInsets.symmetric(vertical: 4),
                         child: Center(
                           child: InkWell(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
+                            splashColor: AppColor.transparent,
+                            highlightColor: AppColor.transparent,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(

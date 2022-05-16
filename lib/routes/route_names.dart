@@ -7,6 +7,6 @@ const String otpRoute = '/otp';
 const String homeRoute = '/home';
 const String taskerProfileRoute = '/tasker-profile';
 const String notificationRoute = '/notifications';
-
+const String jobDetailRoute = '/job-detail';
+const String taskHistoryRoute = '/task-history';
 const String pageNotFoundRoute = '/page-not-found';
-

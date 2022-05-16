@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hs_tasker_app/screens/notification_screen/notification_screen.dart';
+import '/screens/job_detail_screen/job_detail_screen.dart';
+import '/screens/notification_screen/notification_screen.dart';
 import '/screens/forgot_password_screen/forgot_password_screen.dart';
 import '/screens/home/home_screen.dart';
 import '/screens/onboarding/authentication_screen.dart';
@@ -83,6 +84,13 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
       return const NotificationScreen();
     }
 
+    if (route == jobDetailRoute) {
+      return const JobDetailScreen();
+    }
+
+    if (route == taskHistoryRoute) {
+      return const JobDetailScreen();
+    }
     // if (route == roleRoute) {
     //   return const UserManagementScreen(tab: 1);
     // }

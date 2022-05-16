@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../core/authentication/auth.dart';
@@ -69,7 +68,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         children: [
           AppButtonTheme.fillRounded(
             constraints: const BoxConstraints(minHeight: 56),
-            color: Colors.transparent,
+            color: AppColor.transparent,
             highlightColor: AppColor.white,
             child: SvgIcon(
               SvgIcons.arrowBack,
@@ -91,7 +90,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ),
           AppButtonTheme.fillRounded(
             constraints: const BoxConstraints(minHeight: 56),
-            color: Colors.transparent,
+            color: AppColor.transparent,
             highlightColor: AppColor.white,
             child: SvgIcon(
               SvgIcons.refresh,

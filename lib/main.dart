@@ -109,3 +109,7 @@ Future<PackageInfo> loadVersion() async {
 
   return packageInfo;
 }
+
+String? getCurrentRouteName() {
+  return locator<AppRouterDelegate>().currentConfiguration.name;
+}

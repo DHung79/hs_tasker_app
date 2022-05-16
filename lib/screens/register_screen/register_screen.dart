@@ -28,8 +28,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: InkWell(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
+              splashColor: AppColor.transparent,
+              highlightColor: AppColor.transparent,
               child: Container(
                 width: 44,
                 height: 44,

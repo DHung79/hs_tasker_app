@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class AppButtonTheme {
   static Widget underLine({
-    required void Function()? onPressed,
     required Widget child,
+    void Function()? onPressed,
     Color? color,
     Color lineColor = Colors.white,
     double lineWidth = 1,
@@ -30,8 +30,8 @@ class AppButtonTheme {
   }
 
   static Widget fillRounded({
-    required void Function()? onPressed,
     required Widget child,
+    void Function()? onPressed,
     Color? color,
     Color? highlightColor,
     BorderRadiusGeometry borderRadius = BorderRadius.zero,
@@ -55,7 +55,7 @@ class AppButtonTheme {
 
   static Widget outlineRounded({
     required Widget child,
-    required void Function()? onPressed,
+    void Function()? onPressed,
     Color? color,
     BorderRadiusGeometry borderRadius = BorderRadius.zero,
     Color outlineColor = Colors.white,

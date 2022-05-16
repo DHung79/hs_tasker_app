@@ -50,6 +50,16 @@ class AppRoutePath {
         routeId = '',
         isUnknown = false;
 
+  AppRoutePath.jobDetail()
+      : name = jobDetailRoute,
+        routeId = '',
+        isUnknown = false;
+
+  AppRoutePath.taskerHistory()
+      : name = taskHistoryRoute,
+        routeId = '',
+        isUnknown = false;
+
   // AppRoutePath.roles()
   //     : name = roleRoute,
   //       routeId = '',
@@ -96,6 +106,12 @@ class AppRoutePath {
     }
     if (name == notificationRoute) {
       return AppRoutePath.notifications();
+    }
+    if (name == jobDetailRoute) {
+      return AppRoutePath.jobDetail();
+    }
+    if (name == taskHistoryRoute) {
+      return AppRoutePath.taskerHistory();
     }
     // if (name == roleRoute) {
     //   return AppRoutePath.roles();

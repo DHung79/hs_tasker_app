@@ -42,8 +42,8 @@ class _OTPScreenState extends State<OTPScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 InkWell(
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
+                  splashColor: AppColor.transparent,
+                  highlightColor: AppColor.transparent,
                   child: Container(
                     decoration: BoxDecoration(
                       color: AppColor.secondary1,
@@ -193,8 +193,8 @@ class _OTPScreenState extends State<OTPScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       child: Center(
                         child: InkWell(
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
+                          splashColor: AppColor.transparent,
+                          highlightColor: AppColor.transparent,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(

@@ -333,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                           vertical: 4,
-                          horizontal: 12,
+                          horizontal: 10,
                         ),
                         child: Text(
                           'Đang diễn ra',
@@ -389,7 +389,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                 ],
               ),
-              onPressed: () {},
+              onPressed: () {
+                if (homeTabIndex == 0) {
+                  navigateTo(jobDetailRoute);
+                }
+                if (homeTabIndex == 1) {
+                  // navigateTo(jobDetailRoute);
+                }
+                if (homeTabIndex == 2) {
+                  navigateTo(taskHistoryRoute);
+                }
+              },
             ),
           ],
         ),

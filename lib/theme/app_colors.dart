@@ -44,6 +44,7 @@ class AppColor {
   static Color newBackground = hexToColor('#E5E5E5');
   static Color white = Colors.white;
   static Color black = Colors.black;
+  static Color transparent = Colors.transparent;
 }
 
 Color hexToColor(String hex) {

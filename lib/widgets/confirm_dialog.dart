@@ -25,7 +25,6 @@ class _JTConfirmDialogState extends State<JTConfirmDialog> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, size) {
       const double dialogWidth = 334;
-      const double dialogHeight = 282;
       return AlertDialog(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -36,38 +35,40 @@ class _JTConfirmDialogState extends State<JTConfirmDialog> {
         content: Container(
           constraints: const BoxConstraints(
             minWidth: dialogWidth,
-            minHeight: dialogHeight,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-                child: Text(
-                  '${widget.headerTitle}',
-                  style: widget.headerTitleStyle ??
-                      AppTextTheme.mediumHeaderTitle(AppColor.black),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 24),
+                  child: Text(
+                    '${widget.headerTitle}',
+                    style: widget.headerTitleStyle ??
+                        AppTextTheme.mediumHeaderTitle(AppColor.black),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Divider(
-                  thickness: 1.5,
-                  color: AppColor.shade1,
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Divider(
+                    thickness: 1.5,
+                    color: AppColor.shade1,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-                child: Text(
-                  widget.contentText,
-                  style: widget.contentTextStyle ??
-                      AppTextTheme.normalText(AppColor.black),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 24),
+                  child: Text(
+                    widget.contentText,
+                    style: widget.contentTextStyle ??
+                        AppTextTheme.normalText(AppColor.black),
+                  ),
                 ),
-              ),
-              if (widget.actionField != null) widget.actionField!,
-            ],
+                if (widget.actionField != null) widget.actionField!,
+              ],
+            ),
           ),
         ),
       );
