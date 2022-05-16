@@ -25,6 +25,7 @@ export 'locales/i18n_key.dart';
 export 'theme/button_theme.dart';
 
 int notiBadges = 0;
+int homeTabIndex = 0;
 
 Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 // Page index

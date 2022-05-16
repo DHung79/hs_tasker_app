@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
         preferredSize: const Size.fromHeight(146),
         child: _appBar(tasker!),
       ),
-      body: _buildContent(tasker),
+      body: _buildContent(),
     );
   }
 
@@ -197,17 +197,29 @@ class _HomeScreenState extends State<HomeScreen> {
         _headerButton(
           index: 0,
           title: 'Trang tin mới',
-          onPressed: () {},
+          onPressed: () {
+            setState(() {
+              homeTabIndex = 0;
+            });
+          },
         ),
         _headerButton(
           index: 1,
           title: 'Hiện tại',
-          onPressed: () {},
+          onPressed: () {
+            setState(() {
+              homeTabIndex = 1;
+            });
+          },
         ),
         _headerButton(
           index: 2,
           title: 'Lịch sử',
-          onPressed: () {},
+          onPressed: () {
+            setState(() {
+              homeTabIndex = 2;
+            });
+          },
         ),
       ],
     );
@@ -218,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
     required void Function()? onPressed,
     required int index,
   }) {
-    final bool isSelected = index == 0;
+    final bool isSelected = index == homeTabIndex;
     return Expanded(
       child: AppButtonTheme.underLine(
         onPressed: onPressed,
@@ -234,12 +246,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildContent(TaskerModel? tasker) {
+  Widget _buildContent() {
     return LayoutBuilder(builder: (context, size) {
       return ListView.builder(
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
-        itemCount: 2,
+        itemCount: 3,
         itemBuilder: (BuildContext context, index) {
           return Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -259,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: _buildTask(),
+              child: _buildTask(index: index),
             ),
           );
         },
@@ -267,7 +279,17 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Widget _buildTask() {
+  Widget _buildTask({required int index}) {
+    final Color tagColor = homeTabIndex == 1
+        ? AppColor.shade1
+        : index != 0
+            ? AppColor.others1
+            : AppColor.shade9;
+    final Color tagTextColor = homeTabIndex == 2
+        ? Colors.white
+        : index != 0
+            ? AppColor.primary2
+            : AppColor.shade9;
     return LayoutBuilder(builder: (context, constraints) {
       return Padding(
         padding: const EdgeInsets.all(16),
@@ -276,18 +298,41 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Container(
               constraints: const BoxConstraints(minHeight: 42),
-              child: Column(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Dọn dẹp theo giờ',
-                    style: AppTextTheme.mediumHeaderTitle(AppColor.primary1),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Dọn dẹp theo giờ',
+                        style:
+                            AppTextTheme.mediumHeaderTitle(AppColor.primary1),
+                      ),
+                      Text(
+                        'Vừa mới',
+                        style: AppTextTheme.normalText(AppColor.text7),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Vừa mới',
-                    style: AppTextTheme.normalText(AppColor.text7),
-                  ),
+                  if (homeTabIndex != 0)
+                    Container(
+                      decoration: BoxDecoration(
+                        color: tagColor,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 12,
+                        ),
+                        child: Text(
+                          'Đang diễn ra',
+                          style: AppTextTheme.mediumHeaderTitle(tagTextColor),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -308,30 +353,36 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             AppButtonTheme.outlineRounded(
               constraints: const BoxConstraints(minHeight: 56),
-              outlineColor: AppColor.primary2,
+              outlineColor: homeTabIndex == 1 && index == 0
+                  ? AppColor.shade9
+                  : AppColor.primary2,
+              color: homeTabIndex == 1 && index == 0 ? AppColor.shade9 : null,
               borderRadius: BorderRadius.circular(4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     'Xem chi tiết',
-                    style: AppTextTheme.subText(AppColor.primary2),
+                    style: homeTabIndex == 1 && index == 0
+                        ? AppTextTheme.headerTitle(Colors.white)
+                        : AppTextTheme.mediumHeaderTitle(AppColor.primary2),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Transform.rotate(
-                      angle: 180 * pi / 180,
-                      child: SvgIcon(
-                        SvgIcons.arrowBack,
-                        color: AppColor.primary2,
-                        size: 18,
+                  if (homeTabIndex != 1)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Transform.rotate(
+                        angle: 180 * pi / 180,
+                        child: SvgIcon(
+                          SvgIcons.arrowBack,
+                          color: AppColor.primary2,
+                          size: 18,
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
               onPressed: () {},
-            )
+            ),
           ],
         ),
       );
