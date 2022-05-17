@@ -201,8 +201,11 @@ class AuthenticationBloc
               final account = await TaskerBloc().getProfile();
               // ignore: unnecessary_null_comparison
               if (account == null) {
-                _cleanupCache();
-                emit(UserTokenExpired());
+                Map<String, dynamic> json = convert.jsonDecode(userJson);
+                final account = TaskerModel.fromJson(json);
+                // account.password =
+                //     sharedPreferences.getString('last_userpassword') ?? '';
+                emit(SetUserData(currentUser: account));
               } else {
                 final json = account.toJson();
                 final jsonStr = convert.jsonEncode(json);
@@ -217,6 +220,20 @@ class AuthenticationBloc
                 message: e.toString(),
                 errorCode: '',
               ));
+            }
+          } else {
+            final account = await TaskerBloc().getProfile();
+            // ignore: unnecessary_null_comparison
+            if (account == null) {
+              _cleanupCache();
+              emit(UserTokenExpired());
+            } else {
+              final json = account.toJson();
+              final jsonStr = convert.jsonEncode(json);
+              sharedPreferences.setString('userJson', jsonStr);
+              // account.password =
+              //     sharedPreferences.getString('last_userpassword') ?? '';
+              emit(SetUserData(currentUser: account));
             }
           }
         }
