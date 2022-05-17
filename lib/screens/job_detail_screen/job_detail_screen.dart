@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../core/authentication/auth.dart';
 import '../../core/tasker/tasker.dart';
@@ -26,7 +27,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
   final List<bool> _checkList = [
     true,
     true,
-    true,
+    false,
   ];
 
   final List<String> _toDoList = [
@@ -181,6 +182,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                         ),
                       ),
                     ),
+                    if (isHistory) _buildResults(),
                   ],
                 ),
               ),
@@ -244,7 +246,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                     child: Container(
                       constraints: const BoxConstraints(maxHeight: 26),
                       decoration: BoxDecoration(
-                        color: _checkList.contains(false)
+                        color: _checkList.length > 3
                             ? AppColor.others1
                             : AppColor.shade9,
                         borderRadius: BorderRadius.circular(50),
@@ -621,6 +623,88 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
             ),
           );
         });
+  }
+
+  Widget _buildResults() {
+    final beforeImages = [
+      'https://media0.giphy.com/media/3og0IG0skAiznZQLde/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
+      'https://media4.giphy.com/media/xUA7aSwkpZH8IQ2zu0/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
+      'https://media1.giphy.com/media/l4FGpa3DuEFMrghKE/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
+    ];
+    final afterImages = [
+      'https://media3.giphy.com/media/EExJM3NifsBwjJukuF/giphy.gif?cid=790b7611be94e029622cd882a7752ed1ec413dd59d85836a&rid=giphy.gif&ct=s',
+      'https://media1.giphy.com/media/xUPGGecxiqAvxUqd20/giphy.gif?cid=ecf05e4752x0e4lxsk6vkt2c5awftsq419qgm3tqs70g5vu1&rid=giphy.gif&ct=g',
+      'https://media2.giphy.com/media/4TmsyEHp9Ksw8rEyR8/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
+    ];
+
+    return LayoutBuilder(builder: (context, size) {
+      return Container(
+        width: size.maxWidth,
+        color: AppColor.white,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Kết quả thực tế',
+                style: AppTextTheme.mediumHeaderTitle(AppColor.black),
+              ),
+              _buildImages(
+                title: 'Trước',
+                images: beforeImages,
+              ),
+              _buildImages(
+                title: 'Sau',
+                images: afterImages,
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget _buildImages({
+    required String title,
+    required List<String> images,
+  }) {
+    return LayoutBuilder(builder: (context, size) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 24),
+            child: Text(
+              title,
+              style: AppTextTheme.mediumHeaderTitle(AppColor.primary1),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: SizedBox(
+              height: 100,
+              width: size.maxWidth,
+              child: ListView.builder(
+                physics: const ClampingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: images.length,
+                itemBuilder: (BuildContext context, index) {
+                  final image = images[index];
+                  final isLast = index != images.length - 1;
+                  return Padding(
+                    padding: EdgeInsets.only(right: isLast ? 16 : 0),
+                    child: Image.network(image),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      );
+    });
   }
 
   _fetchDataOnPage() {}

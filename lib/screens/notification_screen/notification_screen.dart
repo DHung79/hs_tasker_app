@@ -118,10 +118,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
             constraints: const BoxConstraints(minHeight: 172),
             decoration: BoxDecoration(
               border: Border(
-                left: BorderSide(
-                  width: 4,
-                  color: tagColor,
-                ),
+                left: index != items - 1
+                    ? BorderSide(
+                        width: 4,
+                        color: tagColor,
+                      )
+                    : BorderSide.none,
                 bottom: index != items - 1
                     ? BorderSide(
                         color: AppColor.shade1,

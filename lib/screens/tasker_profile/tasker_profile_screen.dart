@@ -155,6 +155,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                 ],
               ),
               onPressed: () {
+                Navigator.of(context).pop();
                 AuthenticationBlocController()
                     .authenticationBloc
                     .add(UserLogOut());
