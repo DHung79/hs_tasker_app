@@ -16,11 +16,18 @@ class TaskerProfileScreen extends StatefulWidget {
 
 class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
   final _pageState = PageState();
+  final _taskerBloc = TaskerBloc();
   bool _isObscure = true;
   @override
   void initState() {
     AuthenticationBlocController().authenticationBloc.add(AppLoadedup());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _taskerBloc.dispose();
+    super.dispose();
   }
 
   @override
@@ -208,8 +215,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
             Container(
               constraints: const BoxConstraints(minHeight: 204),
               child: _taskerInfo(
-                headerTitle: 'Liên lạc',
-                onEdit: () {},
+                headerTitle: 'Hồ sơ',
                 infoContent: Column(
                   children: [
                     Padding(
@@ -228,6 +234,9 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                     ),
                   ],
                 ),
+                onEdit: () {
+                  navigateTo(editTaskerProfileRoute);
+                },
               ),
             ),
             Container(
@@ -515,5 +524,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
     });
   }
 
-  _fetchDataOnPage() {}
+  _fetchDataOnPage() {
+    _taskerBloc.getProfile();
+  }
 }

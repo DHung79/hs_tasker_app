@@ -9,4 +9,5 @@ const String taskerProfileRoute = '/tasker-profile';
 const String notificationRoute = '/notifications';
 const String jobDetailRoute = '/job-detail';
 const String taskHistoryRoute = '/task-history';
+const String editTaskerProfileRoute = '/edit-tasker-profile';
 const String pageNotFoundRoute = '/page-not-found';

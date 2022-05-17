@@ -198,12 +198,19 @@ class AuthenticationBloc
           final userJson = sharedPreferences.getString('userJson');
           if (userJson != null && userJson.isNotEmpty) {
             try {
-              Map<String, dynamic> json = convert.jsonDecode(userJson);
-              final account = TaskerModel.fromJson(json);
-              // account.password =
-              //     sharedPreferences.getString('last_userpassword') ?? '';
-
-              emit(SetUserData(currentUser: account));
+              final account = await TaskerBloc().getProfile();
+              // ignore: unnecessary_null_comparison
+              if (account == null) {
+                _cleanupCache();
+                emit(UserTokenExpired());
+              } else {
+                final json = account.toJson();
+                final jsonStr = convert.jsonEncode(json);
+                sharedPreferences.setString('userJson', jsonStr);
+                // account.password =
+                //     sharedPreferences.getString('last_userpassword') ?? '';
+                emit(SetUserData(currentUser: account));
+              }
               return;
             } on Error catch (e) {
               emit(AuthenticationFailure(
@@ -211,19 +218,6 @@ class AuthenticationBloc
                 errorCode: '',
               ));
             }
-          }
-          final account = await TaskerBloc().getProfile();
-          // ignore: unnecessary_null_comparison
-          if (account == null) {
-            _cleanupCache();
-            emit(UserTokenExpired());
-          } else {
-            final json = account.toJson();
-            final jsonStr = convert.jsonEncode(json);
-            sharedPreferences.setString('userJson', jsonStr);
-            // account.password =
-            //     sharedPreferences.getString('last_userpassword') ?? '';
-            emit(SetUserData(currentUser: account));
           }
         }
       }

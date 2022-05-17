@@ -111,6 +111,26 @@ class TaskerBloc {
     }
   }
 
+  Future<TaskerModel> editProfile({
+    EditTaskerModel? editModel,
+  }) async {
+    try {
+      // Await response from server.
+      final data = await _repository.editProfile<TaskerModel, EditTaskerModel>(
+        editModel: editModel,
+      );
+      if (data.error != null) {
+        // Error exist
+        return Future.error(data.error!);
+      } else {
+        // Adding response data.
+        return Future.value(data.model);
+      }
+    } on AppException catch (e) {
+      return Future.error(e);
+    }
+  }
+
   dispose() {
     _allDataFetcher.close();
     _allDataState.close();

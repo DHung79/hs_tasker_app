@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import '/screens/job_detail_screen/job_detail_screen.dart';
-import '/screens/notification_screen/notification_screen.dart';
-import '/screens/forgot_password_screen/forgot_password_screen.dart';
-import '/screens/home/home_screen.dart';
-import '/screens/onboarding/authentication_screen.dart';
-import '/screens/register_screen/register_screen.dart';
-import '/screens/tasker_profile/tasker_profile_screen.dart';
+import 'package:hs_tasker_app/screens/edit_tasker_profile_screen/edit_tasker_profile_screen.dart';
+import '../screens/tasker_profile_screen/tasker_profile_screen.dart';
+import '../screens/job_detail_screen/job_detail_screen.dart';
+import '../screens/notification_screen/notification_screen.dart';
+import '../screens/forgot_password_screen/forgot_password_screen.dart';
+import '../screens/home/home_screen.dart';
+import '../screens/onboarding/authentication_screen.dart';
+import '../screens/register_screen/register_screen.dart';
 import '../screens/not_found/page_not_found_screen.dart';
 import '../screens/otp_screen/otp_screen.dart';
 import '../screens/reset_password_screen/reset_password_screen.dart';
@@ -90,6 +91,9 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
 
     if (route == taskHistoryRoute) {
       return const JobDetailScreen();
+    }
+    if (route == editTaskerProfileRoute) {
+      return const EditTaskerProfileScreen();
     }
     // if (route == roleRoute) {
     //   return const UserManagementScreen(tab: 1);

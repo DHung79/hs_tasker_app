@@ -60,6 +60,10 @@ class AppRoutePath {
         routeId = '',
         isUnknown = false;
 
+  AppRoutePath.editTaskerProfile()
+      : name = editTaskerProfileRoute,
+        routeId = '',
+        isUnknown = false;
   // AppRoutePath.roles()
   //     : name = roleRoute,
   //       routeId = '',
@@ -112,6 +116,9 @@ class AppRoutePath {
     }
     if (name == taskHistoryRoute) {
       return AppRoutePath.taskerHistory();
+    }
+    if (name == editTaskerProfileRoute) {
+      return AppRoutePath.editTaskerProfile();
     }
     // if (name == roleRoute) {
     //   return AppRoutePath.roles();

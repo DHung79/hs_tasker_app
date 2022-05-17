@@ -40,4 +40,11 @@ class TaskerRepository {
           _provider.deleteTaskerById<T>(
             id: id,
           );
+            Future<ApiResponse<T?>>
+      editProfile<T extends BaseModel, K extends EditBaseModel>({
+    K? editModel,
+  }) =>
+          _provider.editProfile<T, K>(
+            editModel: editModel,
+          );
 }
