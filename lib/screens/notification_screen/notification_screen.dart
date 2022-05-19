@@ -1,8 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
-import '../../core/authentication/auth.dart';
-import '../../core/tasker/tasker.dart';
 import '../../main.dart';
 import '../../widgets/jt_indicator.dart';
 import '../layout_template/content_screen.dart';

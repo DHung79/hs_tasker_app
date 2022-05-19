@@ -46,6 +46,12 @@ class AppRouteInforParser extends RouteInformationParser<AppRoutePath> {
     if (name == editTaskerProfileRoute) {
       return AppRoutePath.editTaskerProfile();
     }
+    if (name == workingTaskRoute) {
+      return AppRoutePath.workingTask();
+    }
+    if (name == toDoTaskRoute) {
+      return AppRoutePath.toDoTask();
+    }
     // if (name == roleRoute) {
     //   return AppRoutePath.roles();
     // }

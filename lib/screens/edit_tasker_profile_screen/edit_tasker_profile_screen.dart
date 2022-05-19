@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
-import '../../core/authentication/auth.dart';
-import '../../core/tasker/tasker.dart';
 import '../../main.dart';
 import '../../theme/validator_text.dart';
 import '../../widgets/jt_indicator.dart';
@@ -79,38 +77,50 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
   Widget _appBar() {
     return AppBar(
       backgroundColor: AppColor.white,
-      elevation: 0.16,
-      flexibleSpace: Row(
-        children: [
-          AppButtonTheme.fillRounded(
-            constraints: const BoxConstraints(minHeight: 56),
-            color: AppColor.transparent,
-            highlightColor: AppColor.white,
-            child: SvgIcon(
-              SvgIcons.arrowBack,
-              size: 24,
-              color: AppColor.black,
+      elevation: 0,
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          color: AppColor.white,
+          boxShadow: [
+            BoxShadow(
+              color: AppColor.shadow.withOpacity(0.16),
+              blurRadius: 16,
+              blurStyle: BlurStyle.outer,
             ),
-            onPressed: () => navigateTo(taskerProfileRoute),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 18),
-              child: Center(
-                child: Text(
-                  'Chỉnh sửa hồ sơ',
-                  style: AppTextTheme.mediumHeaderTitle(AppColor.black),
+          ],
+        ),
+        child: Row(
+          children: [
+            AppButtonTheme.fillRounded(
+              constraints: const BoxConstraints(minHeight: 56),
+              color: AppColor.transparent,
+              highlightColor: AppColor.white,
+              child: SvgIcon(
+                SvgIcons.arrowBack,
+                size: 24,
+                color: AppColor.black,
+              ),
+              onPressed: () => navigateTo(taskerProfileRoute),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 18),
+                child: Center(
+                  child: Text(
+                    'Chỉnh sửa hồ sơ',
+                    style: AppTextTheme.mediumHeaderTitle(AppColor.black),
+                  ),
                 ),
               ),
             ),
-          ),
-          AppButtonTheme.fillRounded(
-            constraints: const BoxConstraints(minHeight: 56),
-            color: AppColor.transparent,
-            highlightColor: AppColor.white,
-            child: const SizedBox(),
-          ),
-        ],
+            AppButtonTheme.fillRounded(
+              constraints: const BoxConstraints(minHeight: 56),
+              color: AppColor.transparent,
+              highlightColor: AppColor.white,
+              child: const SizedBox(),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
-import '../../core/authentication/auth.dart';
-import '../../core/tasker/tasker.dart';
 import '../../main.dart';
 import '../../widgets/confirm_dialog.dart';
 import '../../widgets/jt_indicator.dart';

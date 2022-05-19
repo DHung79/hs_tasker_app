@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../main.dart';
 import '../../constants/api_constants.dart';
@@ -112,7 +110,7 @@ class AuthenticationProvider {
         ApiConstants.apiDomain + ApiConstants.apiVersion + '/login/tasker';
     final response = await RestApiHandlerData.login(
       path: url,
-      body: jsonEncode(body),
+      body: body,
       headers: ApiHelper.headers(null),
     );
     return response;

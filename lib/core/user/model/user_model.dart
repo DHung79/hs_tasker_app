@@ -25,9 +25,9 @@ class UserModel extends BaseModel {
         _authGoogleId = json['authGoogleId'] ?? '',
         _admin = json['admin'] ?? false,
         _gender = json['gender'] ?? '',
-        _createdTime = json['created_time'],
+        _createdTime = json['created_time'] ?? 0,
         // _password = '',
-        _updatedTime = json['updated_time'] {
+        _updatedTime = json['updated_time'] ?? 0 {
     // _roles.addAll(BaseModel.mapList<RoleModel>(
     //   json: json,
     //   key: 'roles',

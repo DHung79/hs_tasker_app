@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '/routes/route_names.dart';
-import '../../core/authentication/auth.dart';
 import '../../main.dart';
 import '../../theme/validator_text.dart';
 import '../../widgets/jt_toast.dart';

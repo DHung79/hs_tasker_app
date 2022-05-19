@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hs_tasker_app/screens/edit_tasker_profile_screen/edit_tasker_profile_screen.dart';
+import '../screens/to_do_task_screen/to_do_task_screen.dart';
+import '../screens/working_task_screen/working_task_screen.dart';
+import '../screens/edit_tasker_profile_screen/edit_tasker_profile_screen.dart';
 import '../screens/tasker_profile_screen/tasker_profile_screen.dart';
 import '../screens/job_detail_screen/job_detail_screen.dart';
 import '../screens/notification_screen/notification_screen.dart';
@@ -92,8 +94,16 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
     if (route == taskHistoryRoute) {
       return const JobDetailScreen();
     }
+
     if (route == editTaskerProfileRoute) {
       return const EditTaskerProfileScreen();
+    }
+
+    if (route == workingTaskRoute) {
+      return const ToDoTaskScreen();
+    }
+    if (route == toDoTaskRoute) {
+      return const WorkingTaskScreen();
     }
     // if (route == roleRoute) {
     //   return const UserManagementScreen(tab: 1);

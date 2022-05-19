@@ -64,6 +64,16 @@ class AppRoutePath {
       : name = editTaskerProfileRoute,
         routeId = '',
         isUnknown = false;
+
+  AppRoutePath.workingTask()
+      : name = workingTaskRoute,
+        routeId = '',
+        isUnknown = false;
+
+  AppRoutePath.toDoTask()
+      : name = toDoTaskRoute,
+        routeId = '',
+        isUnknown = false;
   // AppRoutePath.roles()
   //     : name = roleRoute,
   //       routeId = '',
@@ -119,6 +129,12 @@ class AppRoutePath {
     }
     if (name == editTaskerProfileRoute) {
       return AppRoutePath.editTaskerProfile();
+    }
+    if (name == workingTaskRoute) {
+      return AppRoutePath.workingTask();
+    }
+    if (name == toDoTaskRoute) {
+      return AppRoutePath.toDoTask();
     }
     // if (name == roleRoute) {
     //   return AppRoutePath.roles();

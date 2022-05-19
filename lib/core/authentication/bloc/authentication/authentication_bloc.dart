@@ -2,8 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import '../../../../../main.dart';
-import '../../../tasker/tasker.dart';
-import '../../auth.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
