@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/task/task.dart';
 import '../../../routes/route_names.dart';
 import '../../../widgets/display_date_time.dart';
+import '../../../widgets/jt_task_detail.dart';
 import 'home_task.dart';
 import '../../../main.dart';
 
@@ -178,17 +179,17 @@ class _NewPostContentState extends State<NewPostContent> {
             ),
           ),
         ),
-        taskDetail(
+        JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.time,
           headerTitle: 'Thời gian làm',
           contentTitle: '$date, từ $startTime đến $endTime',
         ),
-        taskDetail(
+        JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.location,
           headerTitle: 'Địa chỉ',
           contentTitle: task.address,
         ),
-        taskDetail(
+        JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.car,
           headerTitle: 'Khoảng cách',
           contentTitle: task.distance,

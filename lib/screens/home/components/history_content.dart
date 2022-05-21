@@ -4,6 +4,7 @@ import '../../../routes/route_names.dart';
 import '../../../core/task/task.dart';
 import '../../../main.dart';
 import '../../../widgets/display_date_time.dart';
+import '../../../widgets/jt_task_detail.dart';
 import 'home_task.dart';
 
 class HistoryContent extends StatefulWidget {
@@ -153,19 +154,19 @@ class _HistoryContentState extends State<HistoryContent> {
     );
     return Column(
       children: [
-        taskDetail(
+        JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.dollar1,
           headerTitle: 'Tổng tiền',
           contentTitle: '${task.bill} VND',
           backgroundColor: AppColor.shade2,
         ),
-        taskDetail(
+        JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.time,
           headerTitle: 'Thời gian',
           contentTitle: 'Từ $startTime đến $endTime, $date',
           backgroundColor: AppColor.shade2,
         ),
-        taskDetail(
+        JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.location,
           headerTitle: 'Địa chỉ',
           contentTitle: task.address,

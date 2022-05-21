@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../routes/route_names.dart';
-import '../../../theme/date_time_comparision.dart';
 import '../../../widgets/display_date_time.dart';
 import 'home_task.dart';
 import '../../../core/task/task.dart';
@@ -64,11 +63,17 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
     _nearestTasks.addAll(_tasks
         .where((e) => e.startTime <= _now.millisecondsSinceEpoch)
         .toList());
-    _nearestTasks.add(_tasks.firstWhere((e) {
+    if (_tasks.where((e) {
       final startTime = DateTime.fromMillisecondsSinceEpoch(e.startTime);
       final date = DateTime.fromMillisecondsSinceEpoch(e.date);
-      return dateCompare(day1: date, day2: _now) && startTime.isAfter(_now);
-    }));
+      return date.difference(_now).inDays == 0 && startTime.isAfter(_now);
+    }).isNotEmpty) {
+      _nearestTasks.add(_tasks.firstWhere((e) {
+        final startTime = DateTime.fromMillisecondsSinceEpoch(e.startTime);
+        final date = DateTime.fromMillisecondsSinceEpoch(e.date);
+        return date.difference(_now).inDays == 0 && startTime.isAfter(_now);
+      }));
+    }
     _upComingTasks.addAll(_tasks);
     _upComingTasks.removeWhere(
         (e) => _nearestTasks.where((n) => n.id == e.id).isNotEmpty);
@@ -77,29 +82,32 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-            child: Text(
-              'Công việc gần nhất',
-              style: AppTextTheme.mediumHeaderTitle(AppColor.text7),
+          if (_nearestTasks.isNotEmpty && _upComingTasks.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+              child: Text(
+                'Công việc gần nhất',
+                style: AppTextTheme.mediumHeaderTitle(AppColor.text7),
+              ),
             ),
-          ),
-          _buildNearestTasks(),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-            child: Divider(
-              thickness: 1.5,
-              color: AppColor.shade1,
+          if (_nearestTasks.isNotEmpty) _buildNearestTasks(),
+          if (_nearestTasks.isNotEmpty && _upComingTasks.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: Divider(
+                thickness: 1.5,
+                color: AppColor.shade1,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-            child: Text(
-              'Công việc sắp tới',
-              style: AppTextTheme.mediumHeaderTitle(AppColor.text7),
+          if (_nearestTasks.isNotEmpty && _upComingTasks.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+              child: Text(
+                'Công việc sắp tới',
+                style: AppTextTheme.mediumHeaderTitle(AppColor.text7),
+              ),
             ),
-          ),
-          _buildUpComingTasks(),
+          if (_upComingTasks.isNotEmpty) _buildUpComingTasks(),
         ],
       );
     });
@@ -116,7 +124,7 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
           final startTime = DateTime.fromMillisecondsSinceEpoch(task.startTime);
           final date = DateTime.fromMillisecondsSinceEpoch(task.date);
           final bool isInProgress =
-              dateCompare(day1: date, day2: _now) && startTime.isBefore(_now);
+              date.difference(_now).inDays <= 0 && startTime.isBefore(_now);
           return Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: Container(
@@ -253,17 +261,26 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
   }
 
   Widget _taskContent(TaskModel task) {
-    final startTime = DateFormat.jm()
-        .format(DateTime.fromMillisecondsSinceEpoch(task.startTime));
-    final endTime = DateFormat.jm()
-        .format(DateTime.fromMillisecondsSinceEpoch(task.endTime));
+    final startTime = formatFromInt(
+      value: task.startTime,
+      context: context,
+      displayedFormat: 'HH:mm',
+    );
+    final endTime = formatFromInt(
+      value: task.endTime,
+      context: context,
+      displayedFormat: 'HH:mm',
+    );
     final date = formatFromInt(
-        value: task.date, context: context, displayedFormat: 'E, dd/MM/yyyy');
+      value: task.date,
+      context: context,
+      displayedFormat: 'E, dd/MM/yyyy',
+    );
     return Column(
       children: [
         _taskDetail(
           svgIcon: SvgIcons.time,
-          title: '${startTime.toLowerCase()} - ${endTime.toLowerCase()}',
+          title: '$startTime - $endTime',
         ),
         _taskDetail(
           svgIcon: SvgIcons.calendar,

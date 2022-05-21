@@ -3,6 +3,7 @@ import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../main.dart';
 import '../../widgets/confirm_dialog.dart';
 import '../../widgets/jt_indicator.dart';
+import '../../widgets/jt_task_detail.dart';
 import '../layout_template/content_screen.dart';
 
 class JobDetailScreen extends StatefulWidget {
@@ -237,7 +238,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
                 child: _buildInfo(
-                  title: 'Trạng thái',
+                  headerTitle: 'Trạng thái',
                   content: Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Container(
@@ -265,39 +266,39 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: _buildInfo(
-                title: 'Tổng tiền',
-                text: '300.00 VND',
+              child: JTTaskDetail.taskDetail(
+                headerTitle: 'Tổng tiền',
+                contentTitle: '300.00 VND',
                 svgIcon: SvgIcons.dollar1,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: _buildInfo(
-                title: 'Thời gian làm',
-                text: 'Ngày mai, từ 14:00 đến 16:00',
+              child: JTTaskDetail.taskDetail(
+                headerTitle: 'Thời gian làm',
+                contentTitle: 'Ngày mai, từ 14:00 đến 16:00',
                 svgIcon: SvgIcons.time,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: _buildInfo(
-                title: 'Địa chỉ',
-                text: '358/12/33 Lư Cấm, Ngọc Hiệp',
+              child: JTTaskDetail.taskDetail(
+                headerTitle: 'Địa chỉ',
+                contentTitle: '358/12/33 Lư Cấm, Ngọc Hiệp',
                 svgIcon: SvgIcons.location,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: _buildInfo(
-                title: 'Loại nhà',
-                text: 'Căn hộ',
+              child: JTTaskDetail.taskDetail(
+                headerTitle: 'Loại nhà',
+                contentTitle: 'Căn hộ',
                 svgIcon: SvgIcons.home,
               ),
             ),
-            _buildInfo(
-              title: 'Khoảng cách',
-              text: '4km',
+            JTTaskDetail.taskDetail(
+              headerTitle: 'Khoảng cách',
+              contentTitle: '4km',
               svgIcon: SvgIcons.car,
             ),
           ],
@@ -325,24 +326,24 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: _buildInfo(
-                title: 'Ghi chú',
-                text: 'Mang theo chổi',
+              child: JTTaskDetail.taskDetail(
+                headerTitle: 'Ghi chú',
+                contentTitle: 'Mang theo chổi',
                 svgIcon: SvgIcons.list,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: _buildInfo(
-                title: 'Danh sách kiểm tra',
+                headerTitle: 'Danh sách kiểm tra',
                 toDoList: _toDoList,
                 checkList: _checkList,
                 svgIcon: SvgIcons.checkList,
               ),
             ),
-            _buildInfo(
-              title: 'Dụng cụ tự mang',
-              text: ' \u2022 Chổi\n \u2022 Cây lau nhà',
+            JTTaskDetail.taskDetail(
+              headerTitle: 'Dụng cụ tự mang',
+              contentTitle: ' \u2022 Chổi\n \u2022 Cây lau nhà',
               svgIcon: SvgIcons.clean,
             ),
           ],
@@ -352,8 +353,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
   }
 
   Widget _buildInfo({
-    required String title,
-    String? text,
+    required String headerTitle,
     Widget? content,
     IconData? icon,
     SvgIconData? svgIcon,
@@ -395,62 +395,55 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  headerTitle,
                   style: AppTextTheme.subText(AppColor.shade5),
                 ),
-                text != null
-                    ? Text(
-                        text,
-                        style: AppTextTheme.mediumBodyText(AppColor.black),
-                      )
-                    : content ??
-                        Column(
-                          children: [
-                            for (var i = 0; i < toDoList!.length; i++)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: Container(
-                                  constraints:
-                                      const BoxConstraints(minHeight: 24),
-                                  child: Row(
-                                    children: [
-                                      isHistory
-                                          ? SizedBox(
-                                              width: 18,
-                                              height: 18,
-                                              child: Checkbox(
-                                                checkColor: AppColor.white,
-                                                activeColor: AppColor.shade9,
-                                                value: checkList![i],
-                                                onChanged: (value) {},
-                                              ),
-                                            )
-                                          : Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 4),
-                                              child: Text(
-                                                '\u2022',
-                                                style:
-                                                    AppTextTheme.mediumBodyText(
-                                                  AppColor.black,
-                                                ),
-                                              ),
+                content ??
+                    Column(
+                      children: [
+                        for (var i = 0; i < toDoList!.length; i++)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Container(
+                              constraints: const BoxConstraints(minHeight: 24),
+                              child: Row(
+                                children: [
+                                  isHistory
+                                      ? SizedBox(
+                                          width: 18,
+                                          height: 18,
+                                          child: Checkbox(
+                                            checkColor: AppColor.white,
+                                            activeColor: AppColor.shade9,
+                                            value: checkList![i],
+                                            onChanged: (value) {},
+                                          ),
+                                        )
+                                      : Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 4),
+                                          child: Text(
+                                            '\u2022',
+                                            style: AppTextTheme.mediumBodyText(
+                                              AppColor.black,
                                             ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 4),
-                                        child: Text(
-                                          toDoList[i],
-                                          style: AppTextTheme.mediumBodyText(
-                                            AppColor.black,
                                           ),
                                         ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4),
+                                    child: Text(
+                                      toDoList[i],
+                                      style: AppTextTheme.mediumBodyText(
+                                        AppColor.black,
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                          ],
-                        ),
+                            ),
+                          ),
+                      ],
+                    ),
               ],
             ),
           )
