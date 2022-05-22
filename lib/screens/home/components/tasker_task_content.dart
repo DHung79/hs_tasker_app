@@ -4,7 +4,6 @@ import '../../../widgets/display_date_time.dart';
 import 'home_task.dart';
 import '../../../core/task/task.dart';
 import '../../../main.dart';
-import 'package:intl/intl.dart';
 
 class TaskerTaskContent extends StatefulWidget {
   const TaskerTaskContent({Key? key}) : super(key: key);
@@ -157,6 +156,9 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
                 taskActions: _taskActions(
                   task: task,
                   isInProgress: isInProgress,
+                  onPressed: () {
+                    navigateTo(workingTaskRoute);
+                  },
                 ),
               ),
             ),
@@ -203,7 +205,12 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
                   ),
                 ),
                 taskContent: _taskContent(task),
-                taskActions: _taskActions(task: task),
+                taskActions: _taskActions(
+                  task: task,
+                  onPressed: () {
+                    navigateTo(toDoTaskRoute);
+                  },
+                ),
               ),
             ),
           );
@@ -333,7 +340,11 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
     );
   }
 
-  Widget _taskActions({required TaskModel task, bool isInProgress = false}) {
+  Widget _taskActions({
+    required TaskModel task,
+    bool isInProgress = false,
+    Function()? onPressed,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(top: 12),
       child: AppButtonTheme.outlineRounded(
@@ -352,9 +363,7 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
             ),
           ],
         ),
-        onPressed: () {
-          navigateTo(toDoTaskRoute);
-        },
+        onPressed: onPressed,
       ),
     );
   }
