@@ -12,4 +12,5 @@ const String taskHistoryRoute = '/task-history';
 const String editTaskerProfileRoute = '/edit-tasker-profile';
 const String workingTaskRoute = '/working-task';
 const String toDoTaskRoute = '/to-do-task';
+const String taskerRatedRoute = '/tasker-rated';
 const String pageNotFoundRoute = '/page-not-found';

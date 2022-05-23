@@ -18,7 +18,6 @@ class PageTemplate extends StatefulWidget {
   final double appBarHeight;
   final Widget? flexibleSpace;
   final bool showAppBar;
-  final void Function() onFetch;
   final Widget? appBar;
 
   const PageTemplate({
@@ -36,7 +35,6 @@ class PageTemplate extends StatefulWidget {
     this.appBarHeight = 56,
     this.flexibleSpace,
     this.showAppBar = true,
-    required this.onFetch,
     this.appBar,
   }) : super(key: key);
 

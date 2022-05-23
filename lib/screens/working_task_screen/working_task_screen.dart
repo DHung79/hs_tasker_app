@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import 'package:hs_tasker_app/screens/working_task_screen/components/warning_dialog.dart';
 import '../../widgets/confirm_dialog.dart';
-import 'components/cancel_task_dialog.dart';
-import 'components/contact_dialog.dart';
+import '../../widgets/cancel_task_dialog.dart';
+import '../../widgets/contact_dialog.dart';
 import '../../widgets/jt_task_detail.dart';
 import '../../core/task/task.dart';
 import '../../main.dart';
@@ -71,9 +71,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
     return PageTemplate(
       pageState: _pageState,
       onUserFetched: (user) => setState(() {}),
-      onFetch: () {
-        _fetchDataOnPage();
-      },
+    
       appBarHeight: 0,
       child: FutureBuilder(
           future: _pageState.currentUser,

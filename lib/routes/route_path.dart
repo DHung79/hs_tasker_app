@@ -74,6 +74,12 @@ class AppRoutePath {
       : name = toDoTaskRoute,
         routeId = '',
         isUnknown = false;
+
+  AppRoutePath.taskerRated()
+      : name = taskerRatedRoute,
+        routeId = '',
+        isUnknown = false;
+
   // AppRoutePath.roles()
   //     : name = roleRoute,
   //       routeId = '',
@@ -135,6 +141,9 @@ class AppRoutePath {
     }
     if (name == toDoTaskRoute) {
       return AppRoutePath.toDoTask();
+    }
+    if (name == taskerRatedRoute) {
+      return AppRoutePath.taskerRated();
     }
     // if (name == roleRoute) {
     //   return AppRoutePath.roles();

@@ -34,9 +34,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
     return PageTemplate(
       pageState: _pageState,
       onUserFetched: (user) => setState(() {}),
-      onFetch: () {
-        _fetchDataOnPage();
-      },
+    
       appBarHeight: 0,
       child: FutureBuilder(
           future: _pageState.currentUser,
@@ -483,7 +481,9 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                     ),
                   ],
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  navigateTo(taskerRatedRoute);
+                },
               ),
             ),
             Padding(

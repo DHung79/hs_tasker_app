@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/tasker_experience_screen/tasker_experience_screen.dart';
 import '../screens/to_do_task_screen/to_do_task_screen.dart';
 import '../screens/working_task_screen/working_task_screen.dart';
 import '../screens/edit_tasker_profile_screen/edit_tasker_profile_screen.dart';
@@ -102,9 +103,15 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
     if (route == workingTaskRoute) {
       return const WorkingTaskScreen();
     }
+
     if (route == toDoTaskRoute) {
       return const ToDoTaskScreen();
     }
+
+    if (route == taskerRatedRoute) {
+      return const TaskerExperienceScreen();
+    }
+
     // if (route == roleRoute) {
     //   return const UserManagementScreen(tab: 1);
     // }

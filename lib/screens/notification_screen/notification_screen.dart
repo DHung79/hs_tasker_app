@@ -27,9 +27,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return PageTemplate(
       pageState: _pageState,
       onUserFetched: (user) => setState(() {}),
-      onFetch: () {
-        _fetchDataOnPage();
-      },
+    
       appBarHeight: 0,
       child: FutureBuilder(
           future: _pageState.currentUser,
