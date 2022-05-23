@@ -402,45 +402,9 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                     Column(
                       children: [
                         for (var i = 0; i < toDoList!.length; i++)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Container(
-                              constraints: const BoxConstraints(minHeight: 24),
-                              child: Row(
-                                children: [
-                                  isHistory
-                                      ? SizedBox(
-                                          width: 18,
-                                          height: 18,
-                                          child: Checkbox(
-                                            checkColor: AppColor.white,
-                                            activeColor: AppColor.shade9,
-                                            value: checkList![i],
-                                            onChanged: (value) {},
-                                          ),
-                                        )
-                                      : Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 4),
-                                          child: Text(
-                                            '\u2022',
-                                            style: AppTextTheme.mediumBodyText(
-                                              AppColor.black,
-                                            ),
-                                          ),
-                                        ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 4),
-                                    child: Text(
-                                      toDoList[i],
-                                      style: AppTextTheme.mediumBodyText(
-                                        AppColor.black,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          _infoItem(
+                            title: toDoList[i],
+                            isCheck: checkList![i],
                           ),
                       ],
                     ),
@@ -450,6 +414,46 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
         ],
       );
     });
+  }
+
+  Widget _infoItem({
+    required String title,
+    required bool isCheck,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 24),
+        child: Row(
+          children: [
+            isHistory
+                ? SvgIcon(
+                    isCheck ? SvgIcons.check : SvgIcons.close,
+                    color: isCheck ? AppColor.shade9 : AppColor.others1,
+                    size: 24,
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(left: 4),
+                    child: Text(
+                      '\u2022',
+                      style: AppTextTheme.mediumBodyText(
+                        AppColor.black,
+                      ),
+                    ),
+                  ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Text(
+                title,
+                style: AppTextTheme.mediumBodyText(
+                  AppColor.black,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _actions() {

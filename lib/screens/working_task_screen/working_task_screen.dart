@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hs_tasker_app/routes/route_names.dart';
+import 'package:hs_tasker_app/screens/working_task_screen/components/warning_dialog.dart';
+import '../../widgets/confirm_dialog.dart';
+import 'components/cancel_task_dialog.dart';
+import 'components/contact_dialog.dart';
+import '../../widgets/jt_task_detail.dart';
+import '../../core/task/task.dart';
 import '../../main.dart';
+import '../../widgets/display_date_time.dart';
 import '../../widgets/jt_indicator.dart';
 import '../layout_template/content_screen.dart';
 
@@ -13,6 +21,44 @@ class WorkingTaskScreen extends StatefulWidget {
 class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
   final _pageState = PageState();
   final _scrollController = ScrollController();
+  bool _showList = true;
+
+  final _task = TaskModel.fromJson({
+    '_id': '0',
+    'type': 'Dọn dẹp theo giờ',
+    'date': 1653038175000,
+    'start_time': 1653038175000,
+    'end_time': 1653045375000,
+    'address': '358/12/33 Lư Cấm, Ngọc Hiệp, Nha Trang Khánh Hòa',
+    'distance': '4km',
+    'status': '',
+    'bill': 300000,
+    'created_time': 1652859350000,
+    'updated_time': 1652859350000,
+  });
+  final List<bool> _checkList = [
+    true,
+    true,
+    false,
+  ];
+
+  final List<String> _toDoList = [
+    'Lau ghế rồng',
+    'Lau bình hoa',
+    'Kiểm tra thức ăn cho cún',
+  ];
+
+  final List<String> _beforeImages = [
+    'https://media0.giphy.com/media/3og0IG0skAiznZQLde/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
+    'https://media4.giphy.com/media/xUA7aSwkpZH8IQ2zu0/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
+    'https://media1.giphy.com/media/l4FGpa3DuEFMrghKE/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
+    'https://media3.giphy.com/media/EExJM3NifsBwjJukuF/giphy.gif?cid=790b7611be94e029622cd882a7752ed1ec413dd59d85836a&rid=giphy.gif&ct=s',
+  ];
+  final List<String> _afterImages = [
+    'https://media1.giphy.com/media/xUPGGecxiqAvxUqd20/giphy.gif?cid=ecf05e4752x0e4lxsk6vkt2c5awftsq419qgm3tqs70g5vu1&rid=giphy.gif&ct=g',
+    'https://media2.giphy.com/media/4TmsyEHp9Ksw8rEyR8/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
+  ];
+
   @override
   void initState() {
     AuthenticationBlocController().authenticationBloc.add(AppLoadedup());
@@ -38,15 +84,14 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
               onFetch: () {
                 _fetchDataOnPage();
               },
-              child: snapshot.hasData
-                  ? _inProgressPage(snapshot)
-                  : const JTIndicator(),
+              child:
+                  snapshot.hasData ? _toDoPage(snapshot) : const JTIndicator(),
             );
           }),
     );
   }
 
-  Widget _inProgressPage(AsyncSnapshot<TaskerModel> snapshot) {
+  Widget _toDoPage(AsyncSnapshot<TaskerModel> snapshot) {
     return Scaffold(
       backgroundColor: AppColor.shade1,
       appBar: PreferredSize(
@@ -61,42 +106,243 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
     return AppBar(
       backgroundColor: AppColor.white,
       elevation: 0.16,
-      flexibleSpace: Row(
-        children: [
-          AppButtonTheme.fillRounded(
-            constraints: const BoxConstraints(minHeight: 40, minWidth: 40),
-            color: AppColor.transparent,
-            highlightColor: AppColor.white,
-            child: Center(
-              child: SvgIcon(
-                SvgIcons.arrowBack,
-                size: 24,
+      flexibleSpace:
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        AppButtonTheme.fillRounded(
+          constraints: const BoxConstraints(maxWidth: 40),
+          color: AppColor.transparent,
+          highlightColor: AppColor.white,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 28, 0, 24),
+              child: Icon(
+                Icons.arrow_back_ios,
+                size: 18,
                 color: AppColor.black,
               ),
             ),
-            onPressed: () {},
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 24.5, 10, 16.5),
-            child: Expanded(
-              child: Center(
+          onPressed: () {
+            navigateTo(homeRoute);
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 24.5, 10, 16.5),
+          child: Container(
+            constraints: const BoxConstraints(minHeight: 39),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
-                  'Chi tiết công việc',
-                  style: AppTextTheme.mediumHeaderTitle(AppColor.black),
+                  'Công việc sắp tới',
+                  style: AppTextTheme.subText(AppColor.primary1),
                 ),
+              ),
+              Text(
+                _task.type,
+                style: AppTextTheme.mediumHeaderTitle(AppColor.black),
+              ),
+            ]),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 24, 16, 16),
+          child: AppButtonTheme.fillRounded(
+              constraints: const BoxConstraints(minHeight: 40),
+              color: AppColor.shade1,
+              borderRadius: BorderRadius.circular(50),
+              highlightColor: AppColor.white,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  'Hủy công việc',
+                  style: AppTextTheme.mediumHeaderTitle(AppColor.others1),
+                ),
+              ),
+              onPressed: () {
+                _cancelTaskDialog(_task);
+              }),
+        ),
+      ]),
+    );
+  }
+
+  Widget _buildContent() {
+    return LayoutBuilder(
+      builder: (context, size) {
+        return SingleChildScrollView(
+          controller: _scrollController,
+          physics: const ClampingScrollPhysics(),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: _taskDetails(),
+              ),
+              _buildJobDetail(),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: _buildResults(),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: _customerContact(),
+              ),
+              _actions(
+                beforeImages: _beforeImages,
+                afterImages: _afterImages,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _customerContact() {
+    return Container(
+      color: AppColor.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
+            child: ClipOval(
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 44,
+                height: 44,
               ),
             ),
           ),
-          AppButtonTheme.fillRounded(
-            constraints: const BoxConstraints(minHeight: 40),
-            color: AppColor.transparent,
-            highlightColor: AppColor.white,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                'Hủy công việc',
-                style: AppTextTheme.mediumHeaderTitle(AppColor.others1),
+          Expanded(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Text(
+                      'Khách hàng',
+                      style: AppTextTheme.subText(AppColor.primary1),
+                    ),
+                  ),
+                  Text(
+                    'Nancy Jewel McDonie',
+                    style: AppTextTheme.mediumBodyText(AppColor.black),
+                  ),
+                ]),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 16, 16, 16),
+            child: AppButtonTheme.fillRounded(
+                constraints: const BoxConstraints(minHeight: 44),
+                color: AppColor.primary2,
+                borderRadius: BorderRadius.circular(50),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  SvgIcon(
+                    SvgIcons.comment,
+                    size: 24,
+                    color: AppColor.white,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      'Liên lạc',
+                      style: AppTextTheme.mediumHeaderTitle(
+                        AppColor.white,
+                      ),
+                    ),
+                  ),
+                ]),
+                onPressed: () {
+                  _showContact();
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _taskDetails() {
+    final date = formatFromInt(
+      value: _task.date,
+      context: context,
+      displayedFormat: 'dd/MM/yyyy',
+    );
+    final startTime = formatFromInt(
+      value: _task.startTime,
+      context: context,
+      displayedFormat: 'HH:mm',
+    );
+    final endTime = formatFromInt(
+      value: _task.endTime,
+      context: context,
+      displayedFormat: 'HH:mm',
+    );
+    return Container(
+      color: AppColor.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              'Thời gian và địa điểm làm việc',
+              style: AppTextTheme.mediumHeaderTitle(AppColor.primary1),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: JTTaskDetail.taskDetailBox(
+              svgIcon: SvgIcons.location,
+              headerTitle: 'Địa chỉ',
+              contentTitle: _task.address,
+              boxColor: AppColor.shade2,
+              button: AppButtonTheme.fillRounded(
+                constraints: const BoxConstraints(minHeight: 44),
+                color: AppColor.shade5,
+                borderRadius: BorderRadius.circular(50),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  SvgIcon(
+                    SvgIcons.navigation1,
+                    size: 24,
+                    color: AppColor.white,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      'Chỉ đường',
+                      style: AppTextTheme.mediumHeaderTitle(
+                        AppColor.white,
+                      ),
+                    ),
+                  ),
+                ]),
+                onPressed: () {},
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: JTTaskDetail.taskDetail(
+              svgIcon: SvgIcons.time,
+              headerTitle: 'Thời gian làm',
+              contentTitle: '$date, từ $startTime đến $endTime',
+              backgroundColor: AppColor.shade2,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: JTTaskDetail.taskDetail(
+              svgIcon: SvgIcons.time,
+              headerTitle: 'Loại nhà',
+              contentTitle: 'Căn hộ',
+              backgroundColor: AppColor.shade2,
             ),
           ),
         ],
@@ -104,63 +350,196 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
     );
   }
 
-  Widget _buildContent() {
-    return LayoutBuilder(
-      builder: (context, size) {
-        return Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                physics: const ClampingScrollPhysics(),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: Container(
-                        color: AppColor.white,
-                        child: _jobHeader(),
+  Widget _buildJobDetail() {
+    return Container(
+      color: AppColor.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              'Chi tiết công việc',
+              style: AppTextTheme.mediumHeaderTitle(AppColor.primary1),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: JTTaskDetail.taskDetail(
+              svgIcon: SvgIcons.note,
+              headerTitle: 'Ghi chú',
+              contentTitle: 'Mang theo chổi',
+              backgroundColor: AppColor.shade2,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: JTTaskDetail.taskDetailList(
+              svgIcon: SvgIcons.checkList,
+              headerTitle: 'Danh sách kiểm tra',
+              contentList: _jobList(
+                toDoList: _toDoList,
+                checkList: _checkList,
+              ),
+              backgroundColor: AppColor.shade2,
+              showList: _showList,
+              onTap: () {
+                setState(() {
+                  _showList = !_showList;
+                });
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: JTTaskDetail.taskDetail(
+              svgIcon: SvgIcons.clean,
+              headerTitle: 'Dụng cụ tự mang',
+              contentTitle: ' \u2022 Chổi\n \u2022 Cây lau nhà',
+              backgroundColor: AppColor.shade2,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _jobList({
+    List<String>? toDoList,
+    List<bool>? checkList,
+  }) {
+    return Column(
+      children: [
+        for (var i = 0; i < toDoList!.length; i++)
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Container(
+              constraints: const BoxConstraints(minHeight: 24),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: Checkbox(
+                      checkColor: AppColor.white,
+                      activeColor: AppColor.shade9,
+                      value: checkList![i],
+                      onChanged: (value) {
+                        setState(() {
+                          checkList[i] = !checkList[i];
+                        });
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4),
+                    child: Text(
+                      toDoList[i],
+                      style: AppTextTheme.mediumBodyText(
+                        AppColor.black,
                       ),
                     ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildResults() {
+    return Container(
+      color: AppColor.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              'Kết quả thực tế',
+              style: AppTextTheme.mediumHeaderTitle(AppColor.primary1),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              'Bạn cần phải chụp trước khi bắt đầu và sau khi kết thúc công việc',
+              style: AppTextTheme.normalText(AppColor.black),
+            ),
+          ),
+          _buildImages(
+            title: 'Trước',
+            images: _beforeImages,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: _buildImages(
+              title: 'Sau',
+              images: _afterImages,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImages({
+    required String title,
+    required List<String> images,
+  }) {
+    return LayoutBuilder(builder: (context, size) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text(
+                title,
+                style: AppTextTheme.mediumHeaderTitle(AppColor.black),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: SizedBox(
+                height: 100,
+                width: size.maxWidth,
+                child: Row(
+                  children: [
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: Container(
-                        color: AppColor.white,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(16, 12, 12, 12),
-                              child: ClipOval(
-                                child: Image.asset(
-                                  'assets/images/logo.png',
-                                  width: 44,
-                                  height: 44,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Nancy Jewel McDonie',
-                                    style: AppTextTheme.mediumBodyText(
-                                        AppColor.black),
-                                  ),
-                                  Text(
-                                    'Đã làm cho khách hàng này 4 lần',
-                                    style:
-                                        AppTextTheme.subText(AppColor.primary1),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: AppButtonTheme.outlineRounded(
+                        constraints: const BoxConstraints(
+                          minHeight: 100,
+                          minWidth: 100,
                         ),
+                        color: AppColor.white,
+                        outlineColor: AppColor.black,
+                        borderRadius: BorderRadius.circular(4),
+                        child: Icon(
+                          Icons.add,
+                          size: 40,
+                          color: AppColor.black,
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        physics: const ClampingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: images.length,
+                        itemBuilder: (BuildContext context, index) {
+                          final image = images[index];
+                          final isLast = index != images.length - 1;
+                          return Padding(
+                            padding: EdgeInsets.only(right: isLast ? 16 : 0),
+                            child: Image.network(image),
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -168,34 +547,190 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
               ),
             ),
           ],
-        );
-      },
-    );
-  }
-
-  Widget _jobHeader() {
-    return LayoutBuilder(builder: (context, size) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            constraints: const BoxConstraints(maxHeight: 110),
-            child: Image.asset(
-              'assets/images/logo.png',
-              width: size.maxWidth,
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              'Dọn dẹp nhà theo giờ',
-              style: AppTextTheme.mediumHeaderTitle(AppColor.black),
-            ),
-          ),
-        ],
+        ),
       );
     });
+  }
+
+  _showContact() {
+    return showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(10),
+          ),
+        ),
+        builder: (context) {
+          return const ContactDialog();
+        });
+  }
+
+  _cancelTaskDialog(TaskModel task) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        barrierColor: Colors.black12,
+        builder: (BuildContext context) {
+          return CancelTaskDialog(
+            task: task,
+            contentHeader: Text(
+              'Bạn có chắc chắn hủy công việc?',
+              style: AppTextTheme.normalText(AppColor.black),
+            ),
+            accountBalances: '700.000 VND',
+          );
+        });
+  }
+
+  Widget _actions({
+    required List<String> beforeImages,
+    required List<String> afterImages,
+  }) {
+    return LayoutBuilder(builder: (context, size) {
+      return Container(
+        color: AppColor.white,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: JTTaskDetail.taskDetail(
+                headerTitle: 'Tổng tiền',
+                contentTitle: '300.00 VND',
+                svgIcon: SvgIcons.dollar1,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 51),
+              child: Container(
+                height: 52,
+                width: size.maxWidth,
+                color: AppColor.white,
+                child: AppButtonTheme.fillRounded(
+                  constraints: const BoxConstraints(minHeight: 52),
+                  color: AppColor.shade9,
+                  highlightColor: AppColor.shade9,
+                  borderRadius: BorderRadius.circular(4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgIcon(
+                        SvgIcons.circleCheck,
+                        color: AppColor.white,
+                        size: 24,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          'Hoàn thành công việc',
+                          style: AppTextTheme.headerTitle(AppColor.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    if (beforeImages.isEmpty || afterImages.isEmpty) {
+                      _warningDialog();
+                    } else {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        barrierColor: Colors.black12,
+                        builder: (BuildContext context) {
+                          return _finishJobDialog();
+                        },
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  _warningDialog() {
+    return showModalBottomSheet(
+        isDismissible: false,
+        barrierColor: AppColor.transparent,
+        backgroundColor: AppColor.transparent,
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        builder: (context) {
+          return const WarningDialog();
+        });
+  }
+
+  _finishJobDialog() {
+    return JTConfirmDialog(
+      headerTitle: 'Kết thúc công việc',
+      contentText: 'Bạn có chắc chắn kết thúc công việc?',
+      actionField: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
+        child: Column(
+          children: [
+            AppButtonTheme.fillRounded(
+              constraints: const BoxConstraints(
+                minHeight: 52,
+              ),
+              borderRadius: BorderRadius.circular(4),
+              color: AppColor.primary2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgIcon(
+                    SvgIcons.circleCheck,
+                    color: AppColor.white,
+                    size: 24,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      'Xác nhận',
+                      style: AppTextTheme.headerTitle(AppColor.white),
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            const SizedBox(height: 16),
+            AppButtonTheme.fillRounded(
+              constraints: const BoxConstraints(
+                minHeight: 52,
+              ),
+              borderRadius: BorderRadius.circular(4),
+              color: AppColor.shade1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgIcon(
+                    SvgIcons.close,
+                    color: AppColor.black,
+                    size: 24,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      'Hủy bỏ',
+                      style: AppTextTheme.headerTitle(AppColor.black),
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   _fetchDataOnPage() {}

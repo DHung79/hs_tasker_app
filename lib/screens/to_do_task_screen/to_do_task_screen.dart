@@ -364,8 +364,10 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
           child: JTTaskDetail.taskDetailList(
             svgIcon: SvgIcons.checkList,
             headerTitle: 'Danh sách kiểm tra',
-            contentTitle:
-                ' \u2022 Lau ghế rồng \n \u2022 Lau bình hoa \n \u2022 Kiểm tra thức ăn cho cún',
+            contentList: Text(
+              ' \u2022 Lau ghế rồng \n \u2022 Lau bình hoa \n \u2022 Kiểm tra thức ăn cho cún',
+              style: AppTextTheme.mediumHeaderTitle(AppColor.black),
+            ),
             backgroundColor: AppColor.shade2,
             showList: _showList,
             onTap: () {

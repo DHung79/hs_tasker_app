@@ -145,7 +145,7 @@ class JTTaskDetail {
   static Widget taskDetailList({
     IconData? icon,
     SvgIconData? svgIcon,
-    String? contentTitle,
+    Widget? contentList,
     String? headerTitle,
     Color? backgroundColor,
     double radius = 10,
@@ -205,8 +205,7 @@ class JTTaskDetail {
                                 padding: const EdgeInsets.only(right: 10),
                                 child: Text(
                                   headerTitle ?? '',
-                                  style:
-                                      AppTextTheme.subText(AppColor.shade5),
+                                  style: AppTextTheme.subText(AppColor.shade5),
                                 ),
                               ),
                               InkWell(
@@ -222,15 +221,11 @@ class JTTaskDetail {
                               ),
                             ],
                           ),
-                          if(showList)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16),
-                            child: Text(
-                              contentTitle ?? '',
-                              style: AppTextTheme.mediumHeaderTitle(
-                                  AppColor.black),
+                          if (showList)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16),
+                              child: contentList,
                             ),
-                          ),
                         ],
                       ),
                     ),
