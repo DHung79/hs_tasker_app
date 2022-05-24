@@ -141,7 +141,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             if (value != _newPasswordController.text) {
                               return 'Mật khẩu không khớp';
                             }
-
                             return null;
                           },
                         ),

@@ -75,8 +75,13 @@ class AppRoutePath {
         routeId = '',
         isUnknown = false;
 
-  AppRoutePath.taskerRated()
-      : name = taskerRatedRoute,
+  AppRoutePath.taskerExperience()
+      : name = taskerExperienceRoute,
+        routeId = '',
+        isUnknown = false;
+
+  AppRoutePath.changePassword()
+      : name = changePasswordRoute,
         routeId = '',
         isUnknown = false;
 
@@ -142,8 +147,11 @@ class AppRoutePath {
     if (name == toDoTaskRoute) {
       return AppRoutePath.toDoTask();
     }
-    if (name == taskerRatedRoute) {
-      return AppRoutePath.taskerRated();
+    if (name == taskerExperienceRoute) {
+      return AppRoutePath.taskerExperience();
+    }
+    if (name == changePasswordRoute) {
+      return AppRoutePath.changePassword();
     }
     // if (name == roleRoute) {
     //   return AppRoutePath.roles();

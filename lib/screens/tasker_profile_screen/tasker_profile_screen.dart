@@ -34,7 +34,6 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
     return PageTemplate(
       pageState: _pageState,
       onUserFetched: (user) => setState(() {}),
-    
       appBarHeight: 0,
       child: FutureBuilder(
           future: _pageState.currentUser,
@@ -342,7 +341,9 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                       style: AppTextTheme.normalText(AppColor.primary2),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    navigateTo(changePasswordRoute);
+                  },
                 ),
               ],
             ),
@@ -482,7 +483,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                   ],
                 ),
                 onPressed: () {
-                  navigateTo(taskerRatedRoute);
+                  navigateTo(taskerExperienceRoute);
                 },
               ),
             ),
@@ -513,7 +514,9 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                     ),
                   ],
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  navigateTo(editTaskerProfileRoute);
+                },
               ),
             )
           ],
