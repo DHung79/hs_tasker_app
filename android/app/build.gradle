@@ -26,15 +26,15 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    compileSdkVersion 31
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 
-    kotlinOptions {
-        jvmTarget = '1.8'
+    lintOptions {
+        disable 'InvalidPackage'
     }
 
     sourceSets {
@@ -42,18 +42,33 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.jt.homeservice"
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
+        minSdkVersion 21
+        targetSdkVersion 29
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
 
+    signingConfigs {
+        debug {
+            storeFile file('../../lib/config/key_stores/debug.keystore')
+            storePassword 'hs@admin'
+            keyAlias 'hsdebugkey'
+            keyPassword 'hs@admin'
+        }
+        //47:C9:E8:47:1E:B4:96:B1:20:68:EB:81:AB:2E:F9:04:62:07:4A:F1
+        release {
+            storeFile file('../../lib/config/key_stores/release.keystore')
+            storePassword 'hs@admin'
+            keyAlias 'hsreleasekey'
+            keyPassword 'hs@admin'
+        }
+        //24:32:E5:5F:EF:F7:A8:AB:9D:C7:51:24:E2:6B:A4:09:A4:A5:9B:DE
+    }    
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
     }
@@ -65,4 +80,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // implementation 'com.google.firebase:firebase-messaging'
 }
