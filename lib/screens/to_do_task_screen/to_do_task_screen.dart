@@ -274,7 +274,9 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
                   ),
                 ),
               ]),
-              onPressed: () {},
+              onPressed: () {
+                navigateTo(mapRoute);
+              },
             ),
           ),
         ),

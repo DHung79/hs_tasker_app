@@ -1,9 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.hs_tasker_app">
+    package="com.jt.homeservice">
    <application
         android:label="hs_tasker_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data 
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDwZsZf46N_Rs6ui_7kHZ52kOr5rq17Ibc"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -30,8 +33,5 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data 
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDwZsZf46N_Rs6ui_7kHZ52kOr5rq17Ibc"/>
     </application>
 </manifest>

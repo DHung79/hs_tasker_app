@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/map_screen/map_screen.dart';
 import '../screens/change_password_screen/change_password_screen.dart';
 import '../screens/tasker_experience_screen/tasker_experience_screen.dart';
 import '../screens/to_do_task_screen/to_do_task_screen.dart';
@@ -115,6 +116,10 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
 
     if (route == changePasswordRoute) {
       return const ChangePasswordScreen();
+    }
+
+    if (route == mapRoute) {
+      return const MapScreen();
     }
 
     // if (route == roleRoute) {

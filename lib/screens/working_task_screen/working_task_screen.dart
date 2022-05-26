@@ -71,7 +71,6 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
     return PageTemplate(
       pageState: _pageState,
       onUserFetched: (user) => setState(() {}),
-    
       appBarHeight: 0,
       child: FutureBuilder(
           future: _pageState.currentUser,
@@ -321,7 +320,9 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                     ),
                   ),
                 ]),
-                onPressed: () {},
+                onPressed: () {
+                  navigateTo(mapRoute);
+                },
               ),
             ),
           ),

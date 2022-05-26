@@ -58,6 +58,9 @@ class AppRouteInforParser extends RouteInformationParser<AppRoutePath> {
     if (name == changePasswordRoute) {
       return AppRoutePath.changePassword();
     }
+    if (name == mapRoute) {
+      return AppRoutePath.map();
+    }
     // if (name == roleRoute) {
     //   return AppRoutePath.roles();
     // }

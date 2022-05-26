@@ -1,4 +1,4 @@
-package com.example.hs_tasker_app
+package com.jt.homeservice
 
 import io.flutter.embedding.android.FlutterActivity
 
