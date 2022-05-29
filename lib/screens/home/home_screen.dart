@@ -34,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
           future: _pageState.currentUser,
           builder: (context, AsyncSnapshot<TaskerModel> snapshot) {
             return PageContent(
-           
               pageState: _pageState,
               onFetch: () {
                 _fetchDataOnPage();
