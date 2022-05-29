@@ -130,6 +130,26 @@ class TaskerBloc {
     }
   }
 
+  Future<TaskerModel> changePassword({
+    EditTaskerModel? editModel,
+  }) async {
+    try {
+      // Await response from server.
+      final data = await _repository.editPassword<TaskerModel, EditTaskerModel>(
+        editModel: editModel,
+      );
+      if (data.error != null) {
+        // Error exist
+        return Future.error(data.error!);
+      } else {
+        // Adding response data.
+        return Future.value(data.model);
+      }
+    } on AppException catch (e) {
+      return Future.error(e);
+    }
+  }
+
   dispose() {
     _allDataFetcher.close();
     _allDataState.close();

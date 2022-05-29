@@ -176,6 +176,13 @@ class EditBaseModel {
     return {};
   }
 
+  static Map<String, dynamic> toChangePasswordJson(EditBaseModel model) {
+    if (model is EditTaskerModel) {
+      return model.toChangePasswordJson();
+    }
+    return {};
+  }
+
   static Map<String, dynamic> toEditJson(EditBaseModel model) {
     if (model is EditServiceModel) {
       return model.toEditJson();

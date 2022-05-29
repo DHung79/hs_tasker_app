@@ -105,4 +105,24 @@ class TaskerApiProvider {
     );
     return response;
   }
+
+  Future<ApiResponse<T?>>
+      editPassword<T extends BaseModel, K extends EditBaseModel>({
+    K? editModel,
+  }) async {
+    final path = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.taskers +
+        ApiConstants.me +
+        '/change-password';
+    final token = await ApiHelper.getUserToken();
+    final body = convert.jsonEncode(EditBaseModel.toChangePasswordJson(editModel!));
+    logDebug('path: $path\nbody: $body');
+    final response = await RestApiHandlerData.putData<T>(
+      path: path,
+      body: body,
+      headers: ApiHelper.headers(token),
+    );
+    return response;
+  }
 }

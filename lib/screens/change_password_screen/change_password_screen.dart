@@ -50,7 +50,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           future: _pageState.currentUser,
           builder: (context, AsyncSnapshot<TaskerModel> snapshot) {
             return PageContent(
-              userSnapshot: snapshot,
               pageState: _pageState,
               onFetch: () {
                 _fetchDataOnPage();
@@ -164,7 +163,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 });
               },
               onSaved: (value) {
-                editModel.name = value!.trim();
+                editModel.password = value!.trim();
               },
               onChanged: (value) {
                 setState(() {
@@ -176,6 +175,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               validator: (value) {
                 if (value!.isEmpty || value.trim().isEmpty) {
                   return ValidatorText.empty(fieldName: 'Mật khẩu cũ');
+                }
+                if (value.trim() != editModel.password) {
+                  return 'Nhập sai mật khẩu';
                 }
                 return null;
               },
@@ -191,7 +193,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     _newPasswordSecure = !_newPasswordSecure;
                   });
                 },
-                onSaved: (value) {},
                 onChanged: (value) {
                   setState(() {
                     if (_errorMessage.isNotEmpty) {
@@ -213,6 +214,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         fieldName: ScreenUtil.t(I18nKey.password)!,
                         moreThan: 50);
                   }
+                  if (value.trim() == editModel.password) {
+                    return 'Mật khẩu mới phải khác với mật khẩu cũ';
+                  }
                   return null;
                 },
               ),
@@ -228,7 +232,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     _checkNewPasswordSecure = !_checkNewPasswordSecure;
                   });
                 },
-                onSaved: (value) {},
+                onSaved: (value) {
+                  editModel.newPassword = value!.trim();
+                },
                 onChanged: (value) {
                   setState(() {
                     if (_errorMessage.isNotEmpty) {
@@ -298,7 +304,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 ),
                 borderRadius: BorderRadius.circular(4),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               suffixIcon: TextButton(
                 child: obscureText
                     ? Icon(
@@ -352,7 +359,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             onPressed: () {
               if (_key.currentState!.validate()) {
                 _key.currentState!.save();
-                _editUserInfo(editModel: editModel);
+                _editPassword(editModel: editModel);
               } else {
                 setState(() {
                   _autovalidate = AutovalidateMode.onUserInteraction;
@@ -365,24 +372,24 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     });
   }
 
-  _editUserInfo({required EditTaskerModel editModel}) {
-    // _taskerBloc.editProfile(editModel: editModel).then(
-    //   (value) async {
-    //     AuthenticationBlocController().authenticationBloc.add(GetUserData());
-    //     navigateTo(taskerProfileRoute);
-    //     JTToast.successToast(message: ScreenUtil.t(I18nKey.updateSuccess)!);
-    //   },
-    // ).onError((ApiError error, stackTrace) {
-    //   setState(() {
-    //     _errorMessage = showError(error.errorCode, context);
-    //   });
-    // }).catchError(
-    //   (error, stackTrace) {
-    //     setState(() {
-    //       _errorMessage = error.toString();
-    //     });
-    //   },
-    // );
+  _editPassword({required EditTaskerModel editModel}) {
+    _taskerBloc.changePassword(editModel: editModel).then(
+      (value) async {
+        AuthenticationBlocController().authenticationBloc.add(GetUserData());
+        navigateTo(taskerProfileRoute);
+        JTToast.successToast(message: ScreenUtil.t(I18nKey.updateSuccess)!);
+      },
+    ).onError((ApiError error, stackTrace) {
+      setState(() {
+        _errorMessage = showError(error.errorCode, context);
+      });
+    }).catchError(
+      (error, stackTrace) {
+        setState(() {
+          _errorMessage = error.toString();
+        });
+      },
+    );
   }
 
   _fetchDataOnPage() {

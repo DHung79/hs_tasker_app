@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import '../../main.dart';
 import '../../routes/route_names.dart';
 import '../../widgets/jt_indicator.dart';
@@ -21,11 +20,19 @@ class _MapScreenState extends State<MapScreen> {
     target: LatLng(12.27873, 109.1998974),
     zoom: 12.0,
   );
+  String _searchString = '';
+  Marker? _selectedPlate;
 
   @override
   void initState() {
     AuthenticationBlocController().authenticationBloc.add(AppLoadedup());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _mapController.dispose();
+    super.dispose();
   }
 
   @override
@@ -39,7 +46,6 @@ class _MapScreenState extends State<MapScreen> {
           future: _pageState.currentUser,
           builder: (context, AsyncSnapshot<TaskerModel> snapshot) {
             return PageContent(
-              userSnapshot: snapshot,
               pageState: _pageState,
               onFetch: () {
                 _fetchDataOnPage();
@@ -49,6 +55,46 @@ class _MapScreenState extends State<MapScreen> {
                   : const JTIndicator(),
             );
           }),
+    );
+  }
+
+  Widget _buildContent(AsyncSnapshot<TaskerModel> snapshot) {
+    return Scaffold(
+      backgroundColor: AppColor.white,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: _appBar(),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: GoogleMap(
+              onMapCreated: _onMapCreated,
+              minMaxZoomPreference: const MinMaxZoomPreference(12, 18),
+              initialCameraPosition: _location,
+              scrollGesturesEnabled: true,
+              myLocationEnabled: true,
+              indoorViewEnabled: true,
+              trafficEnabled: true,
+              markers: {
+                if (_selectedPlate != null) _selectedPlate!,
+              },
+              onLongPress: (value) {
+                setState(() {
+                  _selectedPlate = Marker(
+                    markerId: const MarkerId('selectedPlate'),
+                    position: value,
+                  );
+                });
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 34),
+            child: _actions(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -69,37 +115,58 @@ class _MapScreenState extends State<MapScreen> {
             ),
             onPressed: () => navigateTo(workingTaskRoute),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildContent(AsyncSnapshot<TaskerModel> snapshot) {
-    return Scaffold(
-      backgroundColor: AppColor.white,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(56),
-        child: _appBar(),
-      ),
-      body: Column(
-        children: [
           Expanded(
-            child: GoogleMap(
-              onMapCreated: _onMapCreated,
-              minMaxZoomPreference: const MinMaxZoomPreference(12, 18),
-              initialCameraPosition: _location,
-              scrollGesturesEnabled: true,
-              myLocationEnabled: true,
-              indoorViewEnabled: true,
-              trafficEnabled: true,
-              onCameraMove: (location) {
-                logDebug(location.zoom);
-              },
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextFormField(
+                initialValue: _searchString,
+                style: TextStyle(color: AppColor.black),
+                decoration: InputDecoration(
+                  errorStyle: AppTextTheme.subText(AppColor.others1),
+                  filled: true,
+                  fillColor: AppColor.transparent,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1.0,
+                      color: AppColor.text7,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1.0,
+                      color: AppColor.text7,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
+                  suffixIconColor: AppColor.black,
+                  suffixIcon: Container(
+                    constraints: const BoxConstraints(minHeight: 50),
+                    child: TextButton(
+                      child: SvgIcon(
+                        SvgIcons.close,
+                        color: AppColor.black,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _searchString = '';
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _searchString = value;
+                  });
+                },
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 34),
-            child: _actions(),
           ),
         ],
       ),
@@ -131,7 +198,13 @@ class _MapScreenState extends State<MapScreen> {
                 ),
               ],
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (_selectedPlate != null) {
+                logDebug(_selectedPlate!.position);
+              } else {
+                logDebug('Chưa chọn vị trí');
+              }
+            },
           ),
         ),
       );

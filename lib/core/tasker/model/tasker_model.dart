@@ -10,6 +10,7 @@ class TaskerModel extends BaseModel {
   final String _gender;
   final int _createdTime;
   final int _updatedTime;
+  String _password;
 
   TaskerModel.fromJson(Map<String, dynamic> json)
       : __id = json['_id'] ?? '',
@@ -19,7 +20,8 @@ class TaskerModel extends BaseModel {
         _phoneNumber = json['phoneNumber'] ?? '',
         _gender = json['gender'] ?? '',
         _createdTime = json['created_time'],
-        _updatedTime = json['updated_time'];
+        _updatedTime = json['updated_time'],
+        _password = '';
 
   Map<String, dynamic> toJson() => {
         "_id": __id,
@@ -40,6 +42,10 @@ class TaskerModel extends BaseModel {
   String get gender => _gender;
   int get createdTime => _createdTime;
   int get updatedTime => _updatedTime;
+  String get password => _password;
+  set password(value) {
+    _password = value;
+  }
 }
 
 class EditTaskerModel extends EditBaseModel {
@@ -49,6 +55,8 @@ class EditTaskerModel extends EditBaseModel {
   String address = '';
   String phoneNumber = '';
   String gender = '';
+  String password = '';
+  String newPassword = '';
 
   EditTaskerModel.fromModel(TaskerModel? model) {
     id = model?.id ?? '';
@@ -57,6 +65,16 @@ class EditTaskerModel extends EditBaseModel {
     address = model?.address ?? '';
     phoneNumber = model?.phoneNumber ?? '';
     gender = model?.gender ?? 'Male';
+    password = model?.password ?? '';
+    newPassword = '';
+  }
+
+  Map<String, dynamic> toChangePasswordJson() {
+    Map<String, dynamic> params = {
+      'password': password,
+      'new_password': newPassword,
+    };
+    return params;
   }
 
   Map<String, dynamic> toEditInfoJson() {

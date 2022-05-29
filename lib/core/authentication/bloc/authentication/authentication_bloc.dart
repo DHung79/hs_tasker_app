@@ -61,7 +61,6 @@ class AuthenticationBloc
           event.email,
           event.password,
         );
-        logDebug('data: $data');
         if (data["error_message"] == null) {
           final currentUser = Token.fromJson(data);
           if (currentUser.id.isNotEmpty) {
@@ -201,15 +200,15 @@ class AuthenticationBloc
               if (account == null) {
                 Map<String, dynamic> json = convert.jsonDecode(userJson);
                 final account = TaskerModel.fromJson(json);
-                // account.password =
-                //     sharedPreferences.getString('last_userpassword') ?? '';
+                account.password =
+                    sharedPreferences.getString('last_userpassword') ?? '';
                 emit(SetUserData(currentUser: account));
               } else {
                 final json = account.toJson();
                 final jsonStr = convert.jsonEncode(json);
                 sharedPreferences.setString('userJson', jsonStr);
-                // account.password =
-                //     sharedPreferences.getString('last_userpassword') ?? '';
+                account.password =
+                    sharedPreferences.getString('last_userpassword') ?? '';
                 emit(SetUserData(currentUser: account));
               }
               return;
@@ -229,8 +228,8 @@ class AuthenticationBloc
               final json = account.toJson();
               final jsonStr = convert.jsonEncode(json);
               sharedPreferences.setString('userJson', jsonStr);
-              // account.password =
-              //     sharedPreferences.getString('last_userpassword') ?? '';
+              account.password =
+                  sharedPreferences.getString('last_userpassword') ?? '';
               emit(SetUserData(currentUser: account));
             }
           }

@@ -46,7 +46,6 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
           future: _pageState.currentUser,
           builder: (context, AsyncSnapshot<TaskerModel> snapshot) {
             return PageContent(
-              userSnapshot: snapshot,
               pageState: _pageState,
               onFetch: () {
                 _fetchDataOnPage();

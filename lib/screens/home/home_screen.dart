@@ -29,13 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return PageTemplate(
       pageState: _pageState,
       onUserFetched: (user) => setState(() {}),
-    
       appBarHeight: 0,
       child: FutureBuilder(
           future: _pageState.currentUser,
           builder: (context, AsyncSnapshot<TaskerModel> snapshot) {
             return PageContent(
-              userSnapshot: snapshot,
+           
               pageState: _pageState,
               onFetch: () {
                 _fetchDataOnPage();

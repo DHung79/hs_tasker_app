@@ -39,7 +39,6 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
           future: _pageState.currentUser,
           builder: (context, AsyncSnapshot<TaskerModel> snapshot) {
             return PageContent(
-              userSnapshot: snapshot,
               pageState: _pageState,
               onFetch: () {
                 _fetchDataOnPage();

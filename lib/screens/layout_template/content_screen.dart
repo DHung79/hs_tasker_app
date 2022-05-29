@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../main.dart';
 import '../../theme/validator_text.dart';
+import '../../widgets/jt_indicator.dart';
 
 class PageTemplate extends StatefulWidget {
   final Widget child;
@@ -147,14 +148,12 @@ class _PageTemplateState extends State<PageTemplate> {
 }
 
 class PageContent extends StatelessWidget {
-  final AsyncSnapshot<TaskerModel> userSnapshot;
   final PageState pageState;
   final void Function()? onFetch;
   final Widget child;
 
   const PageContent({
     Key? key,
-    required this.userSnapshot,
     required this.pageState,
     required this.child,
     this.onFetch,
@@ -162,22 +161,6 @@ class PageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!userSnapshot.hasData) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: SizedBox(
-            width: 24,
-            height: 24,
-            child: CircularProgressIndicator(
-              strokeWidth: 2.0,
-              color: Theme.of(context).textTheme.button!.color,
-            ),
-          ),
-        ),
-      );
-    }
-
     if (!pageState.isInitData) {
       if (onFetch != null) onFetch!();
       pageState.isInitData = true;

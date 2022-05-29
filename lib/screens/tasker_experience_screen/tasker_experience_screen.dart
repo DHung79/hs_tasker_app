@@ -47,7 +47,6 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
           future: _pageState.currentUser,
           builder: (context, AsyncSnapshot<TaskerModel> snapshot) {
             return PageContent(
-              userSnapshot: snapshot,
               pageState: _pageState,
               onFetch: () {
                 _fetchDataOnPage();
