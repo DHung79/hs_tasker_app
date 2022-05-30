@@ -87,6 +87,9 @@ class BaseModel {
     if (T == ListTaskModel) {
       return ListTaskModel.fromJson(json) as T;
     }
+    if (T == LocationModel) {
+      return LocationModel.fromJson(json) as T;
+    }
 
     logError("Unknown BaseModel class: $T");
     throw Exception("Unknown BaseModel class: $T");

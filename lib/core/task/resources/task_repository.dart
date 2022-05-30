@@ -2,24 +2,24 @@ import 'dart:async';
 import '../../../main.dart';
 import 'task_api_provider.dart';
 
-class TaskerRepository {
-  final _provider = TaskerApiProvider();
+class TaskRepository {
+  final _provider = TaskApiProvider();
 
   Future<ApiResponse<T?>>
       fetchAllData<T extends BaseModel, K extends EditBaseModel>({
     required Map<String, dynamic> params,
   }) =>
-          _provider.fetchAllTaskers<T>(params: params);
+          _provider.fetchAllTasks<T>(params: params);
 
   Future<ApiResponse<T?>>
       getProfile<T extends BaseModel, K extends EditBaseModel>() =>
-          _provider.fetchTaskerByToken<T>();
+          _provider.fetchTaskByToken<T>();
 
   Future<ApiResponse<T?>>
       fetchDataById<T extends BaseModel, K extends EditBaseModel>({
     String? id,
   }) =>
-          _provider.fetchTaskerById<T>(
+          _provider.fetchTaskById<T>(
             id: id,
           );
 
@@ -28,7 +28,7 @@ class TaskerRepository {
     K? editModel,
     String? id,
   }) =>
-          _provider.editTaskerById<T, K>(
+          _provider.editTaskById<T, K>(
             editModel: editModel,
             id: id,
           );
@@ -37,7 +37,7 @@ class TaskerRepository {
       deleteObject<T extends BaseModel, K extends EditBaseModel>({
     String? id,
   }) =>
-          _provider.deleteTaskerById<T>(
+          _provider.deleteTaskById<T>(
             id: id,
           );
             Future<ApiResponse<T?>>

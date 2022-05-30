@@ -9,6 +9,7 @@ import '../../core/task/task.dart';
 import '../../main.dart';
 import '../../widgets/display_date_time.dart';
 import '../../widgets/jt_indicator.dart';
+import '../../widgets/open_google_map.dart';
 import '../layout_template/content_screen.dart';
 
 class WorkingTaskScreen extends StatefulWidget {
@@ -33,6 +34,10 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
     'distance': '4km',
     'status': '',
     'bill': 300000,
+    'location_gps': {
+      'lat': 9.780089104772939,
+      'long': 105.61860409261743,
+    },
     'created_time': 1652859350000,
     'updated_time': 1652859350000,
   });
@@ -320,7 +325,10 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                   ),
                 ]),
                 onPressed: () {
-                  navigateTo(mapRoute);
+                  openMap(
+                    lat: _task.location.lat,
+                    long: _task.location.long,
+                  );
                 },
               ),
             ),

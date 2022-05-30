@@ -1,15 +1,16 @@
 import 'package:rxdart/rxdart.dart';
-import '../../../main.dart';
 import '../../base/blocs/block_state.dart';
 import '../../rest/api_helpers/api_exception.dart';
+import '../../rest/models/rest_api_response.dart';
+import '../task.dart';
 
-class TaskerBloc {
-  final _repository = TaskerRepository();
-  final BehaviorSubject<ApiResponse<ListTaskerModel?>> _allDataFetcher =
-      BehaviorSubject<ApiResponse<ListTaskerModel>>();
+class TaskBloc {
+  final _repository = TaskRepository();
+  final BehaviorSubject<ApiResponse<ListTaskModel?>> _allDataFetcher =
+      BehaviorSubject<ApiResponse<ListTaskModel>>();
   final _allDataState = BehaviorSubject<BlocState>();
 
-  Stream<ApiResponse<ListTaskerModel?>> get allData => _allDataFetcher.stream;
+  Stream<ApiResponse<ListTaskModel?>> get allData => _allDataFetcher.stream;
   Stream<BlocState> get allDataState => _allDataState.stream;
   bool _isFetching = false;
 
@@ -21,7 +22,7 @@ class TaskerBloc {
     try {
       // Await response from server.
       final data = await _repository
-          .fetchAllData<ListTaskerModel, EditTaskerModel>(params: params!);
+          .fetchAllData<ListTaskModel, EditTaskModel>(params: params!);
       if (_allDataFetcher.isClosed) return;
       if (data.error != null) {
         // Error exist
@@ -38,10 +39,10 @@ class TaskerBloc {
     _isFetching = false;
   }
 
-  Future<TaskerModel> getProfile() async {
+  Future<TaskModel> getProfile() async {
     try {
       // Await response from server.
-      final data = await _repository.getProfile<TaskerModel, EditTaskerModel>();
+      final data = await _repository.getProfile<TaskModel, EditTaskModel>();
       if (data.error != null) {
         // Error exist
         return Future.error(data.error!);
@@ -54,28 +55,11 @@ class TaskerBloc {
     }
   }
 
-  Future<TaskerModel> fetchDataById(String id) async {
-    try {
-      // Await response from server.
-      final data =
-          await _repository.fetchDataById<TaskerModel, EditTaskerModel>(id: id);
-      if (data.error != null) {
-        // Error exist
-        return Future.error(data.error!);
-      } else {
-        // Adding response data.
-        return Future.value(data.model);
-      }
-    } on AppException catch (e) {
-      return Future.error(e);
-    }
-  }
-
-  Future<TaskerModel> deleteObject({String? id}) async {
+  Future<TaskModel> fetchDataById(String id) async {
     try {
       // Await response from server.
       final data =
-          await _repository.deleteObject<TaskerModel, EditTaskerModel>(id: id);
+          await _repository.fetchDataById<TaskModel, EditTaskModel>(id: id);
       if (data.error != null) {
         // Error exist
         return Future.error(data.error!);
@@ -88,13 +72,30 @@ class TaskerBloc {
     }
   }
 
-  Future<TaskerModel> editObject({
-    EditTaskerModel? editModel,
+  Future<TaskModel> deleteObject({String? id}) async {
+    try {
+      // Await response from server.
+      final data =
+          await _repository.deleteObject<TaskModel, EditTaskModel>(id: id);
+      if (data.error != null) {
+        // Error exist
+        return Future.error(data.error!);
+      } else {
+        // Adding response data.
+        return Future.value(data.model);
+      }
+    } on AppException catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<TaskModel> editObject({
+    EditTaskModel? editModel,
     String? id,
   }) async {
     try {
       // Await response from server.
-      final data = await _repository.editObject<TaskerModel, EditTaskerModel>(
+      final data = await _repository.editObject<TaskModel, EditTaskModel>(
         editModel: editModel,
         id: id,
       );
@@ -110,12 +111,12 @@ class TaskerBloc {
     }
   }
 
-  Future<TaskerModel> editProfile({
-    EditTaskerModel? editModel,
+  Future<TaskModel> editProfile({
+    EditTaskModel? editModel,
   }) async {
     try {
       // Await response from server.
-      final data = await _repository.editProfile<TaskerModel, EditTaskerModel>(
+      final data = await _repository.editProfile<TaskModel, EditTaskModel>(
         editModel: editModel,
       );
       if (data.error != null) {

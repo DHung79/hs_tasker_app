@@ -5,12 +5,12 @@ import '../../constants/api_constants.dart';
 import '../../helpers/api_helper.dart';
 import '../../rest/rest_api_handler_data.dart';
 
-class TaskerApiProvider {
-  Future<ApiResponse<T?>> fetchAllTaskers<T extends BaseModel>({
+class TaskApiProvider {
+  Future<ApiResponse<T?>> fetchAllTasks<T extends BaseModel>({
     required Map<String, dynamic> params,
   }) async {
     var path =
-        ApiConstants.apiDomain + ApiConstants.apiVersion + ApiConstants.taskers;
+        ApiConstants.apiDomain + ApiConstants.apiVersion + ApiConstants.tasks;
     if (params.isNotEmpty) {
       var queries = <String>[];
       params.forEach((key, value) => queries.add('$key=$value'));
@@ -24,10 +24,10 @@ class TaskerApiProvider {
     return response;
   }
 
-  Future<ApiResponse<T?>> fetchTaskerByToken<T extends BaseModel>() async {
+  Future<ApiResponse<T?>> fetchTaskByToken<T extends BaseModel>() async {
     final path = ApiConstants.apiDomain +
         ApiConstants.apiVersion +
-        ApiConstants.taskers +
+        ApiConstants.tasks +
         ApiConstants.me;
     final token = await ApiHelper.getUserToken();
     final response = await RestApiHandlerData.getData<T>(
@@ -37,12 +37,12 @@ class TaskerApiProvider {
     return response;
   }
 
-  Future<ApiResponse<T?>> fetchTaskerById<T extends BaseModel>({
+  Future<ApiResponse<T?>> fetchTaskById<T extends BaseModel>({
     String? id,
   }) async {
     final path = ApiConstants.apiDomain +
         ApiConstants.apiVersion +
-        ApiConstants.taskers +
+        ApiConstants.tasks +
         '/$id';
     final token = await ApiHelper.getUserToken();
     final response = await RestApiHandlerData.getData<T>(
@@ -53,13 +53,13 @@ class TaskerApiProvider {
   }
 
   Future<ApiResponse<T?>>
-      editTaskerById<T extends BaseModel, K extends EditBaseModel>({
+      editTaskById<T extends BaseModel, K extends EditBaseModel>({
     K? editModel,
     String? id,
   }) async {
     final path = ApiConstants.apiDomain +
         ApiConstants.apiVersion +
-        ApiConstants.taskers +
+        ApiConstants.tasks +
         '/$id';
     final body = convert.jsonEncode(EditBaseModel.toEditJson(editModel!));
     final token = await ApiHelper.getUserToken();
@@ -72,12 +72,12 @@ class TaskerApiProvider {
     return response;
   }
 
-  Future<ApiResponse<T?>> deleteTaskerById<T extends BaseModel>({
+  Future<ApiResponse<T?>> deleteTaskById<T extends BaseModel>({
     String? id,
   }) async {
     final path = ApiConstants.apiDomain +
         ApiConstants.apiVersion +
-        ApiConstants.taskers +
+        ApiConstants.tasks +
         '/$id';
     final token = await ApiHelper.getUserToken();
     final response = await RestApiHandlerData.deleteData<T>(
@@ -93,7 +93,7 @@ class TaskerApiProvider {
   }) async {
     final path = ApiConstants.apiDomain +
         ApiConstants.apiVersion +
-        ApiConstants.taskers +
+        ApiConstants.tasks +
         ApiConstants.me;
     final body = convert.jsonEncode(EditBaseModel.toEditJson(editModel!));
     logDebug('path: $path\nbody: $body');
