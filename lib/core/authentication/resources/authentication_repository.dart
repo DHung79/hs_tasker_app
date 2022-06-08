@@ -8,8 +8,8 @@ class AuthenticationRepository {
       String? email, String? password) async {
     await Future.delayed(
         const Duration(seconds: 1)); // simulate a network delay
-    final response = await provider
-        .signUpWithEmailAndPassword({'email': email, 'password': password});
+    final body = convert.jsonEncode({'email': email, 'password': password});
+    final response = await provider.signUpWithEmailAndPassword(body);
     return response;
   }
 
@@ -22,13 +22,14 @@ class AuthenticationRepository {
   }
 
   Future<dynamic> resetPassword(
-      String email, String password, String token) async {
+    String id,
+    String password,
+  ) async {
     await Future.delayed(
         const Duration(seconds: 1)); // simulate a network delay
     final body = convert.jsonEncode({
-      'email': email,
+      'id': id,
       'password': password,
-      'token': token,
     });
     final response = await provider.resetPassword(body);
     return response;
@@ -71,6 +72,15 @@ class AuthenticationRepository {
         const Duration(seconds: 1)); // simulate a network delay
     final body = convert.jsonEncode({'email': email, 'password': password});
     final response = await provider.taskerLogin(body);
+    return response;
+  }
+
+  Future<dynamic> checkOTP(String otp) async {
+    await Future.delayed(
+      const Duration(seconds: 1),
+    );
+    final body = convert.jsonEncode({'otp': otp});
+    final response = await provider.checkOTP(body);
     return response;
   }
 }

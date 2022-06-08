@@ -64,9 +64,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         listener: (context, state) async {
           if (state is AuthenticationFailure) {
             _showError(state.errorCode);
-          } else if (state is ResetPasswordState) {
+          }
+          if (state is ForgotPasswordDoneState) {
             JTToast.init(context);
-            navigateTo(resetPasswordRoute);
+            navigateTo(otpRoute);
             await Future.delayed(const Duration(milliseconds: 400));
             JTToast.successToast(
                 width: 327,
@@ -158,10 +159,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     });
     if (_key.currentState!.validate()) {
       _key.currentState!.save();
-      // AuthenticationBlocController().authenticationBloc.add(
-      //       ForgotPassword(email: emailController.text),
-      //     );
-      navigateTo(otpRoute);
+      AuthenticationBlocController().authenticationBloc.add(
+            ForgotPassword(email: _emailController.text),
+          );
     } else {
       setState(() {
         _autovalidate = AutovalidateMode.always;
@@ -182,7 +182,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   _showError(String errorCode) async {
     setState(() {
-      _errorMessage = showError(errorCode, context);
+      _errorMessage = showError(errorCode, context, fieldName: 'Email');
     });
   }
 }

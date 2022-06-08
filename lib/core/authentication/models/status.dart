@@ -13,3 +13,18 @@ class Status extends BaseModel {
     return data;
   }
 }
+
+class OtpModel extends BaseModel {
+  String userId = '';
+
+  OtpModel.fromJson(Map<String, dynamic>? json) {
+    userId = json?['tasker']['_id'] ?? '';
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = {
+      'user_id': userId,
+    };
+    return data;
+  }
+}

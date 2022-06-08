@@ -28,6 +28,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
   @override
   Widget build(BuildContext context) {
+    JTToast.init(context);
     ScreenUtil.init(context);
     return Scaffold(
       backgroundColor: AppColor.primary1,
@@ -92,14 +93,8 @@ class _OTPScreenState extends State<OTPScreen> {
         listener: (context, state) async {
           if (state is AuthenticationFailure) {
             _showError(state.errorCode);
-          } else if (state is ResetPasswordState) {
-            JTToast.init(context);
+          } else if (state is CheckOTPDoneState) {
             navigateTo(resetPasswordRoute);
-            await Future.delayed(const Duration(milliseconds: 400));
-            JTToast.successToast(
-                width: 327,
-                height: 53,
-                message: ScreenUtil.t(I18nKey.checkYourEmail)!);
           }
         },
         child: LayoutBuilder(
@@ -223,10 +218,9 @@ class _OTPScreenState extends State<OTPScreen> {
 
     if (_key.currentState!.validate()) {
       _key.currentState!.save();
-      // AuthenticationBlocController().authenticationBloc.add(
-      //       ForgotPassword(email: emailController.text),
-      //     );
-      navigateTo(resetPasswordRoute);
+      AuthenticationBlocController().authenticationBloc.add(
+            CheckOTP(otp: _otpController.text),
+          );
     } else {
       setState(() {
         _autovalidate = AutovalidateMode.always;
@@ -245,9 +239,9 @@ class _OTPScreenState extends State<OTPScreen> {
         : const SizedBox();
   }
 
-  _showError(String errorCode) async {
+  _showError(String errorCode) {
     setState(() {
-      _errorMessage = showError(errorCode, context);
+      _errorMessage = showError(errorCode, context, fieldName: 'otp');
     });
   }
 }

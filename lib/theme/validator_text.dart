@@ -41,12 +41,30 @@ class ValidatorText {
   }
 }
 
-String showError(String errorCode, BuildContext context) {
+String showError(String errorCode, BuildContext context, {String? fieldName}) {
   ScreenUtil.init(context);
   String message = '';
   switch (errorCode) {
     case '100':
       message = ScreenUtil.t(I18nKey.notHavePermissionToControlDoor)!;
+      break;
+    case '400':
+      if (fieldName != null) {
+        if (fieldName == 'Email') {
+          message = ScreenUtil.t(I18nKey.emailDoesNotExist)!;
+        } else {
+          message = fieldName + ' ' + ScreenUtil.t(I18nKey.isExpired)!;
+        }
+      } else {
+        message = ScreenUtil.t(I18nKey.invalidEmailOrPassword)!;
+      }
+      break;
+    case '404':
+      if (fieldName != null) {
+        message = ScreenUtil.t(I18nKey.incorrectOTP)!;
+      } else {
+        message = ScreenUtil.t(I18nKey.invalidEmailOrPassword)!;
+      }
       break;
     case '900':
       message = ScreenUtil.t(I18nKey.unauthorized)!;

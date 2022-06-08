@@ -52,7 +52,8 @@ class AuthenticationProvider {
     final url = ApiConstants.apiDomain +
         ApiConstants.apiVersion +
         ApiConstants.forgotPassword +
-        '/reset-token';
+        ApiConstants.resetPassword +
+        ApiConstants.tasker;
     final response = await RestApiHandlerData.putData<Status>(
       path: url,
       body: body,
@@ -64,7 +65,8 @@ class AuthenticationProvider {
   forgotPassword(dynamic body) async {
     final url = ApiConstants.apiDomain +
         ApiConstants.apiVersion +
-        ApiConstants.forgotPassword;
+        ApiConstants.forgotPassword +
+        ApiConstants.tasker;
     final response = await RestApiHandlerData.postData<Status>(
       path: url,
       body: body,
@@ -109,6 +111,21 @@ class AuthenticationProvider {
     final url =
         ApiConstants.apiDomain + ApiConstants.apiVersion + '/login/tasker';
     final response = await RestApiHandlerData.login(
+      path: url,
+      body: body,
+      headers: ApiHelper.headers(null),
+    );
+    return response;
+  }
+
+  checkOTP(dynamic body) async {
+    final url = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.forgotPassword +
+        ApiConstants.otp +
+        ApiConstants.tasker;
+    logDebug('path: $url\nbody: $body');
+    final response = await RestApiHandlerData.postData<OtpModel>(
       path: url,
       body: body,
       headers: ApiHelper.headers(null),

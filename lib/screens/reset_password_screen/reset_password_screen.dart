@@ -38,14 +38,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         listener: (context, state) async {
           if (state is AuthenticationFailure) {
             _showError(state.errorCode);
-          } else if (state is ResetPasswordState) {
-            JTToast.init(context);
-            navigateTo(resetPasswordRoute);
-            await Future.delayed(const Duration(milliseconds: 400));
-            JTToast.successToast(
-                width: 327,
-                height: 53,
-                message: ScreenUtil.t(I18nKey.checkYourEmail)!);
+          } else if (state is ResetPasswordDoneState) {
+            navigateTo(authenticationRoute);
           }
         },
         child: LayoutBuilder(
@@ -177,7 +171,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     });
     if (_key.currentState!.validate()) {
       _key.currentState!.save();
-      navigateTo(authenticationRoute);
+      AuthenticationBlocController().authenticationBloc.add(
+            ResetPassword(password: _newPasswordController.text),
+          );
     } else {
       setState(() {
         _autovalidate = AutovalidateMode.always;
