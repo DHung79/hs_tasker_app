@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hs_tasker_app/core/logger/logger.dart';
@@ -26,11 +27,13 @@ export 'theme/button_theme.dart';
 export 'core/tasker/tasker.dart';
 export 'core/authentication/auth.dart';
 
+// Page index
 int notiBadges = 0;
 int homeTabIndex = 0;
 
+String? currentFcmToken;
+
 Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-// Page index
 GlobalKey globalKey = GlobalKey();
 
 navigateTo(String route) async {

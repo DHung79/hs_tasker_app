@@ -1,6 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
+import '../../config/fcm/fcm.dart';
 import '../../main.dart';
 import '../../theme/validator_text.dart';
 
@@ -49,11 +52,39 @@ class _PageTemplateState extends State<PageTemplate> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   bool showNoti = false;
   final _taskerBloc = TaskerBloc();
+  PushNotification? _notificationInfo;
 
   @override
-  void initState() {
+  initState() {
     _authenticationBloc = AuthenticationBlocController().authenticationBloc;
     _authenticationBloc.add(AppLoadedup());
+    requestPermissionsLocal();
+    registerNotification(
+      getFcmToken: (fcmToken) {
+          currentFcmToken = fcmToken;
+      },
+      notificationInfo: _notificationInfo,
+    );
+    checkForInitialMessage(getNotification: (notification) {
+      setState(() {
+        _notificationInfo = notification;
+        // _totalNotifications++;
+      });
+    });
+    initLocalPushNotification();
+    // For handling notification when the app is in background
+    // but not terminated
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      PushNotification notification = PushNotification(
+        title: message.notification?.title,
+        body: message.notification?.body,
+        dataTitle: message.data['title'].toString(),
+        dataBody: message.data['body'].toString(),
+      );
+      setState(() {
+        _notificationInfo = notification;
+      });
+    });
     super.initState();
   }
 
