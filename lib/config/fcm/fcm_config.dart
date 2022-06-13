@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import '../../core/logger/logger.dart';
+import '../../core/notification/notification.dart';
+import '../../main.dart';
 import 'fcm_model.dart';
 
 Future<void> _showNotification({String? title, String? body}) async {
@@ -110,14 +111,12 @@ void registerNotification({
     (fcmToken) {
       logDebug('fcmToken: $fcmToken');
       getFcmToken(fcmToken);
-      // setState(() {
-      //   currentFcmToken = fcmToken;
-      // });
-      // NotificationRepository()
-      //     .updateFcmToken(body: {'fcm_token': '$fcmToken'})
-      //     .then((value) => logDebug(
-      //         'Call updateFcmToken to server ${value ? 'Ok' : 'Fail'}'))
-      //     .catchError((e) => logDebug('Call updateFcmToken Error: $e'));
+      currentFcmToken = fcmToken;
+      NotificationRepository()
+          .updateFcmToken(body: {'fcm_token': '$fcmToken'})
+          .then((value) => logDebug(
+              'Call updateFcmToken to server ${value ? 'Ok' : 'Fail'}'))
+          .catchError((e) => logDebug('Call updateFcmToken Error: $e'));
     },
   ).catchError((dynamic err) {
     logDebug('Has some errors on get fcmToken: $err');

@@ -4,7 +4,6 @@ import '/routes/route_names.dart';
 import '../../main.dart';
 import '../../theme/validator_text.dart';
 import '../../widgets/jt_text_form_field.dart';
-import '../../widgets/jt_toast.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);

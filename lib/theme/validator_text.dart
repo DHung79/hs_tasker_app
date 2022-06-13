@@ -94,9 +94,6 @@ String showError(String errorCode, BuildContext context, {String? fieldName}) {
             ScreenUtil.t(I18nKey.allowed)!.toLowerCase();
       }
       break;
-    case '400':
-      message = ScreenUtil.t(I18nKey.invalidEmailOrPassword)!;
-      break;
     case '1001':
       message = ScreenUtil.t(I18nKey.userNotFound)!;
       break;
