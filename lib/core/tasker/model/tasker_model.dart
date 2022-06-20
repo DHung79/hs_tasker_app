@@ -82,7 +82,7 @@ class EditTaskerModel extends EditBaseModel {
       'name': name,
       'email': email,
       'address': address,
-      'phone_number': phoneNumber,
+      'phoneNumber': phoneNumber,
       'gender': gender,
     };
     return params;
@@ -94,7 +94,7 @@ class EditTaskerModel extends EditBaseModel {
       'name': name,
       'email': email,
       'address': address,
-      'phone_number': phoneNumber,
+      'phoneNumber': phoneNumber,
       'gender': gender,
     };
 
