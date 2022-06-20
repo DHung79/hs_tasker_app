@@ -132,8 +132,7 @@ String showError(String errorCode, BuildContext context, {String? fieldName}) {
       message = 'Công việc đã bị huỷ';
       break;
     case '1014':
-      message =
-          'Không tìm thấy Admin!';
+      message = 'Không tìm thấy Admin!';
       break;
     case '1015':
       message = 'Mã OTP đã hết hạn';
@@ -142,9 +141,6 @@ String showError(String errorCode, BuildContext context, {String? fieldName}) {
       message = 'Không tìm thấy thông tin liên lạc!';
       break;
     case '1017':
-      message = 'Không tìm thấy thông tin liên lạc!';
-      break;
-    case '1018':
       message = ScreenUtil.t(I18nKey.emailDoesNotExist)!;
       break;
     case '1100':
