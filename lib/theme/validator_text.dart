@@ -111,7 +111,7 @@ String showError(String errorCode, BuildContext context, {String? fieldName}) {
       message = 'Không tìm thấy người giúp việc!';
       break;
     case '1007':
-      message = 'Dịch vụ không được tìm thấy!';
+      message = 'Không tìm thấy dịch vụ!';
       break;
     case '1008':
       message = 'Không tìm thấy đơn hàng!';
@@ -133,19 +133,19 @@ String showError(String errorCode, BuildContext context, {String? fieldName}) {
       break;
     case '1014':
       message =
-          'Can not update complete task because task is not give by tasker!';
+          'Không tìm thấy Admin!';
       break;
     case '1015':
       message = 'Mã OTP đã hết hạn';
       break;
     case '1016':
-      message = 'Admin is not found!';
+      message = 'Không tìm thấy thông tin liên lạc!';
       break;
     case '1017':
-      message = 'Contact info is not found!';
+      message = 'Không tìm thấy thông tin liên lạc!';
       break;
     case '1018':
-      message = 'Is not match id tasker in task!';
+      message = ScreenUtil.t(I18nKey.emailDoesNotExist)!;
       break;
     case '1100':
       message = ScreenUtil.t(I18nKey.pageAndLimitShouldBeNumberic)!;

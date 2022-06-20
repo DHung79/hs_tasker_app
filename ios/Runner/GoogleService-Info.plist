@@ -3,19 +3,19 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1037388754263-0cp5qig5hk1nh44and25spsin4vtm5jg.apps.googleusercontent.com</string>
+	<string>1037388754263-bpa014p0pototji0hc9vs0njm83g7aqe.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1037388754263-0cp5qig5hk1nh44and25spsin4vtm5jg</string>
+	<string>com.googleusercontent.apps.1037388754263-bpa014p0pototji0hc9vs0njm83g7aqe</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>1037388754263-204s33mk3njmi8ve3f51dksijt8l383r.apps.googleusercontent.com</string>
+	<string>1037388754263-02k2mn2sdgnjm5fjgt3pj8msi1j1aj6h.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCX0Er-vJ4POrimMxj-eXGPqkcd9pqd7PA</string>
+	<string>AIzaSyCVg9Y9xzDlDYXO6KlXeozR0BnEA3h6z8k</string>
 	<key>GCM_SENDER_ID</key>
 	<string>1037388754263</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.jt.homeservice</string>
+	<string>com.jt.hs.tasker</string>
 	<key>PROJECT_ID</key>
 	<string>homeservicedev-348702</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1037388754263:ios:ea6fa10ca8ced2528fe212</string>
+	<string>1:1037388754263:ios:851b108c02faea9e8fe212</string>
 </dict>
 </plist>
