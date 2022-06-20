@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,15 +16,26 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
-  final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _otpController = TextEditingController();
   String? _errorMessage = '';
   AutovalidateMode _autovalidate = AutovalidateMode.disabled;
+  bool _processing = false;
+  Timer? _delayResend;
+  Timer? _delayCheckOtp;
+  bool _lockResend = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _delayCheckOtp?.cancel();
+    _delayResend?.cancel();
+    super.dispose();
   }
 
   @override
@@ -102,7 +114,7 @@ class _OTPScreenState extends State<OTPScreen> {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Form(
-                key: _key,
+                key: _formKey,
                 autovalidateMode: _autovalidate,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -180,27 +192,29 @@ class _OTPScreenState extends State<OTPScreen> {
                             AppColor.primary1,
                           ),
                         ),
-                        onPressed: () => _checkOTP(),
+                        onPressed: !_processing ? _checkOTP : null,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Center(
-                        child: InkWell(
-                          splashColor: AppColor.transparent,
-                          highlightColor: AppColor.transparent,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Gửi lại',
-                              style: AppTextTheme.normalHeaderTitle(
-                                  AppColor.white),
+                    if (!_lockResend)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Center(
+                          child: InkWell(
+                            splashColor: AppColor.transparent,
+                            highlightColor: AppColor.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Gửi lại',
+                                style: AppTextTheme.normalHeaderTitle(
+                                  AppColor.white,
+                                ),
+                              ),
                             ),
+                            onTap: _resendOTP,
                           ),
-                          onTap: () {},
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -213,19 +227,43 @@ class _OTPScreenState extends State<OTPScreen> {
 
   _checkOTP() {
     setState(() {
+      _processing = true;
+      _delayCheckOtp = Timer.periodic(const Duration(seconds: 2), (timer) {
+        if (timer.tick == 1) {
+          timer.cancel();
+          setState(() {
+            _processing = false;
+          });
+        }
+      });
       _errorMessage = '';
     });
-
-    if (_key.currentState!.validate()) {
-      _key.currentState!.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       AuthenticationBlocController().authenticationBloc.add(
             CheckOTP(otp: _otpController.text),
           );
     } else {
       setState(() {
-        _autovalidate = AutovalidateMode.always;
+        _autovalidate = AutovalidateMode.onUserInteraction;
       });
     }
+  }
+
+  _resendOTP() {
+    setState(() {
+      _errorMessage = '';
+      _lockResend = true;
+      _delayResend = Timer.periodic(const Duration(minutes: 5), (timer) {
+        if (timer.tick == 1) {
+          timer.cancel();
+          setState(() {
+            _lockResend = false;
+          });
+        }
+      });
+    });
+    AuthenticationBlocController().authenticationBloc.add(ResendOTP());
   }
 
   Widget _buildErrorMessage() {

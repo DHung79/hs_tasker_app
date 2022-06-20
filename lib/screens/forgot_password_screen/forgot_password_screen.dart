@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/routes/route_names.dart';
@@ -17,13 +18,20 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  String? _errorMessage = '';
+  String _errorMessage = '';
   AutovalidateMode _autovalidate = AutovalidateMode.disabled;
-
+  bool _processing = false;
+  Timer? _delayForgotPassword;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _delayForgotPassword?.cancel();
+    super.dispose();
   }
 
   @override
@@ -108,8 +116,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           },
                           onChanged: (value) {
                             setState(() {
-                              if (_errorMessage!.isNotEmpty) {
+                              if (_errorMessage.isNotEmpty) {
                                 _errorMessage = '';
+                              }
+                              if (_processing && _errorMessage.isEmpty) {
+                                _processing = false;
                               }
                             });
                           },
@@ -139,7 +150,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               AppColor.primary1,
                             ),
                           ),
-                          onPressed: () => _forgotPassword(),
+                          onPressed: !_processing ? _forgotPassword : null,
                         ),
                       ),
                     ],
@@ -156,6 +167,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   _forgotPassword() {
     setState(() {
       _errorMessage = '';
+      _processing = true;
+      _delayForgotPassword =
+          Timer.periodic(const Duration(seconds: 2), (timer) {
+        if (timer.tick == 1) {
+          timer.cancel();
+          setState(() {
+            _processing = false;
+          });
+        }
+      });
     });
     if (_key.currentState!.validate()) {
       _key.currentState!.save();
@@ -170,10 +191,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   Widget _buildErrorMessage() {
-    return _errorMessage != null && _errorMessage!.isNotEmpty
+    return _errorMessage.isNotEmpty
         ? Center(
             child: Text(
-              _errorMessage!,
+              _errorMessage,
               style: AppTextTheme.normalHeaderTitle(AppColor.others1),
             ),
           )

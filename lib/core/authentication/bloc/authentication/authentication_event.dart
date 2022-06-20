@@ -88,3 +88,16 @@ class CheckOTP extends AuthenticationEvent {
 }
 
 class ResendOTP extends AuthenticationEvent {}
+
+class ChangePassword extends AuthenticationEvent {
+  final String password;
+  final String newPassword;
+
+  const ChangePassword({
+    required this.password,
+    required this.newPassword,
+  });
+
+  @override
+  List<Object> get props => [password];
+}

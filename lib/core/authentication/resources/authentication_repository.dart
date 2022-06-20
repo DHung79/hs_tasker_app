@@ -8,8 +8,8 @@ class AuthenticationRepository {
       String? email, String? password) async {
     await Future.delayed(
         const Duration(seconds: 1)); // simulate a network delay
-    final body = convert.jsonEncode({'email': email, 'password': password});
-    final response = await provider.signUpWithEmailAndPassword(body);
+    final response = await provider
+        .signUpWithEmailAndPassword({'email': email, 'password': password});
     return response;
   }
 
@@ -43,10 +43,20 @@ class AuthenticationRepository {
     return response;
   }
 
+  Future<dynamic> checkEmail(String email) async {
+    await Future.delayed(
+        const Duration(seconds: 1)); // simulate a network delay
+    final body = convert.jsonEncode({'email': email});
+    final response = await provider.checkEmail(body);
+    return response;
+  }
+
   Future<dynamic> removeFcmToken(String fcmToken) async {
     await Future.delayed(
         const Duration(seconds: 1)); // simulate a network delay
-    final body = convert.jsonEncode({'fcm_token': fcmToken});
+    final body = convert.jsonEncode({
+      'fcm_token': fcmToken,
+    });
     final response = await provider.removeFcmToken(body);
     return response;
   }
@@ -69,7 +79,8 @@ class AuthenticationRepository {
 
   Future<dynamic> taskerLogin(String? email, String? password) async {
     await Future.delayed(
-        const Duration(seconds: 1)); // simulate a network delay
+      const Duration(seconds: 1),
+    );
     final body = convert.jsonEncode({'email': email, 'password': password});
     final response = await provider.taskerLogin(body);
     return response;
@@ -81,6 +92,20 @@ class AuthenticationRepository {
     );
     final body = convert.jsonEncode({'otp': otp});
     final response = await provider.checkOTP(body);
+    return response;
+  }
+
+  Future<dynamic> changePassword(
+    String password,
+    String newPassword,
+  ) async {
+    await Future.delayed(
+        const Duration(seconds: 1)); // simulate a network delay
+    final body = convert.jsonEncode({
+      'password': password,
+      'new_password': newPassword,
+    });
+    final response = await provider.changePassword(body);
     return response;
   }
 }

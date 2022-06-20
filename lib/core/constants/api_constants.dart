@@ -6,7 +6,7 @@ class ApiConstants {
   static String tasker = '/tasker';
   static String me = '/me';
   static String services = '/services';
-  static String changePassword = '/changePassword';
+  static String changePassword = '/change-password';
   static String resetPassword = '/reset-password';
   static String forgotPassword = '/forgot-password';
   static String tasks = '/tasks';
@@ -16,4 +16,6 @@ class ApiConstants {
   static String all = '/all';
   static String fcmToken = '/fcm-token';
   static String unreadTotal = '/unreadTotal';
+  static String checkEmail = '/check-email';
+  static String login = '/login';
 }

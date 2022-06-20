@@ -6,16 +6,6 @@ import '../../rest/rest_api_handler_data.dart';
 import '../models/status.dart';
 
 class AuthenticationProvider {
-  loginWithEmailAndPassword(dynamic body) async {
-    final url = ApiConstants.apiDomain + ApiConstants.apiVersion + '/login';
-    final response = await RestApiHandlerData.login(
-      path: url,
-      body: body,
-      headers: ApiHelper.headers(null),
-    );
-    return response;
-  }
-
   signUpWithEmailAndPassword(dynamic body) async {
     return null;
   }
@@ -67,6 +57,22 @@ class AuthenticationProvider {
         ApiConstants.apiVersion +
         ApiConstants.forgotPassword +
         ApiConstants.tasker;
+    logDebug('path: $url\nbody: $body');
+    final response = await RestApiHandlerData.postData<Status>(
+      path: url,
+      body: body,
+      headers: ApiHelper.headers(null),
+    );
+    return response;
+  }
+
+  checkEmail(dynamic body) async {
+    final url = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.forgotPassword +
+        ApiConstants.tasker +
+        ApiConstants.checkEmail;
+    logDebug('path: $url\nbody: $body');
     final response = await RestApiHandlerData.postData<Status>(
       path: url,
       body: body,
@@ -76,7 +82,10 @@ class AuthenticationProvider {
   }
 
   removeFcmToken(dynamic body) async {
-    final url = ApiConstants.apiDomain + ApiConstants.apiVersion + '/fcm_token';
+    final url = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.fcmToken +
+        ApiConstants.tasker;
     final response = await RestApiHandlerData.deleteData<Status>(
       path: url,
       body: body,
@@ -108,8 +117,10 @@ class AuthenticationProvider {
   }
 
   taskerLogin(dynamic body) async {
-    final url =
-        ApiConstants.apiDomain + ApiConstants.apiVersion + '/login/tasker';
+    final url = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.login +
+        ApiConstants.tasker;
     final response = await RestApiHandlerData.login(
       path: url,
       body: body,
@@ -129,6 +140,23 @@ class AuthenticationProvider {
       path: url,
       body: body,
       headers: ApiHelper.headers(null),
+    );
+    return response;
+  }
+
+  changePassword(dynamic body) async {
+    final url = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.taskers +
+        ApiConstants.me +
+        ApiConstants.changePassword;
+    final SharedPreferences sharedPreferences = await prefs;
+    var token = sharedPreferences.getString('authtoken') ?? '';
+    logDebug('path: $url\nbody: $body');
+    final response = await RestApiHandlerData.putData<TaskerModel>(
+      path: url,
+      body: body,
+      headers: ApiHelper.headers(token),
     );
     return response;
   }
