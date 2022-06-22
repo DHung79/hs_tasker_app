@@ -4,83 +4,93 @@ import '../../../routes/route_names.dart';
 import '../../../core/task/task.dart';
 import '../../../main.dart';
 import '../../../widgets/display_date_time.dart';
+import '../../../widgets/jt_indicator.dart';
 import '../../../widgets/jt_task_detail.dart';
 import 'home_task.dart';
 
 class HistoryContent extends StatefulWidget {
-  const HistoryContent({Key? key}) : super(key: key);
+  final TaskerModel tasker;
+  const HistoryContent({
+    Key? key,
+    required this.tasker,
+  }) : super(key: key);
 
   @override
   State<HistoryContent> createState() => _HistoryContentState();
 }
 
 class _HistoryContentState extends State<HistoryContent> {
-  final List<TaskModel> tasks = [
-    TaskModel.fromJson({
-      '_id': '0',
-      'type': 'Dọn dẹp theo giờ',
-      'date': 1653038175000,
-      'start_time': 1653038175000,
-      'end_time': 1653045375000,
-      'address': '358/12/33 Lư Cấm, Ngọc Hiệp',
-      'distance': '4km',
-      'status': 'Hoàn thành',
-      'bill': 300000,
-      'user': {'name': 'Nancy Jewel McDonie'},
-      'created_time': 1652859350000,
-      'updated_time': 1652859350000,
-    }),
-    TaskModel.fromJson({
-      '_id': '1',
-      'type': 'Dọn dẹp theo giờ',
-      'date': 1653131775000,
-      'start_time': 1653131775000,
-      'end_time': 1653142575000,
-      'address': '358/12/33 Lư Cấm, Ngọc Hiệp',
-      'distance': '4km',
-      'status': 'Bị hủy bỏ',
-      'bill': 300000,
-      'user': {'name': 'Nancy Jewel McDonie'},
-      'created_time': 1652859350000,
-      'updated_time': 1652859350000,
-    }),
-  ];
+  final _taskBloc = TaskBloc();
+
+  @override
+  void initState() {
+    _taskBloc.fetchAllData({'tasker': widget.tasker.id});
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _taskBloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, size) {
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        itemCount: tasks.length,
-        itemBuilder: (BuildContext context, index) {
-          final task = tasks[index];
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Container(
-              constraints: BoxConstraints(
-                minHeight: 408,
-                minWidth: size.maxWidth - 32,
-              ),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColor.shadow.withOpacity(0.16),
-                    blurRadius: 24,
-                    spreadRadius: 0.16,
-                    blurStyle: BlurStyle.outer,
+      return StreamBuilder(
+          stream: _taskBloc.allData,
+          builder:
+              (context, AsyncSnapshot<ApiResponse<ListTaskModel?>> snapshot) {
+            if (snapshot.hasData) {
+              final tasks = snapshot.data!.model!.records;
+              final historyTasks = tasks.where((e) {
+                return e.status >= 3;
+              }).toList();
+              if (historyTasks.isNotEmpty) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  itemCount: historyTasks.length,
+                  itemBuilder: (BuildContext context, index) {
+                    final task = historyTasks[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Container(
+                        constraints: BoxConstraints(
+                          minHeight: 408,
+                          minWidth: size.maxWidth - 32,
+                        ),
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColor.shadow.withOpacity(0.16),
+                              blurRadius: 24,
+                              spreadRadius: 0.16,
+                              blurStyle: BlurStyle.outer,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: HomeTask(
+                          taskHeader: _taskHeader(task),
+                          taskContent: _taskContent(task),
+                          taskActions: _taskActions(task),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              } else {
+                return Center(
+                  child: Text(
+                    ScreenUtil.t(I18nKey.noData)!,
+                    style: AppTextTheme.mediumBodyText(AppColor.black),
                   ),
-                ],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: HomeTask(
-                taskHeader: _taskHeader(task),
-                taskContent: _taskContent(task),
-                taskActions: _taskActions(task),
-              ),
-            ),
-          );
-        },
-      );
+                );
+              }
+            }
+            return const JTIndicator();
+          });
     });
   }
 

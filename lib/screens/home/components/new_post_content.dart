@@ -9,7 +9,9 @@ import 'home_task.dart';
 import '../../../main.dart';
 
 class NewPostContent extends StatefulWidget {
-  const NewPostContent({Key? key}) : super(key: key);
+  const NewPostContent({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<NewPostContent> createState() => _NewPostContentState();
@@ -125,7 +127,6 @@ class _NewPostContentState extends State<NewPostContent> {
       context: context,
       displayedFormat: 'HH:mm',
     );
-
     return Column(
       children: [
         Container(

@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         preferredSize: const Size.fromHeight(146),
         child: _appBar(tasker!),
       ),
-      body: _buildContent(),
+      body: _buildContent(tasker),
     );
   }
 
@@ -263,13 +263,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(TaskerModel tasker) {
     if (homeTabIndex == 0) {
       return const NewPostContent();
     } else if (homeTabIndex == 1) {
-      return const TaskerTaskContent();
+      return TaskerTaskContent(tasker: tasker);
     } else {
-      return const HistoryContent();
+      return HistoryContent(tasker: tasker);
     }
   }
 
