@@ -72,7 +72,7 @@ class _OTPScreenState extends State<OTPScreen> {
                           ),
                           child: Center(
                             child: SvgIcon(
-                              SvgIcons.arrowBack,
+                              SvgIcons.arrowIosBack,
                               color: AppColor.black,
                               size: 24,
                             ),

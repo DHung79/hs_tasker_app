@@ -110,7 +110,7 @@ class _CancelTaskDialogState extends State<CancelTaskDialog> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgIcon(
-              SvgIcons.circleCheck,
+              SvgIcons.checkCircleOutline,
               color: AppColor.white,
               size: 24,
             ),

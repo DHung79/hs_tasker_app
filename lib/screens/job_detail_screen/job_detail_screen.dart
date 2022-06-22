@@ -81,7 +81,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
             color: AppColor.transparent,
             highlightColor: AppColor.white,
             child: SvgIcon(
-              SvgIcons.arrowBack,
+              SvgIcons.arrowIosBack,
               size: 24,
               color: AppColor.black,
             ),
@@ -257,7 +257,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                       ),
                     ),
                   ),
-                  svgIcon: SvgIcons.dollar1,
+                  svgIcon: SvgIcons.dollar,
                 ),
               ),
             Padding(
@@ -265,7 +265,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Tổng tiền',
                 contentTitle: '300.00 VND',
-                svgIcon: SvgIcons.dollar1,
+                svgIcon: SvgIcons.dollar,
               ),
             ),
             Padding(
@@ -281,7 +281,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Địa chỉ',
                 contentTitle: '358/12/33 Lư Cấm, Ngọc Hiệp',
-                svgIcon: SvgIcons.location,
+                svgIcon: SvgIcons.locationOutline,
               ),
             ),
             Padding(
@@ -289,13 +289,13 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Loại nhà',
                 contentTitle: 'Căn hộ',
-                svgIcon: SvgIcons.home,
+                svgIcon: SvgIcons.home2,
               ),
             ),
             JTTaskDetail.taskDetail(
               headerTitle: 'Khoảng cách',
               contentTitle: '4km',
-              svgIcon: SvgIcons.car,
+              svgIcon: SvgIcons.carSide,
             ),
           ],
         ),
@@ -325,7 +325,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Ghi chú',
                 contentTitle: 'Mang theo chổi',
-                svgIcon: SvgIcons.list,
+                svgIcon: SvgIcons.notebook,
               ),
             ),
             Padding(
@@ -334,13 +334,13 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 headerTitle: 'Danh sách kiểm tra',
                 toDoList: _toDoList,
                 checkList: _checkList,
-                svgIcon: SvgIcons.checkList,
+                svgIcon: SvgIcons.listCheck,
               ),
             ),
             JTTaskDetail.taskDetail(
               headerTitle: 'Dụng cụ tự mang',
               contentTitle: ' \u2022 Chổi\n \u2022 Cây lau nhà',
-              svgIcon: SvgIcons.clean,
+              svgIcon: SvgIcons.broom,
             ),
           ],
         ),
@@ -469,7 +469,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgIcon(
-                  SvgIcons.circleCheck,
+                  SvgIcons.checkCircleOutline,
                   color: AppColor.white,
                   size: 24,
                 ),
@@ -516,7 +516,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgIcon(
-                    SvgIcons.circleCheck,
+                    SvgIcons.checkCircleOutline,
                     color: AppColor.white,
                     size: 24,
                   ),
@@ -545,7 +545,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgIcon(
-                    SvgIcons.arrowBack,
+                    SvgIcons.arrowIosBack,
                     color: AppColor.black,
                     size: 24,
                   ),
@@ -591,7 +591,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SvgIcon(
-                          SvgIcons.arrowBack,
+                          SvgIcons.arrowIosBack,
                           color: AppColor.white,
                           size: 24,
                         ),

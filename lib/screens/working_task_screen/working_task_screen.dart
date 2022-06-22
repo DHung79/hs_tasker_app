@@ -245,7 +245,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   SvgIcon(
-                    SvgIcons.comment,
+                    SvgIcons.commentAlt,
                     size: 24,
                     color: AppColor.white,
                   ),
@@ -299,7 +299,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
           Padding(
             padding: const EdgeInsets.all(16),
             child: JTTaskDetail.taskDetailBox(
-              svgIcon: SvgIcons.location,
+              svgIcon: SvgIcons.locationOutline,
               headerTitle: 'Địa chỉ',
               contentTitle: _task.address,
               boxColor: AppColor.shade2,
@@ -310,7 +310,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   SvgIcon(
-                    SvgIcons.navigation1,
+                    SvgIcons.navigation,
                     size: 24,
                     color: AppColor.white,
                   ),
@@ -372,7 +372,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
           Padding(
             padding: const EdgeInsets.all(16),
             child: JTTaskDetail.taskDetail(
-              svgIcon: SvgIcons.note,
+              svgIcon: SvgIcons.notebook,
               headerTitle: 'Ghi chú',
               contentTitle: 'Mang theo chổi',
               backgroundColor: AppColor.shade2,
@@ -381,7 +381,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
           Padding(
             padding: const EdgeInsets.all(16),
             child: JTTaskDetail.taskDetailList(
-              svgIcon: SvgIcons.checkList,
+              svgIcon: SvgIcons.listCheck,
               headerTitle: 'Danh sách kiểm tra',
               contentList: _jobList(
                 toDoList: _toDoList,
@@ -399,7 +399,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
           Padding(
             padding: const EdgeInsets.all(16),
             child: JTTaskDetail.taskDetail(
-              svgIcon: SvgIcons.clean,
+              svgIcon: SvgIcons.broom,
               headerTitle: 'Dụng cụ tự mang',
               contentTitle: ' \u2022 Chổi\n \u2022 Cây lau nhà',
               backgroundColor: AppColor.shade2,
@@ -602,7 +602,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Tổng tiền',
                 contentTitle: '300.00 VND',
-                svgIcon: SvgIcons.dollar1,
+                svgIcon: SvgIcons.dollar,
               ),
             ),
             Padding(
@@ -620,7 +620,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SvgIcon(
-                        SvgIcons.circleCheck,
+                        SvgIcons.checkCircleOutline,
                         color: AppColor.white,
                         size: 24,
                       ),
@@ -688,7 +688,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgIcon(
-                    SvgIcons.circleCheck,
+                    SvgIcons.checkCircleOutline,
                     color: AppColor.white,
                     size: 24,
                   ),

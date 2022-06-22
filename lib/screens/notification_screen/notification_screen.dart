@@ -65,7 +65,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             color: AppColor.transparent,
             highlightColor: AppColor.white,
             child: SvgIcon(
-              SvgIcons.arrowBack,
+              SvgIcons.arrowIosBack,
               size: 24,
               color: AppColor.black,
             ),
@@ -146,7 +146,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           child: Transform.rotate(
                             angle: 180 * pi / 180,
                             child: SvgIcon(
-                              SvgIcons.arrowBack,
+                              SvgIcons.arrowIosBack,
                               color: AppColor.white,
                               size: 24,
                             ),

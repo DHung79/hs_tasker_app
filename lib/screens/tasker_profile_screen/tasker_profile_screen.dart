@@ -74,7 +74,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
             color: AppColor.transparent,
             highlightColor: AppColor.white,
             child: SvgIcon(
-              SvgIcons.arrowBack,
+              SvgIcons.arrowIosBack,
               size: 24,
               color: AppColor.black,
             ),
@@ -173,7 +173,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgIcon(
-                    SvgIcons.arrowBack,
+                    SvgIcons.arrowIosBack,
                     color: AppColor.black,
                     size: 24,
                   ),
@@ -223,7 +223,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 7),
                       child: _buildDetail(
                         title: tasker.phoneNumber,
-                        svgIcon: SvgIcons.call,
+                        svgIcon: SvgIcons.telephone,
                       ),
                     ),
                   ],
@@ -251,7 +251,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
 
                         return _buildDetail(
                           title: title,
-                          svgIcon: SvgIcons.dollar1,
+                          svgIcon: SvgIcons.dollar,
                           child: InkWell(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),

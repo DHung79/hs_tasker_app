@@ -168,7 +168,7 @@ class _NewPostContentState extends State<NewPostContent> {
           contentTitle: '$date, từ $startTime đến $endTime',
         ),
         JTTaskDetail.taskDetail(
-          svgIcon: SvgIcons.location,
+          svgIcon: SvgIcons.locationOutline,
           headerTitle: 'Địa chỉ',
           contentTitle: task.address,
         ),
@@ -221,7 +221,7 @@ class _NewPostContentState extends State<NewPostContent> {
                   child: Transform.rotate(
                     angle: 180 * pi / 180,
                     child: SvgIcon(
-                      SvgIcons.arrowBack,
+                      SvgIcons.arrowIosBack,
                       color: AppColor.primary2,
                       size: 18,
                     ),

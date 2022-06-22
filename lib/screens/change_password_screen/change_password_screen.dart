@@ -97,7 +97,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               color: AppColor.transparent,
               highlightColor: AppColor.white,
               child: SvgIcon(
-                SvgIcons.arrowBack,
+                SvgIcons.arrowIosBack,
                 size: 24,
                 color: AppColor.black,
               ),
@@ -328,7 +328,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         color: AppColor.black,
                       )
                     : SvgIcon(
-                        SvgIcons.password,
+                        SvgIcons.eyeOff,
                         color: AppColor.black,
                       ),
                 onPressed: passwordIconOnPressed,
@@ -358,7 +358,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgIcon(
-                  SvgIcons.circleCheck,
+                  SvgIcons.checkCircleOutline,
                   color: AppColor.white,
                   size: 24,
                 ),

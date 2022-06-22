@@ -153,7 +153,7 @@ class _HistoryContentState extends State<HistoryContent> {
     return Column(
       children: [
         JTTaskDetail.taskDetail(
-          svgIcon: SvgIcons.dollar1,
+          svgIcon: SvgIcons.dollar,
           headerTitle: 'Tổng tiền',
           contentTitle: '${task.totalPrice} VND',
           backgroundColor: AppColor.shade2,
@@ -165,7 +165,7 @@ class _HistoryContentState extends State<HistoryContent> {
           backgroundColor: AppColor.shade2,
         ),
         JTTaskDetail.taskDetail(
-          svgIcon: SvgIcons.location,
+          svgIcon: SvgIcons.locationOutline,
           headerTitle: 'Địa chỉ',
           contentTitle: task.address,
           backgroundColor: AppColor.shade2,
@@ -238,7 +238,7 @@ class _HistoryContentState extends State<HistoryContent> {
                   child: Transform.rotate(
                     angle: 180 * pi / 180,
                     child: SvgIcon(
-                      SvgIcons.arrowBack,
+                      SvgIcons.arrowIosBack,
                       color: AppColor.primary2,
                       size: 18,
                     ),

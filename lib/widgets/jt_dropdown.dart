@@ -39,7 +39,7 @@ class JTDropdownButtonFormField<T> extends StatelessWidget {
       decoration: decoration,
       value: _displayedValue,
       icon: SvgIcon(
-        SvgIcons.keyboardDown,
+        SvgIcons.expandMore,
         size: 24,
         color: AppColor.black,
       ),

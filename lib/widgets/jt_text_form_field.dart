@@ -60,7 +60,7 @@ class _JTTextFormFieldState extends State<JTTextFormField> {
                           color: AppColor.white,
                         )
                       : SvgIcon(
-                          SvgIcons.password,
+                          SvgIcons.eyeOff,
                           color: AppColor.white,
                         ),
                   onPressed: widget.passwordIconOnPressed,

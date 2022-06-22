@@ -109,7 +109,7 @@ class _MapScreenState extends State<MapScreen> {
             color: AppColor.transparent,
             highlightColor: AppColor.white,
             child: SvgIcon(
-              SvgIcons.arrowBack,
+              SvgIcons.arrowIosBack,
               size: 24,
               color: AppColor.black,
             ),

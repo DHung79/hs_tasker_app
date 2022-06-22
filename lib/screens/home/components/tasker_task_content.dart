@@ -294,11 +294,11 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
           title: date,
         ),
         _taskDetail(
-          svgIcon: SvgIcons.location,
+          svgIcon: SvgIcons.locationOutline,
           title: task.address,
         ),
         _taskDetail(
-          svgIcon: SvgIcons.dollar1,
+          svgIcon: SvgIcons.dollar,
           title: '${task.totalPrice} VND',
         ),
       ],

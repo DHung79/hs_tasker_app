@@ -48,7 +48,7 @@ class _ContactDialogState extends State<ContactDialog> {
                           padding: const EdgeInsets.only(right: 16),
                           child: _contactButton(
                             title: 'Gọi điện',
-                            svgIcon: SvgIcons.call,
+                            svgIcon: SvgIcons.telephone,
                             onPressed: () {},
                           ),
                         ),
@@ -57,7 +57,7 @@ class _ContactDialogState extends State<ContactDialog> {
                         flex: 1,
                         child: _contactButton(
                           title: 'Nhắn tin',
-                          svgIcon: SvgIcons.comment,
+                          svgIcon: SvgIcons.commentAlt,
                           onPressed: () {},
                         ),
                       ),

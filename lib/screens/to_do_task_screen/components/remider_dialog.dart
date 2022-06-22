@@ -140,7 +140,7 @@ class _RemiderDialogState extends State<RemiderDialog> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgIcon(
-              SvgIcons.circleCheck,
+              SvgIcons.checkCircleOutline,
               color: AppColor.white,
               size: 24,
             ),

@@ -220,7 +220,7 @@ class JTTaskDetail {
                                 child: Transform.rotate(
                                   angle: angle * pi / 180,
                                   child: SvgIcon(
-                                    SvgIcons.keyboardDown,
+                                    SvgIcons.expandMore,
                                     color: AppColor.black,
                                     size: 24,
                                   ),

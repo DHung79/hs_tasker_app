@@ -202,7 +202,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   SvgIcon(
-                    SvgIcons.comment,
+                    SvgIcons.commentAlt,
                     size: 24,
                     color: AppColor.white,
                   ),
@@ -247,7 +247,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
         Padding(
           padding: const EdgeInsets.all(16),
           child: JTTaskDetail.taskDetailBox(
-            svgIcon: SvgIcons.location,
+            svgIcon: SvgIcons.locationOutline,
             headerTitle: 'Địa chỉ',
             contentTitle: _task.address,
             boxColor: AppColor.shade2,
@@ -258,7 +258,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
               child:
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 SvgIcon(
-                  SvgIcons.navigation1,
+                  SvgIcons.navigation,
                   size: 24,
                   color: AppColor.white,
                 ),
@@ -293,7 +293,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   SvgIcon(
-                    SvgIcons.bell,
+                    SvgIcons.notifications,
                     size: 24,
                     color: AppColor.shade5,
                   ),
@@ -315,7 +315,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
         Padding(
           padding: const EdgeInsets.all(16),
           child: JTTaskDetail.taskDetail(
-            svgIcon: SvgIcons.dollar1,
+            svgIcon: SvgIcons.dollar,
             headerTitle: 'Tổng tiền',
             contentTitle: '${_task.totalPrice} VND',
             backgroundColor: AppColor.shade2,
@@ -333,7 +333,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
         Padding(
           padding: const EdgeInsets.all(16),
           child: JTTaskDetail.taskDetail(
-            svgIcon: SvgIcons.car,
+            svgIcon: SvgIcons.carSide,
             headerTitle: 'Ghi chú',
             contentTitle: 'Mang theo chổi',
             backgroundColor: AppColor.shade2,
@@ -342,7 +342,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
         Padding(
           padding: const EdgeInsets.all(16),
           child: JTTaskDetail.taskDetail(
-            svgIcon: SvgIcons.clean,
+            svgIcon: SvgIcons.broom,
             headerTitle: 'Dụng cụ tự mang',
             contentTitle: ' \u2022 Chổi\n \u2022 Cây lau nhà',
             backgroundColor: AppColor.shade2,
@@ -351,7 +351,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
           child: JTTaskDetail.taskDetailList(
-            svgIcon: SvgIcons.checkList,
+            svgIcon: SvgIcons.listCheck,
             headerTitle: 'Danh sách kiểm tra',
             contentList: Text(
               ' \u2022 Lau ghế rồng \n \u2022 Lau bình hoa \n \u2022 Kiểm tra thức ăn cho cún',

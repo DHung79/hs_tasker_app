@@ -92,7 +92,7 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
               color: AppColor.transparent,
               highlightColor: AppColor.white,
               child: SvgIcon(
-                SvgIcons.arrowBack,
+                SvgIcons.arrowIosBack,
                 size: 24,
                 color: AppColor.black,
               ),
@@ -329,7 +329,7 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgIcon(
-                  SvgIcons.circleCheck,
+                  SvgIcons.checkCircleOutline,
                   color: AppColor.white,
                   size: 24,
                 ),
