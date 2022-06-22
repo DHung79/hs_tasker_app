@@ -136,6 +136,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         appContext: context,
                         length: 4,
                         controller: _otpController,
+                        keyboardType: TextInputType.number,
                         textStyle: AppTextTheme.bigText(AppColor.white),
                         animationType: AnimationType.fade,
                         animationDuration: const Duration(milliseconds: 250),
@@ -165,7 +166,7 @@ class _OTPScreenState extends State<OTPScreen> {
                           });
                         },
                         validator: (value) {
-                          if (value!.isEmpty || value.trim().isEmpty) {
+                          if (value!.trim().isEmpty) {
                             _errorMessage =
                                 ValidatorText.empty(fieldName: 'OTP');
                             return '';
@@ -252,6 +253,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
   _resendOTP() {
     setState(() {
+      _otpController.clear();
       _errorMessage = '';
       _lockResend = true;
       _delayResend = Timer.periodic(const Duration(minutes: 5), (timer) {

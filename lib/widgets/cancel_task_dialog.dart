@@ -64,7 +64,7 @@ class _CancelTaskDialogState extends State<CancelTaskDialog> {
                     ),
                   ),
                   Text(
-                    '${widget.task.bill} VND',
+                    '${widget.task.totalPrice} VND',
                     style: AppTextTheme.normalText(AppColor.others1),
                   ),
                 ],

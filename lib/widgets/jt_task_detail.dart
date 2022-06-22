@@ -10,54 +10,62 @@ class JTTaskDetail {
     String? headerTitle,
     Color? backgroundColor,
   }) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: backgroundColor ?? AppColor.shade10,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Center(
-                child: icon != null
-                    ? Icon(
-                        icon,
-                        size: 20,
-                        color: AppColor.shade5,
-                      )
-                    : SvgIcon(
-                        svgIcon,
-                        size: 20,
-                        color: AppColor.shade5,
-                      ),
-              ),
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                  headerTitle ?? '',
-                  style: AppTextTheme.normalText(AppColor.shade5),
+    return LayoutBuilder(builder: (context, size) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: backgroundColor ?? AppColor.shade10,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Center(
+                  child: icon != null
+                      ? Icon(
+                          icon,
+                          size: 20,
+                          color: AppColor.shade5,
+                        )
+                      : SvgIcon(
+                          svgIcon,
+                          size: 20,
+                          color: AppColor.shade5,
+                        ),
                 ),
               ),
-              Text(
-                contentTitle ?? '',
-                style: AppTextTheme.mediumBodyText(AppColor.text1),
+            ),
+            Container(
+              width: size.maxWidth - 52,
+              constraints: const BoxConstraints(maxHeight: 59),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Text(
+                      headerTitle ?? '',
+                      style: AppTextTheme.normalText(AppColor.shade5),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      contentTitle ?? '',
+                      style: AppTextTheme.mediumBodyText(AppColor.text1),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ],
-      ),
-    );
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   static Widget taskDetailBox({

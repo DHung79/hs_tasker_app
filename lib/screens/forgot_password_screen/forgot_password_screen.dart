@@ -125,7 +125,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             });
                           },
                           validator: (value) {
-                            if (value!.isEmpty || value.trim().isEmpty) {
+                            if (value!.trim().isEmpty) {
                               return ValidatorText.empty(
                                   fieldName: ScreenUtil.t(I18nKey.email)!);
                             }

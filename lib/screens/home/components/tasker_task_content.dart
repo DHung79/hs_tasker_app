@@ -235,7 +235,7 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
-                  task.type,
+                  task.service.name,
                   style: AppTextTheme.mediumHeaderTitle(AppColor.primary1),
                 ),
               ),
@@ -299,7 +299,7 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
         ),
         _taskDetail(
           svgIcon: SvgIcons.dollar1,
-          title: '${task.bill} VND',
+          title: '${task.totalPrice} VND',
         ),
       ],
     );

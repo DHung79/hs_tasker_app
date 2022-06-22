@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:hs_tasker_app/widgets/jt_indicator.dart';
 import '../../../core/task/task.dart';
 import '../../../routes/route_names.dart';
 import '../../../widgets/display_date_time.dart';
@@ -15,83 +16,65 @@ class NewPostContent extends StatefulWidget {
 }
 
 class _NewPostContentState extends State<NewPostContent> {
-  final List<TaskModel> tasks = [
-    TaskModel.fromJson({
-      '_id': '0',
-      'type': 'Dọn dẹp theo giờ',
-      'date': 1653038175000,
-      'start_time': 1653038175000,
-      'end_time': 1653045375000,
-      'address': '358/12/33 Lư Cấm, Ngọc Hiệp',
-      'distance': '4km',
-      'status': '',
-      'bill': 300000,
-      'created_time': 1652859350000,
-      'updated_time': 1652859350000,
-    }),
-    TaskModel.fromJson({
-      '_id': '1',
-      'type': 'Dọn dẹp theo giờ',
-      'date': 1653131775000,
-      'start_time': 1653131775000,
-      'end_time': 1653142575000,
-      'address': '358/12/33 Lư Cấm, Ngọc Hiệp',
-      'distance': '4km',
-      'status': '',
-      'bill': 300000,
-      'created_time': 1652859350000,
-      'updated_time': 1652859350000,
-    }),
-    TaskModel.fromJson({
-      '_id': '2',
-      'type': 'Dọn dẹp theo giờ',
-      'date': 1653056175000,
-      'start_time': 1653056175000,
-      'end_time': 1653066975000,
-      'address': '358/12/33 Lư Cấm, Ngọc Hiệp',
-      'distance': '4km',
-      'status': '',
-      'bill': 300000,
-      'created_time': 1652859350000,
-      'updated_time': 1652859350000,
-    }),
-  ];
+  final _taskBloc = TaskBloc();
+
+  @override
+  void initState() {
+    _taskBloc.fetchAllData({});
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _taskBloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, size) {
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        itemCount: tasks.length,
-        itemBuilder: (BuildContext context, index) {
-          final task = tasks[index];
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: Container(
-              constraints: BoxConstraints(
-                minHeight: 408,
-                minWidth: size.maxWidth - 32,
-              ),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColor.shadow.withOpacity(0.16),
-                    blurRadius: 24,
-                    spreadRadius: 0.16,
-                    blurStyle: BlurStyle.outer,
-                  ),
-                ],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: HomeTask(
-                taskHeader: _taskHeader(task),
-                taskContent: _taskContent(task),
-                taskActions: _taskActions(task),
-              ),
-            ),
-          );
-        },
-      );
+      return StreamBuilder(
+          stream: _taskBloc.allData,
+          builder:
+              (context, AsyncSnapshot<ApiResponse<ListTaskModel?>> snapshot) {
+            if (snapshot.hasData) {
+              final tasks = snapshot.data!.model!.records;
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                itemCount: tasks.length,
+                itemBuilder: (BuildContext context, index) {
+                  final task = tasks[index];
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    child: Container(
+                      constraints: BoxConstraints(
+                        minHeight: 408,
+                        minWidth: size.maxWidth - 32,
+                      ),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColor.shadow.withOpacity(0.16),
+                            blurRadius: 24,
+                            spreadRadius: 0.16,
+                            blurStyle: BlurStyle.outer,
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: HomeTask(
+                        taskHeader: _taskHeader(task),
+                        taskContent: _taskContent(task),
+                        taskActions: _taskActions(task),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
+            return const JTIndicator();
+          });
     });
   }
 
@@ -108,7 +91,7 @@ class _NewPostContentState extends State<NewPostContent> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
-                  task.type,
+                  task.service.name,
                   style: AppTextTheme.mediumHeaderTitle(AppColor.primary1),
                 ),
               ),
@@ -171,7 +154,7 @@ class _NewPostContentState extends State<NewPostContent> {
                     flex: 1,
                     child: _contentHeader(
                       headerTitle: 'Tổng tiền (VND)',
-                      contentTitle: '${task.bill}',
+                      contentTitle: '${task.totalPrice}',
                     ),
                   ),
                 ],
@@ -188,11 +171,6 @@ class _NewPostContentState extends State<NewPostContent> {
           svgIcon: SvgIcons.location,
           headerTitle: 'Địa chỉ',
           contentTitle: task.address,
-        ),
-        JTTaskDetail.taskDetail(
-          svgIcon: SvgIcons.car,
-          headerTitle: 'Khoảng cách',
-          contentTitle: task.distance,
         ),
       ],
     );

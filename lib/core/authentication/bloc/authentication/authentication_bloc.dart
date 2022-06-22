@@ -358,7 +358,8 @@ class AuthenticationBloc
             if (userJson != null && userJson.isNotEmpty) {
               Map<String, dynamic> json = convert.jsonDecode(userJson);
               final account = TaskerModel.fromJson(json);
-              account.password = event.newPassword;
+              sharedPreferences.setString(
+                  'last_userpassword', event.newPassword);
               emit(SetUserData(currentUser: account));
             }
             emit(ChangePasswordDoneState());

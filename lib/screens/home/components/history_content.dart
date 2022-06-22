@@ -99,7 +99,7 @@ class _HistoryContentState extends State<HistoryContent> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
-                  task.type,
+                  task.service.name,
                   style: AppTextTheme.mediumHeaderTitle(AppColor.primary1),
                 ),
               ),
@@ -115,9 +115,7 @@ class _HistoryContentState extends State<HistoryContent> {
           ),
           Container(
             decoration: BoxDecoration(
-              color: task.status == 'Hoàn thành'
-                  ? AppColor.shade9
-                  : AppColor.others1,
+              color: task.status == 3 ? AppColor.shade9 : AppColor.others1,
               borderRadius: BorderRadius.circular(50),
             ),
             child: Padding(
@@ -126,7 +124,7 @@ class _HistoryContentState extends State<HistoryContent> {
                 horizontal: 10,
               ),
               child: Text(
-                task.status,
+                task.status.toString(),
                 style: AppTextTheme.mediumHeaderTitle(AppColor.white),
               ),
             ),
@@ -157,7 +155,7 @@ class _HistoryContentState extends State<HistoryContent> {
         JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.dollar1,
           headerTitle: 'Tổng tiền',
-          contentTitle: '${task.bill} VND',
+          contentTitle: '${task.totalPrice} VND',
           backgroundColor: AppColor.shade2,
         ),
         JTTaskDetail.taskDetail(

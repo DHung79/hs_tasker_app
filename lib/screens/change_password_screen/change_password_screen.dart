@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../main.dart';
 import '../../theme/validator_text.dart';
@@ -18,7 +19,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final _taskerBloc = TaskerBloc();
   String _errorMessage = '';
   AutovalidateMode _autovalidate = AutovalidateMode.disabled;
-  final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _oldPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _checkNewPasswordController = TextEditingController();
@@ -127,17 +128,31 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   Widget _buildContent(TaskerModel tasker) {
     final editModel = EditTaskerModel.fromModel(tasker);
+    logDebug('password: ${tasker.password}');
     return LayoutBuilder(builder: (context, size) {
-      return SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        child: Column(
-          children: [
-            _inputField(editModel),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 34),
-              child: _buildActions(editModel),
-            ),
-          ],
+      return BlocListener<AuthenticationBloc, AuthenticationState>(
+        bloc: AuthenticationBlocController().authenticationBloc,
+        listener: (context, state) async {
+          if (state is AuthenticationFailure) {
+            _showError(state.errorCode);
+          }
+          if (state is ChangePasswordDoneState) {
+            await Future.delayed(const Duration(milliseconds: 400));
+            navigateTo(taskerProfileRoute);
+            JTToast.successToast(message: 'Bạn đã đổi mật khẩu thành công');
+          }
+        },
+        child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Column(
+            children: [
+              _inputField(editModel),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 34),
+                child: _buildActions(editModel),
+              ),
+            ],
+          ),
         ),
       );
     });
@@ -147,7 +162,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Form(
-        key: _key,
+        key: _formKey,
         autovalidateMode: _autovalidate,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -173,7 +188,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 });
               },
               validator: (value) {
-                if (value!.isEmpty || value.trim().isEmpty) {
+                if (value!.trim().isEmpty) {
                   return ValidatorText.empty(fieldName: 'Mật khẩu cũ');
                 }
                 if (value.trim() != editModel.password) {
@@ -201,15 +216,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   });
                 },
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (value!.trim().isEmpty) {
                     return ValidatorText.empty(
                         fieldName: ScreenUtil.t(I18nKey.password)!);
                   }
-                  if (value.length < 6) {
+                  if (value.trim().length < 6) {
                     return ValidatorText.atLeast(
                         fieldName: ScreenUtil.t(I18nKey.password)!, atLeast: 6);
                   }
-                  if (value.length > 50) {
+                  if (value.trim().length > 50) {
                     return ValidatorText.moreThan(
                         fieldName: ScreenUtil.t(I18nKey.password)!,
                         moreThan: 50);
@@ -243,7 +258,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   });
                 },
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (value!.trim().isEmpty) {
                     return ValidatorText.empty(
                         fieldName: ScreenUtil.t(I18nKey.password)!);
                   }
@@ -357,8 +372,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               ],
             ),
             onPressed: () {
-              if (_key.currentState!.validate()) {
-                _key.currentState!.save();
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
                 _editPassword(editModel: editModel);
               } else {
                 setState(() {
@@ -373,23 +388,45 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   _editPassword({required EditTaskerModel editModel}) {
-    _taskerBloc.changePassword(editModel: editModel).then(
-      (value) async {
-        AuthenticationBlocController().authenticationBloc.add(GetUserData());
-        navigateTo(taskerProfileRoute);
-        JTToast.successToast(message: ScreenUtil.t(I18nKey.updateSuccess)!);
-      },
-    ).onError((ApiError error, stackTrace) {
+    setState(() {
+      _errorMessage = '';
+    });
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      AuthenticationBlocController().authenticationBloc.add(
+            ChangePassword(
+              password: _oldPasswordController.text,
+              newPassword: _newPasswordController.text,
+            ),
+          );
+    } else {
       setState(() {
-        _errorMessage = showError(error.errorCode, context);
+        _autovalidate = AutovalidateMode.onUserInteraction;
       });
-    }).catchError(
-      (error, stackTrace) {
-        setState(() {
-          _errorMessage = error.toString();
-        });
-      },
-    );
+    }
+    // _taskerBloc.changePassword(editModel: editModel).then(
+    //   (value) async {
+    //     AuthenticationBlocController().authenticationBloc.add(GetUserData());
+    //     navigateTo(taskerProfileRoute);
+    //     JTToast.successToast(message: ScreenUtil.t(I18nKey.updateSuccess)!);
+    //   },
+    // ).onError((ApiError error, stackTrace) {
+    //   setState(() {
+    //     _errorMessage = showError(error.errorCode, context);
+    //   });
+    // }).catchError(
+    //   (error, stackTrace) {
+    //     setState(() {
+    //       _errorMessage = error.toString();
+    //     });
+    //   },
+    // );
+  }
+
+  _showError(String errorCode) {
+    setState(() {
+      _errorMessage = showError(errorCode, context, fieldName: 'Email');
+    });
   }
 
   _fetchDataOnPage() {

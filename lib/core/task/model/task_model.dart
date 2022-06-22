@@ -1,89 +1,138 @@
 import '../../base/models/common_model.dart';
 import '../../rest/models/rest_api_response.dart';
+import '../../service/service.dart';
+import '../../tasker/tasker.dart';
 import '../../user/model/user_model.dart';
 
 class TaskModel extends BaseModel {
+  final LocationModel _location;
+  final UserModel _user;
+  final TaskerModel _tasker;
+  final ServiceModel _service;
   final String __id;
-  final String _type;
-  final int _date;
+  final String _address;
+  final String _estimateTime;
   final int _startTime;
   final int _endTime;
-  final String _address;
-  final String _distance;
-  final String _stastus;
-  final int _bill;
-  final UserModel _user;
-  final LocationModel _location;
+  final int _date;
+  final String _note;
+  final int _status;
+  final int _language;
+  final int _failureReason;
+  final String _typeHome;
+  final List<String> _checkList = [];
+  final bool _isDeleted;
+  final int _deletedTime;
   final int _createdTime;
   final int _updatedTime;
+  final int _totalPrice;
 
   TaskModel.fromJson(Map<String, dynamic> json)
-      : __id = json['_id'] ?? '',
-        _type = json['type'] ?? '',
-        _date = json['date'],
-        _startTime = json['start_time'],
-        _endTime = json['end_time'],
-        _address = json['address'] ?? '',
-        _distance = json['distance'] ?? '',
-        _stastus = json['status'] ?? '',
-        _bill = json['bill'] ?? 0,
+      : _location = BaseModel.map<LocationModel>(
+          json: json,
+          key: 'location_gps',
+        ),
         _user = BaseModel.map<UserModel>(
           json: json,
           key: 'user',
         ),
-        _location = BaseModel.map<LocationModel>(
+        _tasker = BaseModel.map<TaskerModel>(
           json: json,
-          key: 'location_gps',
+          key: 'tasker',
         ),
-        _createdTime = json['created_time'],
-        _updatedTime = json['updated_time'];
+        _service = BaseModel.map<ServiceModel>(
+          json: json,
+          key: 'service',
+        ),
+        __id = json['_id'] ?? '',
+        _address = json['address'] ?? '',
+        _estimateTime = json['estimate_time'] ?? '',
+        _startTime = json['start_time'] ?? 0,
+        _endTime = json['end_time'] ?? 0,
+        _date = json['date'] ?? 0,
+        _note = json['note'] ?? '',
+        _status = json['_status'] ?? 0,
+        _language = json['language'] ?? 0,
+        _failureReason = json['failure_reason'] ?? 0,
+        _typeHome = json['type_home'] ?? '',
+        _isDeleted = json['is_deleted'] ?? false,
+        _deletedTime = json['deleted_time'] ?? 0,
+        _createdTime = json['created_time'] ?? 0,
+        _updatedTime = json['updated_time'] ?? 0,
+        _totalPrice = json['total_price'] ?? 0 {
+    if (json['check_list'] != null) {
+      final jsons = json['check_list'];
+      if (jsons is List<dynamic>) {
+        for (var item in jsons) {
+          if (item is String) {
+            _checkList.add(item);
+          }
+        }
+      }
+    }
+  }
 
   Map<String, dynamic> toJson() => {
-        "_id": __id,
-        "type": _type,
-        "date": _date,
-        "start_time": _startTime,
-        "estimate_time": _endTime,
-        "address": _address,
-        "distance": _distance,
-        "status": _stastus,
-        "bill": _bill,
-        "user": _user.toJson(),
-        "location_gps": _location.toJson(),
-        "created_time": _createdTime,
-        "updated_time": _updatedTime,
+        'location_gps': _location.toJson(),
+        'posted_user': _user.toJson(),
+        'tasker': _tasker.toJson(),
+        'service': _service.toJson(),
+        '_id': __id,
+        'address': _address,
+        'estimate_time': _estimateTime,
+        'start_time': _startTime,
+        'end_time': _endTime,
+        'date': _date,
+        'note': _note,
+        'status': _status,
+        'language': _language,
+        'failure_reason': _failureReason,
+        'type_home': _typeHome,
+        'check_list': _checkList,
+        'is_deleted': _isDeleted,
+        'deleted_time': _deletedTime,
+        'created_time': _createdTime,
+        'updated_time': _updatedTime,
+        'total_price': _totalPrice,
       };
-
+  LocationModel get location => _location;
+  UserModel get user => _user;
+  TaskerModel get tasker => _tasker;
+  ServiceModel get service => _service;
   String get id => __id;
-  String get type => _type;
-  int get date => _date;
+  String get address => _address;
+  String get estimateTime => _estimateTime;
   int get startTime => _startTime;
   int get endTime => _endTime;
-  String get address => _address;
-  String get distance => _distance;
-  String get status => _stastus;
-  int get bill => _bill;
-  UserModel get user => _user;
-  LocationModel get location => _location;
+  int get date => _date;
+  String get note => _note;
+  int get status => _status;
+  int get language => _language;
+  int get failureReason => _failureReason;
+  String get typeHome => _typeHome;
+  List<String> get checkList => _checkList;
+  bool get isDeleted => _isDeleted;
+  int get deletedTime => _deletedTime;
   int get createdTime => _createdTime;
   int get updatedTime => _updatedTime;
+  int get totalPrice => _totalPrice;
 }
 
 class LocationModel extends BaseModel {
-  final double _lat;
-  final double _long;
+  final String _lat;
+  final String _long;
 
   LocationModel.fromJson(Map<String, dynamic> json)
-      : _lat = json['lat'] ?? 0,
-        _long = json['long'] ?? 0;
+      : _lat = json['lat'] ?? '',
+        _long = json['long'] ?? '';
 
   Map<String, dynamic> toJson() => {
         "lat": _lat,
         "long": _long,
       };
 
-  double get lat => _lat;
-  double get long => _long;
+  String get lat => _lat;
+  String get long => _long;
 }
 
 class PostedUserModel extends BaseModel {

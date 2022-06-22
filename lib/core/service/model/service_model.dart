@@ -23,8 +23,8 @@ class ServiceModel extends BaseModel {
           json: json,
           key: 'category',
         ),
-        _createdTime = json['created_time'],
-        _updatedTime = json['updated_time'] {
+        _createdTime = json['created_time'] ?? 0,
+        _updatedTime = json['updated_time'] ?? 0 {
     _translations.addAll(BaseModel.mapList<TranslationModel>(
       json: json,
       key: 'translation',

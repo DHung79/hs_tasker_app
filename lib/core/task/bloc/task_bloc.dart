@@ -14,7 +14,7 @@ class TaskBloc {
   Stream<BlocState> get allDataState => _allDataState.stream;
   bool _isFetching = false;
 
-  fetchAllData({Map<String, dynamic>? params}) async {
+  fetchAllData(Map<String, dynamic>? params) async {
     if (_isFetching) return;
     _isFetching = true;
     // Start fetching data.

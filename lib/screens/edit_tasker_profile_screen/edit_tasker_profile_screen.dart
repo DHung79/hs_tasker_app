@@ -237,7 +237,7 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
                       });
                     },
                     validator: (value) {
-                      if (value!.isEmpty || value.trim().isEmpty) {
+                      if (value!.trim().isEmpty) {
                         return ValidatorText.empty(
                             fieldName: ScreenUtil.t(I18nKey.name)!);
                       }
@@ -299,7 +299,7 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
                       });
                     },
                     validator: (value) {
-                      if (value!.isEmpty || value.trim().isEmpty) {
+                      if (value!.trim().isEmpty) {
                         return ValidatorText.empty(fieldName: 'số điện thoại');
                       }
                       return null;

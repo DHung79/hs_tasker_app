@@ -141,7 +141,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                 ),
               ),
               Text(
-                _task.type,
+                _task.service.name,
                 style: AppTextTheme.mediumHeaderTitle(AppColor.black),
               ),
             ]),
@@ -326,8 +326,8 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                 ]),
                 onPressed: () {
                   openMap(
-                    lat: _task.location.lat,
-                    long: _task.location.long,
+                    lat: double.tryParse(_task.location.lat)!,
+                    long: double.tryParse(_task.location.long)!,
                   );
                 },
               ),

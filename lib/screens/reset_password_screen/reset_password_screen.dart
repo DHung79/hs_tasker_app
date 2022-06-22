@@ -86,16 +86,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             });
                           },
                           validator: (value) {
-                            if (value!.isEmpty) {
+                            if (value!.trim().isEmpty) {
                               return ValidatorText.empty(
                                   fieldName: ScreenUtil.t(I18nKey.password)!);
                             }
-                            if (value.length < 6) {
+                            if (value.trim().length < 6) {
                               return ValidatorText.atLeast(
                                   fieldName: ScreenUtil.t(I18nKey.password)!,
                                   atLeast: 6);
                             }
-                            if (value.length > 50) {
+                            if (value.trim().length > 50) {
                               return ValidatorText.moreThan(
                                   fieldName: ScreenUtil.t(I18nKey.password)!,
                                   moreThan: 50);
@@ -127,7 +127,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             });
                           },
                           validator: (value) {
-                            if (value!.isEmpty) {
+                            if (value!.trim().isEmpty) {
                               return ValidatorText.empty(
                                   fieldName: ScreenUtil.t(I18nKey.password)!);
                             }

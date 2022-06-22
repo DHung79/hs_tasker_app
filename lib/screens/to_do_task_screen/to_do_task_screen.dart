@@ -112,7 +112,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
                 ),
               ),
               Text(
-                _task.type,
+                _task.service.name,
                 style: AppTextTheme.mediumHeaderTitle(AppColor.black),
               ),
             ]),
@@ -317,7 +317,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
           child: JTTaskDetail.taskDetail(
             svgIcon: SvgIcons.dollar1,
             headerTitle: 'Tổng tiền',
-            contentTitle: '${_task.bill} VND',
+            contentTitle: '${_task.totalPrice} VND',
             backgroundColor: AppColor.shade2,
           ),
         ),
@@ -327,15 +327,6 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
             svgIcon: SvgIcons.time,
             headerTitle: 'Loại nhà',
             contentTitle: 'Căn hộ',
-            backgroundColor: AppColor.shade2,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: JTTaskDetail.taskDetail(
-            svgIcon: SvgIcons.car,
-            headerTitle: 'Khoảng cách',
-            contentTitle: _task.distance,
             backgroundColor: AppColor.shade2,
           ),
         ),

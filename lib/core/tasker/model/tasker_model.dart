@@ -17,10 +17,10 @@ class TaskerModel extends BaseModel {
         _name = json['name'] ?? '',
         _email = json['email'] ?? '',
         _address = json['address'] ?? '',
-        _phoneNumber = json['phoneNumber'] ?? '',
+        _phoneNumber = json['phoneNumber']?.toString() ?? '',
         _gender = json['gender'] ?? '',
-        _createdTime = json['created_time'],
-        _updatedTime = json['updated_time'],
+        _createdTime = json['created_time'] ?? 0,
+        _updatedTime = json['updated_time'] ?? 0,
         _password = '';
 
   Map<String, dynamic> toJson() => {
