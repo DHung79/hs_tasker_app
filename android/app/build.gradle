@@ -43,7 +43,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.jt.hs.tasker"
+        applicationId "com.jt.home_service_tasker"
         minSdkVersion 21
         targetSdkVersion 29
         multiDexEnabled true

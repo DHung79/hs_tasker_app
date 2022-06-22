@@ -1,4 +1,4 @@
-package com.jt.hs.tasker
+package com.jt.home_service_tasker
 
 import io.flutter.embedding.android.FlutterActivity
 
