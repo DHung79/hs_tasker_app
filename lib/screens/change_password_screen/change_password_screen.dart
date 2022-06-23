@@ -97,7 +97,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               color: AppColor.transparent,
               highlightColor: AppColor.white,
               child: SvgIcon(
-                SvgIcons.arrowIosBack,
+                SvgIcons.arrowBackIos,
                 size: 24,
                 color: AppColor.black,
               ),

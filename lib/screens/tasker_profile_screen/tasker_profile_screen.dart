@@ -74,7 +74,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
             color: AppColor.transparent,
             highlightColor: AppColor.white,
             child: SvgIcon(
-              SvgIcons.arrowIosBack,
+              SvgIcons.arrowBackIos,
               size: 24,
               color: AppColor.black,
             ),
@@ -173,7 +173,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgIcon(
-                    SvgIcons.arrowIosBack,
+                    SvgIcons.arrowBackIos,
                     color: AppColor.black,
                     size: 24,
                   ),

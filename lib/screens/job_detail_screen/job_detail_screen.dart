@@ -81,7 +81,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
             color: AppColor.transparent,
             highlightColor: AppColor.white,
             child: SvgIcon(
-              SvgIcons.arrowIosBack,
+              SvgIcons.arrowBackIos,
               size: 24,
               color: AppColor.black,
             ),
@@ -545,7 +545,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgIcon(
-                    SvgIcons.arrowIosBack,
+                    SvgIcons.arrowBackIos,
                     color: AppColor.black,
                     size: 24,
                   ),
@@ -591,7 +591,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SvgIcon(
-                          SvgIcons.arrowIosBack,
+                          SvgIcons.arrowBackIos,
                           color: AppColor.white,
                           size: 24,
                         ),

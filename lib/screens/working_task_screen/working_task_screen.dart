@@ -245,7 +245,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   SvgIcon(
-                    SvgIcons.commentAlt,
+                    SvgIcons.message,
                     size: 24,
                     color: AppColor.white,
                   ),

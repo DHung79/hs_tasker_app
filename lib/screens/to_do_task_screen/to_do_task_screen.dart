@@ -202,7 +202,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   SvgIcon(
-                    SvgIcons.commentAlt,
+                    SvgIcons.message,
                     size: 24,
                     color: AppColor.white,
                   ),

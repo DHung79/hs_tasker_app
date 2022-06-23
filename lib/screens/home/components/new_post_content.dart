@@ -222,7 +222,7 @@ class _NewPostContentState extends State<NewPostContent> {
                   child: Transform.rotate(
                     angle: 180 * pi / 180,
                     child: SvgIcon(
-                      SvgIcons.arrowIosBack,
+                      SvgIcons.arrowBackIos,
                       color: AppColor.primary2,
                       size: 18,
                     ),

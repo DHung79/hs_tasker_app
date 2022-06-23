@@ -57,7 +57,7 @@ class _ContactDialogState extends State<ContactDialog> {
                         flex: 1,
                         child: _contactButton(
                           title: 'Nhắn tin',
-                          svgIcon: SvgIcons.commentAlt,
+                          svgIcon: SvgIcons.message,
                           onPressed: () {},
                         ),
                       ),

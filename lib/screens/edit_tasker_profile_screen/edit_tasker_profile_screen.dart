@@ -92,7 +92,7 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
               color: AppColor.transparent,
               highlightColor: AppColor.white,
               child: SvgIcon(
-                SvgIcons.arrowIosBack,
+                SvgIcons.arrowBackIos,
                 size: 24,
                 color: AppColor.black,
               ),
