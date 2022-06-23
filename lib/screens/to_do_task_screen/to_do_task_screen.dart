@@ -11,7 +11,11 @@ import '../layout_template/content_screen.dart';
 import 'components/remider_dialog.dart';
 
 class ToDoTaskScreen extends StatefulWidget {
-  const ToDoTaskScreen({Key? key}) : super(key: key);
+  final String id;
+  const ToDoTaskScreen({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
 
   @override
   State<ToDoTaskScreen> createState() => _ToDoTaskScreenState();
@@ -21,24 +25,19 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
   final _pageState = PageState();
   final _scrollController = ScrollController();
   bool _showList = true;
+  final _taskBloc = TaskBloc();
 
-  final _task = TaskModel.fromJson({
-    '_id': '0',
-    'type': 'Dọn dẹp theo giờ',
-    'date': 1653038175000,
-    'start_time': 1653038175000,
-    'end_time': 1653045375000,
-    'address': '358/12/33 Lư Cấm, Ngọc Hiệp, Nha Trang Khánh Hòa',
-    'distance': '4km',
-    'status': '',
-    'bill': 300000,
-    'created_time': 1652859350000,
-    'updated_time': 1652859350000,
-  });
   @override
   void initState() {
     AuthenticationBlocController().authenticationBloc.add(AppLoadedup());
+    _taskBloc.fetchDataById(widget.id);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _taskBloc.dispose();
+    super.dispose();
   }
 
   @override
@@ -64,83 +63,100 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
   }
 
   Widget _toDoPage(AsyncSnapshot<TaskerModel> snapshot) {
-    return Scaffold(
-      backgroundColor: AppColor.shade1,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80),
-        child: _appBar(),
-      ),
-      body: _buildContent(),
-    );
+    return StreamBuilder(
+        stream: _taskBloc.taskData,
+        builder: (context, AsyncSnapshot<ApiResponse<TaskModel?>> snapshot) {
+          if (snapshot.hasData) {
+            final task = snapshot.data!.model!;
+            return Scaffold(
+              backgroundColor: AppColor.shade1,
+              appBar: PreferredSize(
+                preferredSize: const Size.fromHeight(80),
+                child: _appBar(task),
+              ),
+              body: _buildContent(task),
+            );
+          }
+          return const JTIndicator();
+        });
   }
 
-  Widget _appBar() {
+  Widget _appBar(TaskModel task) {
     return AppBar(
       backgroundColor: AppColor.white,
       elevation: 0.16,
-      flexibleSpace:
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        AppButtonTheme.fillRounded(
-          constraints: const BoxConstraints(maxWidth: 40),
-          color: AppColor.transparent,
-          highlightColor: AppColor.white,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 28, 0, 24),
-              child: Icon(
-                Icons.arrow_back_ios,
-                size: 18,
-                color: AppColor.black,
+      flexibleSpace: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              AppButtonTheme.fillRounded(
+                constraints: const BoxConstraints(maxWidth: 40),
+                color: AppColor.transparent,
+                highlightColor: AppColor.white,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 28, 0, 24),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      size: 18,
+                      color: AppColor.black,
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  navigateTo(homeRoute);
+                },
               ),
-            ),
-          ),
-          onPressed: () {
-            navigateTo(homeRoute);
-          },
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(10, 24.5, 10, 16.5),
-          child: Container(
-            constraints: const BoxConstraints(minHeight: 39),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                  'Công việc sắp tới',
-                  style: AppTextTheme.subText(AppColor.primary1),
+                padding: const EdgeInsets.fromLTRB(10, 24.5, 10, 16.5),
+                child: Container(
+                  constraints: const BoxConstraints(minHeight: 39),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: Text(
+                          'Công việc sắp tới',
+                          style: AppTextTheme.subText(AppColor.primary1),
+                        ),
+                      ),
+                      Text(
+                        task.service.name,
+                        style: AppTextTheme.mediumHeaderTitle(AppColor.black),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              Text(
-                _task.service.name,
-                style: AppTextTheme.mediumHeaderTitle(AppColor.black),
-              ),
-            ]),
+            ],
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 24, 16, 16),
-          child: AppButtonTheme.fillRounded(
-              constraints: const BoxConstraints(minHeight: 40),
-              color: AppColor.shade1,
-              borderRadius: BorderRadius.circular(50),
-              highlightColor: AppColor.white,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text(
-                  'Hủy công việc',
-                  style: AppTextTheme.mediumHeaderTitle(AppColor.others1),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 24, 16, 16),
+            child: AppButtonTheme.fillRounded(
+                constraints: const BoxConstraints(minHeight: 40),
+                color: AppColor.shade1,
+                borderRadius: BorderRadius.circular(50),
+                highlightColor: AppColor.white,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    'Hủy công việc',
+                    style: AppTextTheme.mediumHeaderTitle(AppColor.others1),
+                  ),
                 ),
-              ),
-              onPressed: () {
-                _cancelTaskDialog(_task);
-              }),
-        ),
-      ]),
+                onPressed: () {
+                  _cancelTaskDialog(task);
+                }),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(TaskModel task) {
     return LayoutBuilder(
       builder: (context, size) {
         return SingleChildScrollView(
@@ -149,16 +165,16 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
           child: Column(children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
-              child: _customerContact(),
+              child: _customerContact(task),
             ),
-            _taskDetails(),
+            _taskDetails(task),
           ]),
         );
       },
     );
   }
 
-  Widget _customerContact() {
+  Widget _customerContact(TaskModel task) {
     return Container(
       color: AppColor.white,
       child: Row(
@@ -225,19 +241,19 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
     );
   }
 
-  Widget _taskDetails() {
+  Widget _taskDetails(TaskModel task) {
     final date = formatFromInt(
-      value: _task.date,
+      value: task.date,
       context: context,
       displayedFormat: 'dd/MM/yyyy',
     );
     final startTime = formatFromInt(
-      value: _task.startTime,
+      value: task.startTime,
       context: context,
       displayedFormat: 'HH:mm',
     );
     final endTime = formatFromInt(
-      value: _task.endTime,
+      value: task.endTime,
       context: context,
       displayedFormat: 'HH:mm',
     );
@@ -249,7 +265,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
           child: JTTaskDetail.taskDetailBox(
             svgIcon: SvgIcons.locationOutline,
             headerTitle: 'Địa chỉ',
-            contentTitle: _task.address,
+            contentTitle: task.address,
             boxColor: AppColor.shade2,
             button: AppButtonTheme.fillRounded(
               constraints: const BoxConstraints(minHeight: 44),
@@ -317,55 +333,49 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
           child: JTTaskDetail.taskDetail(
             svgIcon: SvgIcons.dollar,
             headerTitle: 'Tổng tiền',
-            contentTitle: '${_task.totalPrice} VND',
+            contentTitle: '${task.totalPrice} VND',
             backgroundColor: AppColor.shade2,
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(16),
           child: JTTaskDetail.taskDetail(
-            svgIcon: SvgIcons.time,
+            svgIcon: SvgIcons.home2,
             headerTitle: 'Loại nhà',
-            contentTitle: 'Căn hộ',
+            contentTitle: _getHomeType(task.typeHome),
             backgroundColor: AppColor.shade2,
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(16),
           child: JTTaskDetail.taskDetail(
-            svgIcon: SvgIcons.carSide,
+            svgIcon: SvgIcons.notebook,
             headerTitle: 'Ghi chú',
-            contentTitle: 'Mang theo chổi',
+            contentTitle: task.note,
             backgroundColor: AppColor.shade2,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: JTTaskDetail.taskDetail(
-            svgIcon: SvgIcons.broom,
-            headerTitle: 'Dụng cụ tự mang',
-            contentTitle: ' \u2022 Chổi\n \u2022 Cây lau nhà',
-            backgroundColor: AppColor.shade2,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
-          child: JTTaskDetail.taskDetailList(
-            svgIcon: SvgIcons.listCheck,
-            headerTitle: 'Danh sách kiểm tra',
-            contentList: Text(
-              ' \u2022 Lau ghế rồng \n \u2022 Lau bình hoa \n \u2022 Kiểm tra thức ăn cho cún',
-              style: AppTextTheme.mediumHeaderTitle(AppColor.black),
+        if (task.checkList.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
+            child: JTTaskDetail.taskDetailList(
+              svgIcon: SvgIcons.listCheck,
+              headerTitle: 'Danh sách kiểm tra',
+              contentList: Text(
+                task.checkList.map((e) {
+                  return ' \u2022 $e \n';
+                }).toString(),
+                style: AppTextTheme.mediumHeaderTitle(AppColor.black),
+              ),
+              backgroundColor: AppColor.shade2,
+              showList: _showList,
+              onTap: () {
+                setState(() {
+                  _showList = !_showList;
+                });
+              },
             ),
-            backgroundColor: AppColor.shade2,
-            showList: _showList,
-            onTap: () {
-              setState(() {
-                _showList = !_showList;
-              });
-            },
           ),
-        ),
       ]),
     );
   }
@@ -408,6 +418,19 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
             accountBalances: '700.000 VND',
           );
         });
+  }
+
+  String _getHomeType(String type) {
+    switch (type) {
+      case '0':
+        return 'Nhà ở';
+      case '1':
+        return 'Căn hộ';
+      case '2':
+        return 'Vila';
+      default:
+        return '';
+    }
   }
 
   _fetchDataOnPage() {}

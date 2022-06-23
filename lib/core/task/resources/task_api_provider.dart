@@ -44,6 +44,7 @@ class TaskApiProvider {
         ApiConstants.apiVersion +
         ApiConstants.tasks +
         '/$id';
+    logDebug('path: $path');
     final token = await ApiHelper.getUserToken();
     final response = await RestApiHandlerData.getData<T>(
       path: path,

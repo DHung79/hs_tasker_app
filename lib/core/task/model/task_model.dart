@@ -20,7 +20,7 @@ class TaskModel extends BaseModel {
   final int _language;
   final int _failureReason;
   final String _typeHome;
-  final List<String> _checkList = [];
+  final List<ToDoModel> _checkList = [];
   final bool _isDeleted;
   final int _deletedTime;
   final int _createdTime;
@@ -60,16 +60,10 @@ class TaskModel extends BaseModel {
         _createdTime = json['created_time'] ?? 0,
         _updatedTime = json['updated_time'] ?? 0,
         _totalPrice = json['total_price'] ?? 0 {
-    if (json['check_list'] != null) {
-      final jsons = json['check_list'];
-      if (jsons is List<dynamic>) {
-        for (var item in jsons) {
-          if (item is String) {
-            _checkList.add(item);
-          }
-        }
-      }
-    }
+    _checkList.addAll(BaseModel.mapList<ToDoModel>(
+      json: json,
+      key: 'check_list',
+    ));
   }
 
   Map<String, dynamic> toJson() => {
@@ -110,7 +104,7 @@ class TaskModel extends BaseModel {
   int get language => _language;
   int get failureReason => _failureReason;
   String get typeHome => _typeHome;
-  List<String> get checkList => _checkList;
+  List<ToDoModel> get checkList => _checkList;
   bool get isDeleted => _isDeleted;
   int get deletedTime => _deletedTime;
   int get createdTime => _createdTime;
@@ -133,6 +127,23 @@ class LocationModel extends BaseModel {
 
   String get lat => _lat;
   String get long => _long;
+}
+
+class ToDoModel extends BaseModel {
+  final String _name;
+  final bool _status;
+
+  ToDoModel.fromJson(Map<String, dynamic> json)
+      : _name = json['name'] ?? '',
+        _status = json['status'] ?? false;
+
+  Map<String, dynamic> toJson() => {
+        "name": _name,
+        "status": _status,
+      };
+
+  String get name => _name;
+  bool get status => _status;
 }
 
 class PostedUserModel extends BaseModel {

@@ -6,11 +6,12 @@ import '../task.dart';
 
 class TaskBloc {
   final _repository = TaskRepository();
-  final BehaviorSubject<ApiResponse<ListTaskModel?>> _allDataFetcher =
-      BehaviorSubject<ApiResponse<ListTaskModel>>();
+  final _allDataFetcher = BehaviorSubject<ApiResponse<ListTaskModel?>>();
   final _allDataState = BehaviorSubject<BlocState>();
+  final _taskDataFetcher = BehaviorSubject<ApiResponse<TaskModel?>>();
 
   Stream<ApiResponse<ListTaskModel?>> get allData => _allDataFetcher.stream;
+  Stream<ApiResponse<TaskModel?>> get taskData => _taskDataFetcher.stream;
   Stream<BlocState> get allDataState => _allDataState.stream;
   bool _isFetching = false;
 
@@ -21,8 +22,8 @@ class TaskBloc {
     _allDataState.sink.add(BlocState.fetching);
     try {
       // Await response from server.
-      final data = await _repository
-          .fetchAllData<ListTaskModel, EditTaskModel>(params: params!);
+      final data = await _repository.fetchAllData<ListTaskModel, EditTaskModel>(
+          params: params!);
       if (_allDataFetcher.isClosed) return;
       if (data.error != null) {
         // Error exist
@@ -39,37 +40,30 @@ class TaskBloc {
     _isFetching = false;
   }
 
-  Future<TaskModel> getProfile() async {
-    try {
-      // Await response from server.
-      final data = await _repository.getProfile<TaskModel, EditTaskModel>();
-      if (data.error != null) {
-        // Error exist
-        return Future.error(data.error!);
-      } else {
-        // Adding response data.
-        return Future.value(data.model);
-      }
-    } on AppException catch (e) {
-      return Future.error(e);
-    }
-  }
 
-  Future<TaskModel> fetchDataById(String id) async {
+  fetchDataById(String id) async {
+    if (_isFetching) return;
+    _isFetching = true;
+    // Start fetching data.
+    _allDataState.sink.add(BlocState.fetching);
     try {
       // Await response from server.
       final data =
           await _repository.fetchDataById<TaskModel, EditTaskModel>(id: id);
+      if (_taskDataFetcher.isClosed) return;
       if (data.error != null) {
         // Error exist
-        return Future.error(data.error!);
+        _taskDataFetcher.sink.addError(data.error!);
       } else {
         // Adding response data.
-        return Future.value(data.model);
+        _taskDataFetcher.sink.add(data);
       }
     } on AppException catch (e) {
-      return Future.error(e);
+      _taskDataFetcher.sink.addError(e);
     }
+    // Complete fetching.
+    _allDataState.sink.add(BlocState.completed);
+    _isFetching = false;
   }
 
   Future<TaskModel> deleteObject({String? id}) async {

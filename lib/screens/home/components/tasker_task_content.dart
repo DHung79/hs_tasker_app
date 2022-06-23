@@ -150,7 +150,7 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
                   task: task,
                   isInProgress: isInProgress,
                   onPressed: () {
-                    navigateTo(workingTaskRoute);
+                    navigateTo(workingTaskRoute + '/${task.id}');
                   },
                 ),
               ),
@@ -201,7 +201,7 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
                 taskActions: _taskActions(
                   task: task,
                   onPressed: () {
-                    navigateTo(toDoTaskRoute);
+                    navigateTo(toDoTaskRoute + '/${task.id}');
                   },
                 ),
               ),

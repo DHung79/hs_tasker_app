@@ -102,12 +102,20 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
       return const EditTaskerProfileScreen();
     }
 
-    if (route == workingTaskRoute) {
-      return const WorkingTaskScreen();
+    if (route.startsWith(workingTaskRoute)) {
+      if (route.length > workingTaskRoute.length) {
+        final id = route.substring(workingTaskRoute.length + 1, route.length);
+        if (id.isNotEmpty) return WorkingTaskScreen(id: id);
+      }
+      return const HomeScreen();
     }
 
-    if (route == toDoTaskRoute) {
-      return const ToDoTaskScreen();
+    if (route.startsWith(toDoTaskRoute)) {
+      if (route.length > toDoTaskRoute.length) {
+        final id = route.substring(toDoTaskRoute.length + 1, route.length);
+        if (id.isNotEmpty) return ToDoTaskScreen(id: id);
+      }
+      return const HomeScreen();
     }
 
     if (route == taskerExperienceRoute) {
@@ -121,20 +129,6 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
     if (route == mapRoute) {
       return const MapScreen();
     }
-
-    // if (route == roleRoute) {
-    //   return const UserManagementScreen(tab: 1);
-    // }
-    // if (route == createRoleRoute) {
-    //   return const UserManagementScreen();
-    // }
-    // if (route.startsWith(editRoleRoute)) {
-    //   if (route.length > editRoleRoute.length) {
-    //     final id = route.substring(editRoleRoute.length + 1, route.length);
-    //     if (id.isNotEmpty) return UserManagementScreen(id: id);
-    //   }
-    //   return const UserManagementScreen(tab: 1);
-    // }
 
     return PageNotFoundScreen(route);
   }

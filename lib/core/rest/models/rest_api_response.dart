@@ -40,13 +40,6 @@ class ApiResponse<T> {
 
 class BaseModel {
   static T fromJson<T extends BaseModel>(Map<String, dynamic> json) {
-    // Models
-    // if (T == AccountModel) {
-    //   return AccountModel.fromJson(json) as T;
-    // }
-    // if (T == AccountListModel) {
-    //   return AccountListModel.fromJson(json) as T;
-    // }
     if (T == Status) {
       return Status.fromJson(json) as T;
     }
@@ -92,6 +85,9 @@ class BaseModel {
     }
     if (T == OtpModel) {
       return OtpModel.fromJson(json) as T;
+    }
+    if (T == ToDoModel) {
+      return ToDoModel.fromJson(json) as T;
     }
 
     logError("Unknown BaseModel class: $T");

@@ -264,12 +264,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildContent(TaskerModel tasker) {
-    if (homeTabIndex == 0) {
-      return const NewPostContent();
-    } else if (homeTabIndex == 1) {
+    if (homeTabIndex == 1) {
       return TaskerTaskContent(tasker: tasker);
-    } else {
+    } else if (homeTabIndex == 2) {
       return HistoryContent(tasker: tasker);
+    } else {
+      return const NewPostContent();
     }
   }
 
