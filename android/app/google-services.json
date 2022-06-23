@@ -7,61 +7,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1037388754263:android:55578cba2b06f51f8fe212",
-        "android_client_info": {
-          "package_name": "com.jt.home_service_tasker"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1037388754263-db8k3i6sklnbpbap4r9quhabqu8alnod.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.jt.home_service_tasker",
-            "certificate_hash": "2432e55feff7a8ab9dc75124e26ba409a4a59bde"
-          }
-        },
-        {
-          "client_id": "1037388754263-qnt8a2ebmgesm4rb33mo6jnpvq061pur.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.jt.home_service_tasker",
-            "certificate_hash": "47c9e8471eb496b12068eb81ab2ef90462074af1"
-          }
-        },
-        {
-          "client_id": "1037388754263-4kebm1h0n5gedtoagehe8kao24ahb0t6.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAEisl8QOvZXrmRDYRFzXikEFOwSlUkSNQ"
-        },
-        {
-          "current_key": "AIzaSyDwZsZf46N_Rs6ui_7kHZ52kOr5rq17Ibc"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1037388754263-4kebm1h0n5gedtoagehe8kao24ahb0t6.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1037388754263-0cp5qig5hk1nh44and25spsin4vtm5jg.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.jt.homeservice"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:1037388754263:android:c25af96b80bbc44a8fe212",
         "android_client_info": {
           "package_name": "com.jt.homeservice"
@@ -91,10 +36,65 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAEisl8QOvZXrmRDYRFzXikEFOwSlUkSNQ"
+          "current_key": "AIzaSyDwZsZf46N_Rs6ui_7kHZ52kOr5rq17Ibc"
         },
         {
+          "current_key": "AIzaSyAEisl8QOvZXrmRDYRFzXikEFOwSlUkSNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1037388754263-4kebm1h0n5gedtoagehe8kao24ahb0t6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1037388754263-0cp5qig5hk1nh44and25spsin4vtm5jg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jt.homeservice"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037388754263:android:10ac54d9da181eb78fe212",
+        "android_client_info": {
+          "package_name": "com.jt.hstasker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1037388754263-2dev2gf8vv9l6ot6ra3epd2qj0937ejk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jt.hstasker",
+            "certificate_hash": "47c9e8471eb496b12068eb81ab2ef90462074af1"
+          }
+        },
+        {
+          "client_id": "1037388754263-vegn1udan6o2upu2o130sj50sjgbh85r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jt.hstasker",
+            "certificate_hash": "2432e55feff7a8ab9dc75124e26ba409a4a59bde"
+          }
+        },
+        {
+          "client_id": "1037388754263-4kebm1h0n5gedtoagehe8kao24ahb0t6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
           "current_key": "AIzaSyDwZsZf46N_Rs6ui_7kHZ52kOr5rq17Ibc"
+        },
+        {
+          "current_key": "AIzaSyAEisl8QOvZXrmRDYRFzXikEFOwSlUkSNQ"
         }
       ],
       "services": {

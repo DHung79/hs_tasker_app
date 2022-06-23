@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jt.home_service_tasker">
+    package="com.jt.hstasker">
    <application
         android:label="Hs Tasker App"
         android:name="${applicationName}"
