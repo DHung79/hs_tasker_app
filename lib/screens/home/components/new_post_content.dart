@@ -231,7 +231,7 @@ class _NewPostContentState extends State<NewPostContent> {
             ],
           ),
           onPressed: () {
-            navigateTo(jobDetailRoute);
+            navigateTo(jobDetailRoute + '/${task.id}');
           },
         ),
       ],

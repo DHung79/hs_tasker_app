@@ -10,19 +10,16 @@ import 'routes/app_router_delegate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'locales/i18n.dart';
 import 'scroll_behavior.dart';
-import 'theme/app_theme.dart';
+import 'theme/theme.dart';
 import 'utils/app_state_notifier.dart';
 
+export 'theme/theme.dart';
 export 'core/authentication/bloc/authentication_bloc_controller.dart';
 export 'core/rest/models/rest_api_response.dart';
 export 'core/logger/logger.dart';
-export 'theme/app_colors.dart';
-export 'theme/app_text_theme.dart';
-export 'theme/svg_constants.dart';
 export 'locales/i18n.dart';
 export 'utils/screen_util.dart';
 export 'locales/i18n_key.dart';
-export 'theme/button_theme.dart';
 export 'core/tasker/tasker.dart';
 export 'core/authentication/auth.dart';
 
@@ -114,6 +111,54 @@ Future<PackageInfo> loadVersion() async {
   return packageInfo;
 }
 
-String? getCurrentRouteName() {
-  return locator<AppRouterDelegate>().currentConfiguration.name;
+String getCurrentRouteName() {
+  return locator<AppRouterDelegate>().currentConfiguration.name ?? '';
+}
+
+String getHomeType(int type) {
+  switch (type) {
+    case 0:
+      return 'Nhà ở';
+    case 1:
+      return 'Căn hộ';
+    case 2:
+      return 'Vila';
+    default:
+      return '';
+  }
+}
+
+Widget getStatusText(int status) {
+  switch (status) {
+    case 0:
+      return Text(
+        'Đang chờ',
+        style: AppTextTheme.mediumBodyText(AppColor.text8),
+      );
+    case 1:
+      return Text(
+        'Đã nhận',
+        style: AppTextTheme.mediumBodyText(AppColor.text3),
+      );
+    case 2:
+      return Text(
+        'Đang tiến hành',
+        style: AppTextTheme.mediumBodyText(AppColor.primary2),
+      );
+    case 3:
+      return Text(
+        'Thành công',
+        style: AppTextTheme.mediumBodyText(AppColor.shade9),
+      );
+    case 4:
+      return Text(
+        'Đã hủy',
+        style: AppTextTheme.mediumBodyText(AppColor.others1),
+      );
+    default:
+      return Text(
+        '',
+        style: AppTextTheme.mediumBodyText(AppColor.black),
+      );
+  }
 }

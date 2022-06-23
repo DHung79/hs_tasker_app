@@ -37,12 +37,23 @@ class AppRouteInforParser extends RouteInformationParser<AppRoutePath> {
     if (name == notificationRoute) {
       return AppRoutePath.notifications();
     }
-    if (name == jobDetailRoute) {
-      return AppRoutePath.jobDetail();
+
+    if (name.startsWith(jobDetailRoute)) {
+      if (name.length > jobDetailRoute.length) {
+        final id = name.substring(jobDetailRoute.length, name.length);
+        if (id.isNotEmpty) return AppRoutePath.jobDetail(id);
+      }
+      return AppRoutePath.home();
     }
-    if (name == taskHistoryRoute) {
-      return AppRoutePath.taskerHistory();
+    
+    if (name.startsWith(taskHistoryRoute)) {
+      if (name.length > taskHistoryRoute.length) {
+        final id = name.substring(taskHistoryRoute.length, name.length);
+        if (id.isNotEmpty) return AppRoutePath.taskerHistory(id);
+      }
+      return AppRoutePath.home();
     }
+
     if (name == editTaskerProfileRoute) {
       return AppRoutePath.editTaskerProfile();
     }

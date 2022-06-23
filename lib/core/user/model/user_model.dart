@@ -20,7 +20,7 @@ class UserModel extends BaseModel {
         __id = json['_id'] ?? '',
         _name = json['name'] ?? '',
         _email = json['email'] ?? '',
-        _phoneNumber = json['phoneNumber'] ?? '',
+        _phoneNumber = json['phoneNumber']?.toString() ?? '',
         _address = json['address'] ?? '',
         _authGoogleId = json['authGoogleId'] ?? '',
         _admin = json['admin'] ?? false,

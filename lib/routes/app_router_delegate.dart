@@ -89,13 +89,19 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
     if (route == notificationRoute) {
       return const NotificationScreen();
     }
-
-    if (route == jobDetailRoute) {
-      return const JobDetailScreen();
+    if (route.startsWith(jobDetailRoute)) {
+      if (route.length > jobDetailRoute.length) {
+        final id = route.substring(jobDetailRoute.length + 1, route.length);
+        if (id.isNotEmpty) return JobDetailScreen(id: id);
+      }
+      return const HomeScreen();
     }
-
-    if (route == taskHistoryRoute) {
-      return const JobDetailScreen();
+    if (route.startsWith(taskHistoryRoute)) {
+      if (route.length > taskHistoryRoute.length) {
+        final id = route.substring(taskHistoryRoute.length + 1, route.length);
+        if (id.isNotEmpty) return JobDetailScreen(id: id);
+      }
+      return const HomeScreen();
     }
 
     if (route == editTaskerProfileRoute) {

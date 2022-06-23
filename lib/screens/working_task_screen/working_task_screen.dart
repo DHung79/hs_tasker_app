@@ -360,7 +360,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
             child: JTTaskDetail.taskDetail(
               svgIcon: SvgIcons.home2,
               headerTitle: 'Loại nhà',
-              contentTitle: _getHomeType(task.typeHome),
+              contentTitle: getHomeType(task.typeHome),
               backgroundColor: AppColor.shade2,
             ),
           ),
@@ -744,19 +744,6 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
       ),
     );
   }
-
-  String _getHomeType(String type) {
-    switch (type) {
-      case '0':
-        return 'Nhà ở';
-      case '1':
-        return 'Căn hộ';
-      case '2':
-        return 'Vila';
-      default:
-        return '';
-    }
-  }
-
+  
   _fetchDataOnPage() {}
 }

@@ -134,7 +134,7 @@ class _HistoryContentState extends State<HistoryContent> {
                 horizontal: 10,
               ),
               child: Text(
-                task.status.toString(),
+                task.status == 3 ? 'Hoàn thành' : 'Bị hủy bỏ',
                 style: AppTextTheme.mediumHeaderTitle(AppColor.white),
               ),
             ),
@@ -257,7 +257,7 @@ class _HistoryContentState extends State<HistoryContent> {
             ],
           ),
           onPressed: () {
-            navigateTo(taskHistoryRoute);
+            navigateTo(taskHistoryRoute + '/${task.id}');
           },
         ),
       ],

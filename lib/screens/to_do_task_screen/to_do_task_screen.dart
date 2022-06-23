@@ -342,7 +342,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
           child: JTTaskDetail.taskDetail(
             svgIcon: SvgIcons.home2,
             headerTitle: 'Loại nhà',
-            contentTitle: _getHomeType(task.typeHome),
+            contentTitle: getHomeType(task.typeHome),
             backgroundColor: AppColor.shade2,
           ),
         ),
@@ -418,19 +418,6 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
             accountBalances: '700.000 VND',
           );
         });
-  }
-
-  String _getHomeType(String type) {
-    switch (type) {
-      case '0':
-        return 'Nhà ở';
-      case '1':
-        return 'Căn hộ';
-      case '2':
-        return 'Vila';
-      default:
-        return '';
-    }
   }
 
   _fetchDataOnPage() {}

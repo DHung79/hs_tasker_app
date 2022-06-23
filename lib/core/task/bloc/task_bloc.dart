@@ -40,7 +40,6 @@ class TaskBloc {
     _isFetching = false;
   }
 
-
   fetchDataById(String id) async {
     if (_isFetching) return;
     _isFetching = true;
@@ -105,14 +104,10 @@ class TaskBloc {
     }
   }
 
-  Future<TaskModel> editProfile({
-    EditTaskModel? editModel,
-  }) async {
+  Future<TaskModel> takeTask(String id) async {
     try {
       // Await response from server.
-      final data = await _repository.editProfile<TaskModel, EditTaskModel>(
-        editModel: editModel,
-      );
+      final data = await _repository.takeTask<TaskModel, EditTaskModel>(id);
       if (data.error != null) {
         // Error exist
         return Future.error(data.error!);

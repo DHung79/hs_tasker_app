@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
+import '../../core/task/task.dart';
 import '../../main.dart';
 import '../../widgets/confirm_dialog.dart';
+import '../../widgets/display_date_time.dart';
 import '../../widgets/jt_indicator.dart';
 import '../../widgets/jt_task_detail.dart';
 import '../layout_template/content_screen.dart';
 
 class JobDetailScreen extends StatefulWidget {
-  const JobDetailScreen({Key? key}) : super(key: key);
+  final String id;
+  const JobDetailScreen({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
 
   @override
   State<JobDetailScreen> createState() => _JobDetailScreenState();
@@ -16,10 +22,19 @@ class JobDetailScreen extends StatefulWidget {
 class _JobDetailScreenState extends State<JobDetailScreen> {
   final _pageState = PageState();
   final _scrollController = ScrollController();
+  final _taskBloc = TaskBloc();
+
   @override
   void initState() {
     AuthenticationBlocController().authenticationBloc.add(AppLoadedup());
+    _taskBloc.fetchDataById(widget.id);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _taskBloc.dispose();
+    super.dispose();
   }
 
   final List<bool> _checkList = [
@@ -34,7 +49,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     'Kiểm tra thức ăn cho cún',
   ];
 
-  final isHistory = getCurrentRouteName() == taskHistoryRoute;
+  final isHistory = getCurrentRouteName().startsWith(taskHistoryRoute);
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +75,22 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
   }
 
   Widget _jobDetailPage(AsyncSnapshot<TaskerModel> snapshot) {
-    return Scaffold(
-      backgroundColor: AppColor.shade1,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(56),
-        child: _appBar(),
-      ),
-      body: _buildContent(),
-    );
+    return StreamBuilder(
+        stream: _taskBloc.taskData,
+        builder: (context, AsyncSnapshot<ApiResponse<TaskModel?>> snapshot) {
+          if (snapshot.hasData) {
+            final task = snapshot.data!.model!;
+            return Scaffold(
+              backgroundColor: AppColor.shade1,
+              appBar: PreferredSize(
+                preferredSize: const Size.fromHeight(56),
+                child: _appBar(),
+              ),
+              body: _buildContent(task),
+            );
+          }
+          return const JTIndicator();
+        });
   }
 
   Widget _appBar() {
@@ -109,7 +132,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(TaskModel task) {
     return LayoutBuilder(
       builder: (context, size) {
         return Column(
@@ -124,16 +147,16 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                       padding: const EdgeInsets.only(bottom: 16),
                       child: Container(
                         color: AppColor.white,
-                        child: _jobHeader(),
+                        child: _jobHeader(task),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
-                      child: _basicInfo(),
+                      child: _basicInfo(task),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
-                      child: _customerRequests(),
+                      child: _customerRequests(task),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
@@ -160,7 +183,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Nancy Jewel McDonie',
+                                    task.user.name,
                                     style: AppTextTheme.mediumBodyText(
                                         AppColor.black),
                                   ),
@@ -176,19 +199,19 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                         ),
                       ),
                     ),
-                    if (isHistory) _buildResults(),
+                    if (isHistory) _buildResults(task),
                   ],
                 ),
               ),
             ),
-            if (!isHistory) _actions(),
+            if (!isHistory) _actions(task),
           ],
         );
       },
     );
   }
 
-  Widget _jobHeader() {
+  Widget _jobHeader(TaskModel task) {
     return LayoutBuilder(builder: (context, size) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -204,7 +227,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Text(
-              'Dọn dẹp nhà theo giờ',
+              task.service.name,
               style: AppTextTheme.mediumHeaderTitle(AppColor.black),
             ),
           ),
@@ -213,7 +236,22 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     });
   }
 
-  Widget _basicInfo() {
+  Widget _basicInfo(TaskModel task) {
+    final date = formatFromInt(
+      value: task.date,
+      context: context,
+      displayedFormat: 'dd/MM/yyyy',
+    );
+    final startTime = formatFromInt(
+      value: task.startTime,
+      context: context,
+      displayedFormat: 'HH:mm',
+    );
+    final endTime = formatFromInt(
+      value: task.endTime,
+      context: context,
+      displayedFormat: 'HH:mm',
+    );
     return Container(
       constraints: const BoxConstraints(minHeight: 352),
       decoration: BoxDecoration(color: AppColor.white),
@@ -240,9 +278,9 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                     child: Container(
                       constraints: const BoxConstraints(maxHeight: 26),
                       decoration: BoxDecoration(
-                        color: _checkList.length > 3
-                            ? AppColor.others1
-                            : AppColor.shade9,
+                        color: task.status == 3
+                            ? AppColor.shade9
+                            : AppColor.others1,
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: Padding(
@@ -251,8 +289,8 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                           horizontal: 10,
                         ),
                         child: Text(
-                          'Hoàn thành',
-                          style: AppTextTheme.mediumBodyText(AppColor.white),
+                          task.status == 3 ? 'Hoàn thành' : 'Bị hủy bỏ',
+                          style: AppTextTheme.mediumHeaderTitle(AppColor.white),
                         ),
                       ),
                     ),
@@ -264,7 +302,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               padding: const EdgeInsets.only(bottom: 16),
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Tổng tiền',
-                contentTitle: '300.00 VND',
+                contentTitle: '${task.totalPrice} VND',
                 svgIcon: SvgIcons.dollar,
               ),
             ),
@@ -272,7 +310,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               padding: const EdgeInsets.only(bottom: 16),
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Thời gian làm',
-                contentTitle: 'Ngày mai, từ 14:00 đến 16:00',
+                contentTitle: '$date, từ $startTime đến $endTime',
                 svgIcon: SvgIcons.time,
               ),
             ),
@@ -280,7 +318,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               padding: const EdgeInsets.only(bottom: 16),
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Địa chỉ',
-                contentTitle: '358/12/33 Lư Cấm, Ngọc Hiệp',
+                contentTitle: task.address,
                 svgIcon: SvgIcons.locationOutline,
               ),
             ),
@@ -288,22 +326,22 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               padding: const EdgeInsets.only(bottom: 16),
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Loại nhà',
-                contentTitle: 'Căn hộ',
+                contentTitle: getHomeType(task.typeHome),
                 svgIcon: SvgIcons.home2,
               ),
             ),
-            JTTaskDetail.taskDetail(
-              headerTitle: 'Khoảng cách',
-              contentTitle: '4km',
-              svgIcon: SvgIcons.carSide,
-            ),
+            // JTTaskDetail.taskDetail(
+            //   headerTitle: 'Khoảng cách',
+            //   contentTitle: '4km',
+            //   svgIcon: SvgIcons.carSide,
+            // ),
           ],
         ),
       ),
     );
   }
 
-  Widget _customerRequests() {
+  Widget _customerRequests(TaskModel task) {
     return Container(
       constraints: const BoxConstraints(minHeight: 296),
       decoration: BoxDecoration(color: AppColor.white),
@@ -324,24 +362,25 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               padding: const EdgeInsets.only(bottom: 16),
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Ghi chú',
-                contentTitle: 'Mang theo chổi',
+                contentTitle: task.note,
                 svgIcon: SvgIcons.notebook,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: _buildInfo(
-                headerTitle: 'Danh sách kiểm tra',
-                toDoList: _toDoList,
-                checkList: _checkList,
-                svgIcon: SvgIcons.listCheck,
+            if (task.checkList.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: _buildInfo(
+                  headerTitle: 'Danh sách kiểm tra',
+                  toDoList: _toDoList,
+                  checkList: _checkList,
+                  svgIcon: SvgIcons.listCheck,
+                ),
               ),
-            ),
-            JTTaskDetail.taskDetail(
-              headerTitle: 'Dụng cụ tự mang',
-              contentTitle: ' \u2022 Chổi\n \u2022 Cây lau nhà',
-              svgIcon: SvgIcons.broom,
-            ),
+            // JTTaskDetail.taskDetail(
+            //   headerTitle: 'Dụng cụ tự mang',
+            //   contentTitle: ' \u2022 Chổi\n \u2022 Cây lau nhà',
+            //   svgIcon: SvgIcons.broom,
+            // ),
           ],
         ),
       ),
@@ -452,7 +491,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     );
   }
 
-  Widget _actions() {
+  Widget _actions(TaskModel task) {
     return LayoutBuilder(builder: (context, size) {
       return Container(
         height: 84,
@@ -488,7 +527,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 barrierDismissible: false,
                 barrierColor: Colors.black12,
                 builder: (BuildContext context) {
-                  return _buildTakeJob();
+                  return _buildTakeJob(task);
                 },
               );
             },
@@ -498,7 +537,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     });
   }
 
-  _buildTakeJob() {
+  _buildTakeJob(TaskModel task) {
     return JTConfirmDialog(
       headerTitle: 'Nhận việc mới',
       contentText: 'Bạn có chắc chắn muốn nhận công việc này?',
@@ -530,8 +569,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 ],
               ),
               onPressed: () {
-                Navigator.of(context).pop();
-                _takeJobErrorDialog();
+                _takeTask(task);
               },
             ),
             const SizedBox(height: 16),
@@ -565,6 +603,23 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  _takeTask(TaskModel task) {
+    _taskBloc.takeTask(task.id).then(
+      (value) async {
+        Navigator.of(context).pop();
+        navigateTo(homeRoute);
+      },
+    ).onError((ApiError error, stackTrace) {
+      Navigator.of(context).pop();
+      _takeJobErrorDialog();
+    }).catchError(
+      (error, stackTrace) {
+        Navigator.of(context).pop();
+        _takeJobErrorDialog();
+      },
     );
   }
 
@@ -615,7 +670,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
         });
   }
 
-  Widget _buildResults() {
+  Widget _buildResults(TaskModel task) {
     final beforeImages = [
       'https://media0.giphy.com/media/3og0IG0skAiznZQLde/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
       'https://media4.giphy.com/media/xUA7aSwkpZH8IQ2zu0/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
@@ -642,10 +697,12 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 style: AppTextTheme.mediumHeaderTitle(AppColor.black),
               ),
               _buildImages(
+                task: task,
                 title: 'Trước',
                 images: beforeImages,
               ),
               _buildImages(
+                task: task,
                 title: 'Sau',
                 images: afterImages,
               ),
@@ -657,6 +714,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
   }
 
   Widget _buildImages({
+    required TaskModel task,
     required String title,
     required List<String> images,
   }) {

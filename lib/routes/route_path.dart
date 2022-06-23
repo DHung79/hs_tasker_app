@@ -50,13 +50,13 @@ class AppRoutePath {
         routeId = '',
         isUnknown = false;
 
-  AppRoutePath.jobDetail()
-      : name = jobDetailRoute,
+  AppRoutePath.jobDetail(String id)
+      : name = jobDetailRoute + id,
         routeId = '',
         isUnknown = false;
 
-  AppRoutePath.taskerHistory()
-      : name = taskHistoryRoute,
+  AppRoutePath.taskerHistory(String id)
+      : name = taskHistoryRoute + id,
         routeId = '',
         isUnknown = false;
 
@@ -124,11 +124,20 @@ class AppRoutePath {
     if (name == notificationRoute) {
       return AppRoutePath.notifications();
     }
-    if (name == jobDetailRoute) {
-      return AppRoutePath.jobDetail();
+
+    if (name != null && name.startsWith(jobDetailRoute)) {
+      if (name.length > jobDetailRoute.length) {
+        final id = name.substring(jobDetailRoute.length, name.length);
+        if (id.isNotEmpty) return AppRoutePath.jobDetail(id);
+      }
+      return AppRoutePath.home();
     }
-    if (name == taskHistoryRoute) {
-      return AppRoutePath.taskerHistory();
+    if (name != null && name.startsWith(taskHistoryRoute)) {
+      if (name.length > taskHistoryRoute.length) {
+        final id = name.substring(taskHistoryRoute.length, name.length);
+        if (id.isNotEmpty) return AppRoutePath.taskerHistory(id);
+      }
+      return AppRoutePath.home();
     }
     if (name == editTaskerProfileRoute) {
       return AppRoutePath.editTaskerProfile();

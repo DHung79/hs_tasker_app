@@ -89,14 +89,15 @@ class TaskApiProvider {
   }
 
   Future<ApiResponse<T?>>
-      editProfile<T extends BaseModel, K extends EditBaseModel>({
-    K? editModel,
+      taskerTakeTask<T extends BaseModel, K extends EditBaseModel>({
+    required String id,
   }) async {
     final path = ApiConstants.apiDomain +
         ApiConstants.apiVersion +
         ApiConstants.tasks +
-        ApiConstants.me;
-    final body = convert.jsonEncode(EditBaseModel.toEditJson(editModel!));
+        ApiConstants.tasker +
+        '/$id';
+    final body = convert.jsonEncode({});
     logDebug('path: $path\nbody: $body');
     final token = await ApiHelper.getUserToken();
     final response = await RestApiHandlerData.putData<T>(

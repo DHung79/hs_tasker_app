@@ -19,7 +19,7 @@ class TaskModel extends BaseModel {
   final int _status;
   final int _language;
   final int _failureReason;
-  final String _typeHome;
+  final int _typeHome;
   final List<ToDoModel> _checkList = [];
   final bool _isDeleted;
   final int _deletedTime;
@@ -34,7 +34,7 @@ class TaskModel extends BaseModel {
         ),
         _user = BaseModel.map<UserModel>(
           json: json,
-          key: 'user',
+          key: 'posted_user',
         ),
         _tasker = BaseModel.map<TaskerModel>(
           json: json,
@@ -51,10 +51,10 @@ class TaskModel extends BaseModel {
         _endTime = json['end_time'] ?? 0,
         _date = json['date'] ?? 0,
         _note = json['note'] ?? '',
-        _status = json['_status'] ?? 0,
+        _status = json['status'] ?? 0,
         _language = json['language'] ?? 0,
         _failureReason = json['failure_reason'] ?? 0,
-        _typeHome = json['type_home'] ?? '',
+        _typeHome = json['type_home'] ?? 0,
         _isDeleted = json['is_deleted'] ?? false,
         _deletedTime = json['deleted_time'] ?? 0,
         _createdTime = json['created_time'] ?? 0,
@@ -103,7 +103,7 @@ class TaskModel extends BaseModel {
   int get status => _status;
   int get language => _language;
   int get failureReason => _failureReason;
-  String get typeHome => _typeHome;
+  int get typeHome => _typeHome;
   List<ToDoModel> get checkList => _checkList;
   bool get isDeleted => _isDeleted;
   int get deletedTime => _deletedTime;
