@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.joytech.hstasker">
-   <application
+    <application
         android:label="Hs Tasker App"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
@@ -10,6 +10,12 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/launcher_icon" />
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -19,9 +25,9 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
             <!-- Specifies an Android theme to apply to this Activity as soon as
-                 the Android process has started. This theme is visible to the user
-                 while the Flutter UI initializes. After that, this theme continues
-                 to determine the Window background behind the Flutter UI. -->
+                the Android process has started. This theme is visible to the user
+                while the Flutter UI initializes. After that, this theme continues
+                to determine the Window background behind the Flutter UI. -->
             <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
                 notification message. See README(https://goo.gl/6BKBk7) for more. -->
             <meta-data
@@ -42,7 +48,7 @@
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
-             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+            This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
