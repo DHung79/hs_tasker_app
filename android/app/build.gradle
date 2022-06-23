@@ -43,7 +43,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.jt.hstasker"
+        applicationId "com.joytech.hstasker"
         minSdkVersion 21
         targetSdkVersion 29
         multiDexEnabled true

@@ -35,7 +35,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   google_maps_flutter: ^2.1.6
   firebase_core: ^1.14.0
-  firebase_messaging: ^11.2.12
+  firebase_messaging: ^11.4.2
   flutter_local_notifications: ^9.6.0
   firebase: ^9.0.3
 

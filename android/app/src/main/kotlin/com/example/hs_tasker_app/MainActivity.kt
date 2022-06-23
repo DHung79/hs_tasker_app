@@ -1,4 +1,4 @@
-package com.jt.hstasker
+package com.joytech.hstasker
 
 import io.flutter.embedding.android.FlutterActivity
 

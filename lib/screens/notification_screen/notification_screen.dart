@@ -88,7 +88,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             highlightColor: AppColor.white,
             child: SvgIcon(
               SvgIcons.refresh,
-              size: 48,
+              size: 24,
               color: AppColor.black,
             ),
             onPressed: () {},
