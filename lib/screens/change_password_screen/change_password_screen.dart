@@ -128,7 +128,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   Widget _buildContent(TaskerModel tasker) {
     final editModel = EditTaskerModel.fromModel(tasker);
-    logDebug('password: ${tasker.password}');
     return LayoutBuilder(builder: (context, size) {
       return BlocListener<AuthenticationBloc, AuthenticationState>(
         bloc: AuthenticationBlocController().authenticationBloc,
@@ -168,6 +167,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (_errorMessage.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: Center(
+                  child: Text(
+                    _errorMessage,
+                    style: AppTextTheme.normalHeaderTitle(AppColor.others1),
+                  ),
+                ),
+              ),
             _buildInput(
               header: 'Mật khẩu cũ',
               controller: _oldPasswordController,
@@ -190,9 +199,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               validator: (value) {
                 if (value!.trim().isEmpty) {
                   return ValidatorText.empty(fieldName: 'Mật khẩu cũ');
-                }
-                if (value.trim() != editModel.password) {
-                  return 'Nhập sai mật khẩu';
                 }
                 return null;
               },
@@ -229,9 +235,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         fieldName: ScreenUtil.t(I18nKey.password)!,
                         moreThan: 50);
                   }
-                  if (value.trim() == editModel.password) {
-                    return 'Mật khẩu mới phải khác với mật khẩu cũ';
-                  }
+                  // if (value.trim() == editModel.password) {
+                  //   return 'Mật khẩu mới phải khác với mật khẩu cũ';
+                  // }
                   return null;
                 },
               ),
@@ -404,23 +410,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         _autovalidate = AutovalidateMode.onUserInteraction;
       });
     }
-    // _taskerBloc.changePassword(editModel: editModel).then(
-    //   (value) async {
-    //     AuthenticationBlocController().authenticationBloc.add(GetUserData());
-    //     navigateTo(taskerProfileRoute);
-    //     JTToast.successToast(message: ScreenUtil.t(I18nKey.updateSuccess)!);
-    //   },
-    // ).onError((ApiError error, stackTrace) {
-    //   setState(() {
-    //     _errorMessage = showError(error.errorCode, context);
-    //   });
-    // }).catchError(
-    //   (error, stackTrace) {
-    //     setState(() {
-    //       _errorMessage = error.toString();
-    //     });
-    //   },
-    // );
   }
 
   _showError(String errorCode) {

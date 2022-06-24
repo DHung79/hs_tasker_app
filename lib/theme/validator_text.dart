@@ -105,7 +105,7 @@ String showError(String errorCode, BuildContext context, {String? fieldName}) {
       message = ScreenUtil.t(I18nKey.phoneNumberAlreadyExists)!;
       break;
     case '1005':
-      message = ScreenUtil.t(I18nKey.invalidPassword)!;
+      message = 'Bạn đã nhập sai mật khẩu';
       break;
     case '1006':
       message = 'Không tìm thấy người giúp việc!';
