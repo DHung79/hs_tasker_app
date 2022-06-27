@@ -374,4 +374,29 @@ class ApiBaseHelper {
       ),
     );
   }
+
+  Future<ApiResponse<T>> putUpload<T extends BaseModel>({
+    required String path,
+    Map<String, String>? headers,
+    required String field,
+    required String filePath,
+  }) async {
+    ApiResponse<T> responseJson;
+
+    try {
+      final request = http.MultipartRequest('PUT', Uri.parse(path));
+      request.headers['x-auth-token'] = headers!['x-auth-token']!;
+      request.files.add(await http.MultipartFile.fromPath(field, filePath));
+      final response = await http.Response.fromStream(await request.send());
+      responseJson = _returnResponse<T>(response);
+    } on SocketException {
+      return ApiResponse(
+        null,
+        ApiError.fromJson(
+          {'error_code': -999, 'error_message': 'No Internet Connection'},
+        ),
+      );
+    }
+    return responseJson;
+  }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../core/base/models/upload_image.dart';
 import '../../main.dart';
-import '../../theme/validator_text.dart';
 import '../../widgets/jt_indicator.dart';
 import '../../widgets/jt_toast.dart';
 import '../layout_template/content_screen.dart';
@@ -21,6 +22,7 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
   String _errorMessage = '';
   AutovalidateMode _autovalidate = AutovalidateMode.disabled;
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  final List<UploadImage> _images = [];
 
   @override
   void initState() {
@@ -135,6 +137,14 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
                 child: _avatar(tasker),
               ),
             ),
+            if (_errorMessage.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Text(
+                  _errorMessage,
+                  style: AppTextTheme.normalText(AppColor.others1),
+                ),
+              ),
             _inputField(editModel),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -152,11 +162,25 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ClipOval(
-          child: Image.asset(
-            'assets/images/logo.png',
-            width: 100,
-            height: 100,
-          ),
+          child: _images.isNotEmpty
+              ? Image.memory(
+                  _images.first.imageData!,
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                )
+              : tasker.avatar.isNotEmpty
+                  ? Image.network(
+                      tasker.avatar,
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      "assets/images/logo.png",
+                      width: 100,
+                      height: 100,
+                    ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8),
@@ -172,11 +196,39 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
                 style: AppTextTheme.normalText(AppColor.black),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                _errorMessage = '';
+              });
+              _pickImage();
+            },
           ),
         ),
       ],
     );
+  }
+
+  _pickImage() async {
+    List<XFile?> imagesPicked = [];
+    final ImagePicker _picker = ImagePicker();
+    imagesPicked = [await _picker.pickImage(source: ImageSource.gallery)];
+    if (imagesPicked.isNotEmpty) {
+      final images = imagesPicked
+          .map(
+            (image) async => UploadImage(
+              key: '${DateTime.now().millisecondsSinceEpoch}-${image!.name}',
+              name: image.name,
+              path: image.path,
+              imageData: await image.readAsBytes(),
+            ),
+          )
+          .toList();
+      final image = await images.first;
+      setState(() {
+        _images.clear();
+        _images.add(image);
+      });
+    }
   }
 
   Widget _inputField(EditTaskerModel editModel) {
@@ -361,9 +413,33 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
   _editUserInfo({required EditTaskerModel editModel}) {
     _taskerBloc.editProfile(editModel: editModel).then(
       (value) async {
-        AuthenticationBlocController().authenticationBloc.add(GetUserData());
-        navigateTo(taskerProfileRoute);
-        JTToast.successToast(message: ScreenUtil.t(I18nKey.updateSuccess)!);
+        if (_images.isNotEmpty) {
+          _taskerBloc
+              .uploadImage(
+            image: _images.first,
+          )
+              .then((value) {
+            AuthenticationBlocController()
+                .authenticationBloc
+                .add(GetUserData());
+            navigateTo(taskerProfileRoute);
+            JTToast.successToast(message: ScreenUtil.t(I18nKey.updateSuccess)!);
+          }).onError((ApiError error, stackTrace) {
+            setState(() {
+              _errorMessage = 'Ảnh không đúng định dạng';
+            });
+          }).catchError(
+            (error, stackTrace) {
+              setState(() {
+                _errorMessage = error.toString();
+              });
+            },
+          );
+        } else {
+          AuthenticationBlocController().authenticationBloc.add(GetUserData());
+          navigateTo(taskerProfileRoute);
+          JTToast.successToast(message: ScreenUtil.t(I18nKey.updateSuccess)!);
+        }
       },
     ).onError((ApiError error, stackTrace) {
       setState(() {

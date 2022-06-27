@@ -306,11 +306,18 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 24, 16, 24),
           child: ClipOval(
-            child: Image.asset(
-              'assets/images/logo.png',
-              width: 80,
-              height: 80,
-            ),
+            child: tasker.avatar.isNotEmpty
+                ? Image.network(
+                    tasker.avatar,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    "assets/images/logo.png",
+                    width: 100,
+                    height: 100,
+                  ),
           ),
         ),
         Padding(

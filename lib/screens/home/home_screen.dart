@@ -83,11 +83,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 24, 8, 24),
                       child: ClipOval(
-                        child: Image.asset(
-                          'assets/images/logo.png',
-                          width: 48,
-                          height: 48,
-                        ),
+                        child: tasker.avatar.isNotEmpty
+                            ? Image.network(
+                                tasker.avatar,
+                                width: 48,
+                                height: 48,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                "assets/images/logo.png",
+                                width: 48,
+                                height: 48,
+                              ),
                       ),
                     ),
                     Expanded(

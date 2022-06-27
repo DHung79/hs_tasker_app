@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 import '../../../main.dart';
+import '../../base/models/upload_image.dart';
 import 'tasker_api_provider.dart';
 
 class TaskerRepository {
@@ -56,4 +58,10 @@ class TaskerRepository {
           _provider.editPassword<T, K>(
             editModel: editModel,
           );
+
+  uploadImage<T extends BaseModel>(
+          {required UploadImage image}) =>
+      _provider.uploadImage<T>(
+        image: image,
+      );
 }

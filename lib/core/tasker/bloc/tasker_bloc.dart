@@ -1,6 +1,7 @@
 import 'package:rxdart/rxdart.dart';
 import '../../../main.dart';
 import '../../base/blocs/block_state.dart';
+import '../../base/models/upload_image.dart';
 import '../../rest/api_helpers/api_exception.dart';
 
 class TaskerBloc {
@@ -137,6 +138,24 @@ class TaskerBloc {
       // Await response from server.
       final data = await _repository.editPassword<TaskerModel, EditTaskerModel>(
         editModel: editModel,
+      );
+      if (data.error != null) {
+        // Error exist
+        return Future.error(data.error!);
+      } else {
+        // Adding response data.
+        return Future.value(data.model);
+      }
+    } on AppException catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<TaskerModel> uploadImage({required UploadImage image}) async {
+    try {
+      // Await response from server.
+      final data = await _repository.uploadImage<TaskerModel>(
+        image: image,
       );
       if (data.error != null) {
         // Error exist

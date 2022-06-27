@@ -11,6 +11,7 @@ class UserModel extends BaseModel {
   final String _authGoogleId;
   final bool _admin;
   final String _gender;
+  final String _avatar;
   final int _createdTime;
   final int _updatedTime;
   // String _password;
@@ -25,18 +26,9 @@ class UserModel extends BaseModel {
         _authGoogleId = json['authGoogleId'] ?? '',
         _admin = json['admin'] ?? false,
         _gender = json['gender'] ?? '',
+        _avatar = json['avatar'] ?? '',
         _createdTime = json['created_time'] ?? 0,
-        // _password = '',
-        _updatedTime = json['updated_time'] ?? 0 {
-    // _roles.addAll(BaseModel.mapList<RoleModel>(
-    //   json: json,
-    //   key: 'roles',
-    // ));
-    // _modules.addAll(BaseModel.mapList<ModuleModel>(
-    //   json: json,
-    //   key: 'modules',
-    // ));
-  }
+        _updatedTime = json['updated_time'] ?? 0;
 
   Map<String, dynamic> toJson() => {
         'roles': _roles,
@@ -48,6 +40,7 @@ class UserModel extends BaseModel {
         'authGoogleId': _authGoogleId,
         'admin': _admin,
         'gender': _gender,
+        'avatar': _avatar,
         'created_time': _createdTime,
         'updated_time': _updatedTime,
       };
@@ -61,6 +54,7 @@ class UserModel extends BaseModel {
   String get authGoogleId => _authGoogleId;
   bool get isAdmin => _admin;
   String get gender => _gender;
+  String get avatar => _avatar;
   int get createdTime => _createdTime;
   int get updatedTime => _updatedTime;
   // String get password => _password;

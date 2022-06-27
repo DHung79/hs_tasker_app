@@ -1,5 +1,6 @@
 import '../../../core/user/model/user_model.dart';
 import '../../authentication/models/status.dart';
+import '../../base/models/upload_image.dart';
 import '../../logger/logger.dart';
 import '../../service/service.dart';
 import '../../task/model/task_model.dart';
@@ -88,6 +89,12 @@ class BaseModel {
     }
     if (T == ToDoModel) {
       return ToDoModel.fromJson(json) as T;
+    }
+    if (T == ImageModel) {
+      return ImageModel.fromJson(json) as T;
+    }
+    if (T == ImageListModel) {
+      return ImageListModel.fromJson(json) as T;
     }
 
     logError("Unknown BaseModel class: $T");

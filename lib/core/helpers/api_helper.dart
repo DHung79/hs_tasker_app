@@ -20,12 +20,16 @@ class ApiHelper {
       //   params['fcmToken'] = currentFcmToken!;
       // }
     }
-    // if (deviceOS.isNotEmpty) {
-    //   params['deviceOS'] = deviceOS;
-    // }
-    // if (deviceId.isNotEmpty) {
-    //   params['deviceId'] = deviceId;
-    // }
+    return params;
+  }
+
+  static Map<String, String> upload(String? token) {
+    Map<String, String> params = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    if (token != null && token.isNotEmpty) {
+      params['x-auth-token'] = token;
+    }
     return params;
   }
 
@@ -40,12 +44,6 @@ class ApiHelper {
       //   params['fcmToken'] = currentFcmToken!;
       // }
     }
-    // if (deviceOS.isNotEmpty) {
-    //   params['deviceOS'] = deviceOS;
-    // }
-    // if (deviceId.isNotEmpty) {
-    //   params['deviceId'] = deviceId;
-    // }
     return params;
   }
 }

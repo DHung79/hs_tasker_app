@@ -170,11 +170,18 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                               padding:
                                   const EdgeInsets.fromLTRB(16, 12, 12, 12),
                               child: ClipOval(
-                                child: Image.asset(
-                                  'assets/images/logo.png',
-                                  width: 44,
-                                  height: 44,
-                                ),
+                                child: task.user.avatar.isNotEmpty
+                                    ? Image.network(
+                                        task.user.avatar,
+                                        width: 44,
+                                        height: 44,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(
+                                        "assets/images/logo.png",
+                                        width: 44,
+                                        height: 44,
+                                      ),
                               ),
                             ),
                             Expanded(

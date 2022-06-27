@@ -8,6 +8,7 @@ class TaskerModel extends BaseModel {
   final String _address;
   final String _phoneNumber;
   final String _gender;
+  final String _avatar;
   final int _createdTime;
   final int _updatedTime;
   String _password;
@@ -19,6 +20,7 @@ class TaskerModel extends BaseModel {
         _address = json['address'] ?? '',
         _phoneNumber = json['phoneNumber']?.toString() ?? '',
         _gender = json['gender'] ?? '',
+        _avatar = json['avatar'] ?? '',
         _createdTime = json['created_time'] ?? 0,
         _updatedTime = json['updated_time'] ?? 0,
         _password = '';
@@ -30,6 +32,7 @@ class TaskerModel extends BaseModel {
         "address": _address,
         "phoneNumber": _phoneNumber,
         "gender": _gender,
+        "avatar": _avatar,
         "created_time": _createdTime,
         "updated_time": _updatedTime,
       };
@@ -40,6 +43,7 @@ class TaskerModel extends BaseModel {
   String get address => _address;
   String get phoneNumber => _phoneNumber;
   String get gender => _gender;
+  String get avatar => _avatar;
   int get createdTime => _createdTime;
   int get updatedTime => _updatedTime;
   String get password => _password;

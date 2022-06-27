@@ -140,11 +140,18 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: ClipOval(
-            child: Image.asset(
-              'assets/images/logo.png',
-              width: 100,
-              height: 100,
-            ),
+            child: tasker.avatar.isNotEmpty
+                ? Image.network(
+                    tasker.avatar,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    "assets/images/logo.png",
+                    width: 100,
+                    height: 100,
+                  ),
           ),
         ),
         Text(

@@ -115,4 +115,19 @@ class RestApiHandlerData {
     );
     return response;
   }
+
+  static Future<ApiResponse<T>> putUpload<T extends BaseModel>({
+    required String path,
+    Map<String, String>? headers,
+    required String field,
+    required String filePath,
+  }) async {
+    final response = await _apiBaseHelper.putUpload<T>(
+      path: path,
+      headers: headers,
+      field: field,
+      filePath: filePath,
+    );
+    return response;
+  }
 }

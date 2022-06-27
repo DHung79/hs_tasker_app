@@ -18,4 +18,5 @@ class ApiConstants {
   static String unreadTotal = '/unreadTotal';
   static String checkEmail = '/check-email';
   static String login = '/login';
+  static String upload = '/upload';
 }
