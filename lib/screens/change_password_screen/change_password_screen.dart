@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../main.dart';
-import '../../theme/validator_text.dart';
 import '../../widgets/jt_indicator.dart';
 import '../../widgets/jt_toast.dart';
 import '../layout_template/content_screen.dart';

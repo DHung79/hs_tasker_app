@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import 'package:validators/validators.dart';
 import '../../main.dart';
-import '../../theme/validator_text.dart';
 import '../../widgets/jt_text_form_field.dart';
 
 class LoginForm extends StatefulWidget {

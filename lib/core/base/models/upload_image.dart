@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import '../../rest/models/rest_api_response.dart';
 
 class UploadImage {

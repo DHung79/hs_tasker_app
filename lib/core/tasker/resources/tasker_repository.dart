@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import '../../../main.dart';
 import '../../base/models/upload_image.dart';
 import 'tasker_api_provider.dart';

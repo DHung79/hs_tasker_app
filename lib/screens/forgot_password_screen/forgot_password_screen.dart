@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '/routes/route_names.dart';
 import 'package:validators/validators.dart';
 import '../../main.dart';
-import '../../theme/validator_text.dart';
 import '../../widgets/jt_text_form_field.dart';
 import '../../widgets/jt_toast.dart';
 
