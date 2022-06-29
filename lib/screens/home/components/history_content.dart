@@ -44,7 +44,7 @@ class _HistoryContentState extends State<HistoryContent> {
             if (snapshot.hasData) {
               final tasks = snapshot.data!.model!.records;
               final historyTasks = tasks.where((e) {
-                return e.status >= 3;
+                return e.status >= 2;
               }).toList();
               if (historyTasks.isNotEmpty) {
                 return ListView.builder(

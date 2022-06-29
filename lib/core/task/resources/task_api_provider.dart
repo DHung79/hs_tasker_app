@@ -107,4 +107,44 @@ class TaskApiProvider {
     );
     return response;
   }
+
+  Future<ApiResponse<T?>>
+      cancelTask<T extends BaseModel, K extends EditBaseModel>({
+    required String id,
+  }) async {
+    final path = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.tasks +
+        ApiConstants.tasker +
+        '/$id';
+    final body = convert.jsonEncode({});
+    logDebug('path: $path');
+    final token = await ApiHelper.getUserToken();
+    final response = await RestApiHandlerData.deleteData<T>(
+      path: path,
+      body: body,
+      headers: ApiHelper.headers(token),
+    );
+    return response;
+  }
+
+  Future<ApiResponse<T?>>
+      updateTaskStatus<T extends BaseModel, K extends EditBaseModel>({
+    required String id,
+  }) async {
+    final path = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.tasks +
+        ApiConstants.tasker +
+        '/$id';
+    final body = convert.jsonEncode({});
+    logDebug('path: $path\nbody: $body');
+    final token = await ApiHelper.getUserToken();
+    final response = await RestApiHandlerData.putData<T>(
+      path: path,
+      body: body,
+      headers: ApiHelper.headers(token),
+    );
+    return response;
+  }
 }

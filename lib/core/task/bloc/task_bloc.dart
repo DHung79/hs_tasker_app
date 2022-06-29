@@ -120,6 +120,38 @@ class TaskBloc {
     }
   }
 
+  Future<TaskModel> cancelTask(String id) async {
+    try {
+      // Await response from server.
+      final data = await _repository.cancelTask<TaskModel, EditTaskModel>(id);
+      if (data.error != null) {
+        // Error exist
+        return Future.error(data.error!);
+      } else {
+        // Adding response data.
+        return Future.value(data.model);
+      }
+    } on AppException catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<TaskModel> updateTaskStatus(String id) async {
+    try {
+      // Await response from server.
+      final data = await _repository.updateTaskStatus<TaskModel, EditTaskModel>(id);
+      if (data.error != null) {
+        // Error exist
+        return Future.error(data.error!);
+      } else {
+        // Adding response data.
+        return Future.value(data.model);
+      }
+    } on AppException catch (e) {
+      return Future.error(e);
+    }
+  }
+
   dispose() {
     _allDataFetcher.close();
     _allDataState.close();

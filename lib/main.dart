@@ -4,6 +4,7 @@ import 'package:hs_tasker_app/core/logger/logger.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'core/task/task.dart';
 import 'locator.dart';
 import 'routes/app_route_information_parser.dart';
 import 'routes/app_router_delegate.dart';
@@ -128,29 +129,34 @@ String getHomeType(int type) {
   }
 }
 
-Widget getStatusText(int status) {
-  switch (status) {
+Widget getStatusText(TaskModel task) {
+  final now = DateTime.now();
+  switch (task.status) {
     case 0:
       return Text(
         'Đang chờ',
         style: AppTextTheme.mediumBodyText(AppColor.text8),
       );
     case 1:
-      return Text(
-        'Đã nhận',
-        style: AppTextTheme.mediumBodyText(AppColor.text3),
-      );
+      final date = DateTime.fromMillisecondsSinceEpoch(task.date);
+      if (date.difference(now).inDays <= 0 &&
+          task.startTime <= now.millisecondsSinceEpoch) {
+        return Text(
+          'Đã nhận',
+          style: AppTextTheme.mediumBodyText(AppColor.text3),
+        );
+      } else {
+        return Text(
+          'Đang tiến hành',
+          style: AppTextTheme.mediumBodyText(AppColor.primary2),
+        );
+      }
     case 2:
-      return Text(
-        'Đang tiến hành',
-        style: AppTextTheme.mediumBodyText(AppColor.primary2),
-      );
-    case 3:
       return Text(
         'Thành công',
         style: AppTextTheme.mediumBodyText(AppColor.shade9),
       );
-    case 4:
+    case 3:
       return Text(
         'Đã hủy',
         style: AppTextTheme.mediumBodyText(AppColor.others1),

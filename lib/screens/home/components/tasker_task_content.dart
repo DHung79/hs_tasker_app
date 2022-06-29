@@ -47,24 +47,27 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
               _nearestTasks.addAll(tasks.where((e) {
                 final date = DateTime.fromMillisecondsSinceEpoch(e.date);
                 return date.difference(_now).inDays <= 0 &&
-                    e.startTime <= _now.millisecondsSinceEpoch;
+                    e.startTime <= _now.millisecondsSinceEpoch &&
+                    e.status == 1;
               }).toList());
               if (tasks.where((e) {
                 final startTime =
                     DateTime.fromMillisecondsSinceEpoch(e.startTime);
                 final date = DateTime.fromMillisecondsSinceEpoch(e.date);
                 return date.difference(_now).inDays == 0 &&
-                    startTime.isAfter(_now);
+                    startTime.isAfter(_now) &&
+                    e.status == 1;
               }).isNotEmpty) {
                 _nearestTasks.add(tasks.firstWhere((e) {
                   final startTime =
                       DateTime.fromMillisecondsSinceEpoch(e.startTime);
                   final date = DateTime.fromMillisecondsSinceEpoch(e.date);
                   return date.difference(_now).inDays == 0 &&
-                      startTime.isAfter(_now);
+                      startTime.isAfter(_now) &&
+                      e.status == 1;
                 }));
               }
-              _upComingTasks.addAll(tasks);
+              _upComingTasks.addAll(tasks.where((e) => e.status == 1));
               _upComingTasks.removeWhere(
                   (e) => _nearestTasks.where((n) => n.id == e.id).isNotEmpty);
               return ListView(

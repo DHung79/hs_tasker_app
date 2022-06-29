@@ -67,10 +67,10 @@ class TaskModel extends BaseModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'location_gps': _location.toJson(),
-        'posted_user': _user.toJson(),
-        'tasker': _tasker.toJson(),
-        'service': _service.toJson(),
+        // 'location_gps': _location.toJson(),
+        // 'posted_user': _user.toJson(),
+        // 'tasker': _tasker.toJson(),
+        // 'service': _service.toJson(),
         '_id': __id,
         'address': _address,
         'estimate_time': _estimateTime,

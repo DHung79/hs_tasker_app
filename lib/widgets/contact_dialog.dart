@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import '/core/user/user.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../main.dart';
 
 class ContactDialog extends StatefulWidget {
-  const ContactDialog({Key? key}) : super(key: key);
+  final UserModel user;
+  const ContactDialog({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
 
   @override
   State<ContactDialog> createState() => _ContactDialogState();
@@ -49,7 +55,9 @@ class _ContactDialogState extends State<ContactDialog> {
                           child: _contactButton(
                             title: 'Gọi điện',
                             svgIcon: SvgIcons.telephone,
-                            onPressed: () {},
+                            onPressed: () {
+                              _callNumber();
+                            },
                           ),
                         ),
                       ),
@@ -58,7 +66,9 @@ class _ContactDialogState extends State<ContactDialog> {
                         child: _contactButton(
                           title: 'Nhắn tin',
                           svgIcon: SvgIcons.message,
-                          onPressed: () {},
+                          onPressed: () {
+                            _sendMessage();
+                          },
                         ),
                       ),
                     ],
@@ -101,5 +111,23 @@ class _ContactDialogState extends State<ContactDialog> {
       ]),
       onPressed: onPressed,
     );
+  }
+
+  _callNumber() async {
+    String url = "tel://" + widget.user.phoneNumber;
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      throw 'Could not call ${widget.user.phoneNumber}';
+    }
+  }
+
+  _sendMessage() async {
+    String url = "sms://" + widget.user.phoneNumber;
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      throw 'Could not call ${widget.user.phoneNumber}';
+    }
   }
 }

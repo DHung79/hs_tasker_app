@@ -35,6 +35,7 @@ class TaskRepository {
   Future<ApiResponse<T?>>
       takeTask<T extends BaseModel, K extends EditBaseModel>(String id) =>
           _provider.taskerTakeTask<T, K>(id: id);
+
   Future<ApiResponse<T?>>
       deleteObject<T extends BaseModel, K extends EditBaseModel>({
     String? id,
@@ -42,4 +43,12 @@ class TaskRepository {
           _provider.deleteTaskById<T>(
             id: id,
           );
+
+  Future<ApiResponse<T?>>
+      cancelTask<T extends BaseModel, K extends EditBaseModel>(String id) =>
+          _provider.cancelTask<T, K>(id: id);
+
+  Future<ApiResponse<T?>>
+      updateTaskStatus<T extends BaseModel, K extends EditBaseModel>(String id) =>
+          _provider.updateTaskStatus<T, K>(id: id);
 }

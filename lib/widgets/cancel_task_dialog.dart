@@ -8,12 +8,14 @@ class CancelTaskDialog extends StatefulWidget {
   final Widget contentHeader;
   final String accountBalances;
   final bool isWarning;
+  final Function()? onConfirmed;
   const CancelTaskDialog({
     Key? key,
     required this.task,
     required this.contentHeader,
     required this.accountBalances,
     this.isWarning = false,
+    this.onConfirmed,
   }) : super(key: key);
 
   @override
@@ -125,7 +127,11 @@ class _CancelTaskDialogState extends State<CancelTaskDialog> {
         ),
         onPressed: () {
           Navigator.of(context).pop();
-          _cancelWarning();
+          if (widget.onConfirmed != null) {
+            widget.onConfirmed!();
+          } else {
+            _warningDialog();
+          }
         },
       ),
       const SizedBox(height: 16),
@@ -176,7 +182,7 @@ class _CancelTaskDialogState extends State<CancelTaskDialog> {
     );
   }
 
-  _cancelWarning() {
+  _warningDialog() {
     return showDialog(
         context: context,
         barrierDismissible: false,

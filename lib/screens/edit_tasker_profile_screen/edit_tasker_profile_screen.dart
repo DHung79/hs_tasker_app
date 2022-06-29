@@ -414,27 +414,7 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
     _taskerBloc.editProfile(editModel: editModel).then(
       (value) async {
         if (_images.isNotEmpty) {
-          _taskerBloc
-              .uploadImage(
-            image: _images.first,
-          )
-              .then((value) {
-            AuthenticationBlocController()
-                .authenticationBloc
-                .add(GetUserData());
-            navigateTo(taskerProfileRoute);
-            JTToast.successToast(message: ScreenUtil.t(I18nKey.updateSuccess)!);
-          }).onError((ApiError error, stackTrace) {
-            setState(() {
-              _errorMessage = 'Ảnh không đúng định dạng';
-            });
-          }).catchError(
-            (error, stackTrace) {
-              setState(() {
-                _errorMessage = error.toString();
-              });
-            },
-          );
+          _uploadImage();
         } else {
           AuthenticationBlocController().authenticationBloc.add(GetUserData());
           navigateTo(taskerProfileRoute);
@@ -444,6 +424,24 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
     ).onError((ApiError error, stackTrace) {
       setState(() {
         _errorMessage = showError(error.errorCode, context);
+      });
+    }).catchError(
+      (error, stackTrace) {
+        setState(() {
+          _errorMessage = error.toString();
+        });
+      },
+    );
+  }
+
+  _uploadImage() {
+    _taskerBloc.uploadImage(image: _images.first).then((value) {
+      AuthenticationBlocController().authenticationBloc.add(GetUserData());
+      navigateTo(taskerProfileRoute);
+      JTToast.successToast(message: ScreenUtil.t(I18nKey.updateSuccess)!);
+    }).onError((ApiError error, stackTrace) {
+      setState(() {
+        _errorMessage = 'Ảnh không đúng định dạng';
       });
     }).catchError(
       (error, stackTrace) {

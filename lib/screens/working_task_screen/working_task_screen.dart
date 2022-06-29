@@ -9,6 +9,7 @@ import '../../core/task/task.dart';
 import '../../main.dart';
 import '../../widgets/display_date_time.dart';
 import '../../widgets/jt_indicator.dart';
+import '../../widgets/jt_toast.dart';
 import '../../widgets/open_google_map.dart';
 import '../layout_template/content_screen.dart';
 
@@ -31,6 +32,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
 
   @override
   void initState() {
+    JTToast.init(context);
     AuthenticationBlocController().authenticationBloc.add(AppLoadedup());
     _taskBloc.fetchDataById(widget.id);
     super.initState();
@@ -251,7 +253,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                     ),
                   ),
                   Text(
-                    'Nancy Jewel McDonie',
+                    task.user.name,
                     style: AppTextTheme.mediumBodyText(AppColor.black),
                   ),
                 ]),
@@ -280,7 +282,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                   ),
                 ]),
                 onPressed: () {
-                  _showContact();
+                  _showContact(task);
                 }),
           ),
         ],
@@ -570,7 +572,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
     });
   }
 
-  _showContact() {
+  _showContact(TaskModel task) {
     return showModalBottomSheet(
         context: context,
         shape: const RoundedRectangleBorder(
@@ -579,7 +581,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
           ),
         ),
         builder: (context) {
-          return const ContactDialog();
+          return ContactDialog(user: task.user);
         });
   }
 
@@ -590,14 +592,33 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
         barrierColor: Colors.black12,
         builder: (BuildContext context) {
           return CancelTaskDialog(
-            task: task,
-            contentHeader: Text(
-              'Bạn có chắc chắn hủy công việc?',
-              style: AppTextTheme.normalText(AppColor.black),
-            ),
-            accountBalances: '700.000 VND',
-          );
+              task: task,
+              contentHeader: Text(
+                'Bạn có chắc chắn hủy công việc?',
+                style: AppTextTheme.normalText(AppColor.black),
+              ),
+              accountBalances: '${task.totalPrice} VND',
+              onConfirmed: () {
+                _cancelTask(task);
+              });
         });
+  }
+
+  _cancelTask(TaskModel task) {
+    _taskBloc
+        .cancelTask(task.id)
+        .then((value) => navigateTo(homeRoute))
+        .onError((ApiError error, stackTrace) {
+      setState(() {
+        JTToast.errorToast(message: showError(error.errorCode, context));
+      });
+    }).catchError(
+      (error, stackTrace) {
+        setState(() {
+          JTToast.errorToast(message: error.toString());
+        });
+      },
+    );
   }
 
   Widget _actions({
