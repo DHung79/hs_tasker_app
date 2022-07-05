@@ -25,7 +25,7 @@ export 'core/tasker/tasker.dart';
 export 'core/authentication/auth.dart';
 
 // Page index
-int notiBadges = 3;
+int notiBadges = 0;
 int homeTabIndex = 0;
 
 String? currentFcmToken;

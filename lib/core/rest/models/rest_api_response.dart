@@ -2,6 +2,7 @@ import '../../../core/user/model/user_model.dart';
 import '../../authentication/models/status.dart';
 import '../../base/models/upload_image.dart';
 import '../../logger/logger.dart';
+import '../../notification/notification.dart';
 import '../../service/service.dart';
 import '../../task/model/task_model.dart';
 import '../../tasker/model/tasker_model.dart';
@@ -96,7 +97,18 @@ class BaseModel {
     if (T == ImageListModel) {
       return ImageListModel.fromJson(json) as T;
     }
-
+    if (T == NotificationModel) {
+      return NotificationModel.fromJson(json) as T;
+    }
+    if (T == MultipleLanguagesBodyModel) {
+      return MultipleLanguagesBodyModel.fromJson(json) as T;
+    }
+    if (T == UnreadTotalModel) {
+      return UnreadTotalModel.fromJson(json) as T;
+    }
+    if (T == NotificationListModel) {
+      return NotificationListModel.fromJson(json) as T;
+    }
     logError("Unknown BaseModel class: $T");
     throw Exception("Unknown BaseModel class: $T");
   }

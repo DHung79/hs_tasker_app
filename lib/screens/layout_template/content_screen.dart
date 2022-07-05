@@ -56,33 +56,6 @@ class _PageTemplateState extends State<PageTemplate> {
   initState() {
     _authenticationBloc = AuthenticationBlocController().authenticationBloc;
     _authenticationBloc.add(AppLoadedup());
-    requestPermissionsLocal();
-    registerNotification(
-      getFcmToken: (fcmToken) {
-          currentFcmToken = fcmToken;
-      },
-      notificationInfo: _notificationInfo,
-    );
-    checkForInitialMessage(getNotification: (notification) {
-      setState(() {
-        _notificationInfo = notification;
-        // _totalNotifications++;
-      });
-    });
-    initLocalPushNotification();
-    // For handling notification when the app is in background
-    // but not terminated
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      PushNotification notification = PushNotification(
-        title: message.notification?.title,
-        body: message.notification?.body,
-        dataTitle: message.data['title'].toString(),
-        dataBody: message.data['body'].toString(),
-      );
-      setState(() {
-        _notificationInfo = notification;
-      });
-    });
     super.initState();
   }
 
@@ -117,6 +90,33 @@ class _PageTemplateState extends State<PageTemplate> {
           _authenticationBloc.add(GetUserData());
         } else if (state is SetUserData<TaskerModel>) {
           _currentUser = Future.value(state.currentUser);
+          requestPermissionsLocal();
+          registerNotification(
+            getFcmToken: (fcmToken) {
+              currentFcmToken = fcmToken;
+            },
+            notificationInfo: _notificationInfo,
+          );
+          checkForInitialMessage(getNotification: (notification) {
+            setState(() {
+              _notificationInfo = notification;
+              // _totalNotifications++;
+            });
+          });
+          initLocalPushNotification();
+          // For handling notification when the app is in background
+          // but not terminated
+          FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+            PushNotification notification = PushNotification(
+              title: message.notification?.title,
+              body: message.notification?.body,
+              dataTitle: message.data['title'].toString(),
+              dataBody: message.data['body'].toString(),
+            );
+            setState(() {
+              _notificationInfo = notification;
+            });
+          });
         }
       },
       child: FutureBuilder(

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:hs_tasker_app/core/notification/notification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import '../../../../../main.dart';
@@ -131,9 +132,6 @@ class AuthenticationBloc
           }
         }
         if (_isExpired) {
-          // if (currentFcmToken != null && currentFcmToken!.isNotEmpty) {
-          //   await authenticationService.removeFcmToken(currentFcmToken!);
-          // }
           _cleanupCache();
           emit(UserTokenExpired());
         } else {
@@ -401,5 +399,8 @@ class AuthenticationBloc
     sharedPreferences.remove('userJson');
     sharedPreferences.remove('login_time');
     sharedPreferences.remove('last_lang');
+    if (currentFcmToken != null) {
+      await NotificationRepository().removeFcmToken(fcmToken: currentFcmToken!);
+    }
   }
 }
