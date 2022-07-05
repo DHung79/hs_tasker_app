@@ -79,19 +79,6 @@ class RestApiHandlerData {
     return response;
   }
 
-  static Future<bool> removeFcmToken({
-    required String path,
-    dynamic body,
-    Map<String, String>? headers,
-  }) async {
-    final response = await _apiBaseHelper.removeFcmToken(
-      path: path,
-      body: body,
-      headers: headers,
-    );
-    return response;
-  }
-
   static login({
     required String path,
     dynamic body,

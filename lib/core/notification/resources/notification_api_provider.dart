@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert' as convert;
 import 'package:hs_tasker_app/core/logger/logger.dart';
+
 import '../../constants/api_constants.dart';
 import '../../helpers/api_helper.dart';
 import '../../rest/models/rest_api_response.dart';
@@ -85,23 +86,6 @@ class NotificationApiProvider {
     final token = await ApiHelper.getUserToken();
     final response = await RestApiHandlerData.putData<T>(
       path: path,
-      headers: ApiHelper.headers(token),
-    );
-    return response;
-  }
-
-  Future<bool> removeFcmToken<T extends BaseModel>({
-    required String fcmToken,
-  }) async {
-    var path = ApiConstants.apiDomain +
-        ApiConstants.apiVersion +
-        ApiConstants.fcmToken +
-        ApiConstants.tasker;
-    final body = convert.jsonEncode({'fcm_token': fcmToken});
-    final token = await ApiHelper.getUserToken();
-    final response = await RestApiHandlerData.removeFcmToken(
-      path: path,
-      body: body,
       headers: ApiHelper.headers(token),
     );
     return response;
