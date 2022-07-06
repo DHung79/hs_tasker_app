@@ -79,6 +79,19 @@ class RestApiHandlerData {
     return response;
   }
 
+  static Future<bool> removeFcmToken({
+    required String path,
+    dynamic body,
+    Map<String, String>? headers,
+  }) async {
+    final response = await _apiBaseHelper.removeFcmToken(
+      path: path,
+      body: body,
+      headers: headers,
+    );
+    return response;
+  }
+
   static login({
     required String path,
     dynamic body,
@@ -120,13 +133,13 @@ class RestApiHandlerData {
     required String path,
     Map<String, String>? headers,
     required String field,
-    required String filePath,
+    required List<String> filesPath,
   }) async {
     final response = await _apiBaseHelper.putUpload<T>(
       path: path,
       headers: headers,
       field: field,
-      filePath: filePath,
+      filesPath: filesPath,
     );
     return response;
   }

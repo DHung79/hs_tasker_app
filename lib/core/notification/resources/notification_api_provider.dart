@@ -33,7 +33,6 @@ class NotificationApiProvider {
         ApiConstants.fcmToken +
         ApiConstants.tasker;
     final token = await ApiHelper.getUserToken();
-    logDebug('path: $path\nbody: $body');
     final response = await RestApiHandlerData.updateFcmToken(
       path: path,
       headers: ApiHelper.headers(token),
@@ -86,6 +85,24 @@ class NotificationApiProvider {
     final token = await ApiHelper.getUserToken();
     final response = await RestApiHandlerData.putData<T>(
       path: path,
+      headers: ApiHelper.headers(token),
+    );
+    return response;
+  }
+
+  Future<bool> removeFcmToken<T extends BaseModel>({
+    required String fcmToken,
+  }) async {
+    var path = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.fcmToken +
+        ApiConstants.tasker;
+    final body = convert.jsonEncode({'fcm_token': fcmToken});
+    final token = await ApiHelper.getUserToken();
+    logDebug('path: $path\nbody: $body\nheaders: ${ApiHelper.headers(token)}');
+    final response = await RestApiHandlerData.removeFcmToken(
+      path: path,
+      body: body,
       headers: ApiHelper.headers(token),
     );
     return response;

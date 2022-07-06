@@ -139,7 +139,50 @@ class TaskBloc {
   Future<TaskModel> updateTaskStatus(String id) async {
     try {
       // Await response from server.
-      final data = await _repository.updateTaskStatus<TaskModel, EditTaskModel>(id);
+      final data =
+          await _repository.updateTaskStatus<TaskModel, EditTaskModel>(id);
+      if (data.error != null) {
+        // Error exist
+        return Future.error(data.error!);
+      } else {
+        // Adding response data.
+        return Future.value(data.model);
+      }
+    } on AppException catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<TaskModel> uploadListImage({
+    required String id,
+    bool isBefore = true,
+    required List<String> filesPath,
+  }) async {
+    try {
+      // Await response from server.
+      final data = await _repository.uploadListImage<TaskModel>(
+        id: id,
+        isBefore: isBefore,
+        filesPath: filesPath,
+      );
+      if (data.error != null) {
+        // Error exist
+        return Future.error(data.error!);
+      } else {
+        // Adding response data.
+        return Future.value(data.model);
+      }
+    } on AppException catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<TaskModel> completeTask({
+    required String id,
+  }) async {
+    try {
+      // Await response from server.
+      final data = await _repository.completeTask<TaskModel>(id);
       if (data.error != null) {
         // Error exist
         return Future.error(data.error!);

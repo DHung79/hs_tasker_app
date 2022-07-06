@@ -21,6 +21,7 @@ class HistoryContent extends StatefulWidget {
 
 class _HistoryContentState extends State<HistoryContent> {
   final _taskBloc = TaskBloc();
+  final completeStatus = 2;
 
   @override
   void initState() {
@@ -44,7 +45,7 @@ class _HistoryContentState extends State<HistoryContent> {
             if (snapshot.hasData) {
               final tasks = snapshot.data!.model!.records;
               final historyTasks = tasks.where((e) {
-                return e.status >= 2;
+                return e.status >= completeStatus;
               }).toList();
               if (historyTasks.isNotEmpty) {
                 return ListView.builder(
@@ -125,7 +126,9 @@ class _HistoryContentState extends State<HistoryContent> {
           ),
           Container(
             decoration: BoxDecoration(
-              color: task.status == 3 ? AppColor.shade9 : AppColor.others1,
+              color: task.status == completeStatus
+                  ? AppColor.shade9
+                  : AppColor.others1,
               borderRadius: BorderRadius.circular(50),
             ),
             child: Padding(
@@ -134,7 +137,7 @@ class _HistoryContentState extends State<HistoryContent> {
                 horizontal: 10,
               ),
               child: Text(
-                task.status == 3 ? 'Hoàn thành' : 'Bị hủy bỏ',
+                task.status == completeStatus ? 'Hoàn thành' : 'Bị hủy bỏ',
                 style: AppTextTheme.mediumHeaderTitle(AppColor.white),
               ),
             ),

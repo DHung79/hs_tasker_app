@@ -40,26 +40,32 @@ class JTToast {
             ),
           ],
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.check_circle_sharp,
-              color: AppColor.shade5,
-              size: 26,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 13),
-              child: Text(
-                message,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AppColor.text1,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.check_circle_sharp,
+                color: AppColor.shade5,
+                size: 26,
+              ),
+              SizedBox(
+                width: width - 26 - 32,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(13, 16, 0, 16),
+                  child: Text(
+                    message,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColor.text1,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -98,26 +104,32 @@ class JTToast {
             ),
           ],
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.warning_amber_rounded,
-              color: AppColor.others1,
-              size: 26,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 13),
-              child: Text(
-                message,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AppColor.text1,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                color: AppColor.others1,
+                size: 26,
+              ),
+              SizedBox(
+                width: width - 26 - 32,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(13, 16, 0, 16),
+                  child: Text(
+                    message,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColor.text1,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

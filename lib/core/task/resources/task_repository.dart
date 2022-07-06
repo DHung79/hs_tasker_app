@@ -49,6 +49,22 @@ class TaskRepository {
           _provider.cancelTask<T, K>(id: id);
 
   Future<ApiResponse<T?>>
-      updateTaskStatus<T extends BaseModel, K extends EditBaseModel>(String id) =>
+      updateTaskStatus<T extends BaseModel, K extends EditBaseModel>(
+              String id) =>
           _provider.updateTaskStatus<T, K>(id: id);
+
+  Future<ApiResponse<T?>> uploadListImage<T extends BaseModel>({
+    required String id,
+    required bool isBefore,
+    required List<String> filesPath,
+  }) =>
+      _provider.uploadListImage<T>(
+        id: id,
+        isBefore: isBefore,
+        filesPath: filesPath,
+      );
+
+  Future<ApiResponse<T?>>
+      completeTask<T extends BaseModel>(String id) =>
+          _provider.completeTask<T>(id: id);
 }

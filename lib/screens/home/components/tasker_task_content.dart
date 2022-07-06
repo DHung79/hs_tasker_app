@@ -25,7 +25,7 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
 
   @override
   void initState() {
-    _taskBloc.fetchAllData({'tasker': widget.tasker.id});
+    _taskBloc.fetchAllData({'tasker': widget.tasker.id, 'status': 1});
     super.initState();
   }
 
@@ -47,60 +47,68 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
               _nearestTasks.addAll(tasks.where((e) {
                 final date = DateTime.fromMillisecondsSinceEpoch(e.date);
                 return date.difference(_now).inDays <= 0 &&
-                    e.startTime <= _now.millisecondsSinceEpoch &&
-                    e.status == 1;
+                    e.startTime <= _now.millisecondsSinceEpoch;
               }).toList());
               if (tasks.where((e) {
                 final startTime =
                     DateTime.fromMillisecondsSinceEpoch(e.startTime);
                 final date = DateTime.fromMillisecondsSinceEpoch(e.date);
                 return date.difference(_now).inDays == 0 &&
-                    startTime.isAfter(_now) &&
-                    e.status == 1;
+                    startTime.isAfter(_now);
               }).isNotEmpty) {
                 _nearestTasks.add(tasks.firstWhere((e) {
                   final startTime =
                       DateTime.fromMillisecondsSinceEpoch(e.startTime);
                   final date = DateTime.fromMillisecondsSinceEpoch(e.date);
                   return date.difference(_now).inDays == 0 &&
-                      startTime.isAfter(_now) &&
-                      e.status == 1;
+                      startTime.isAfter(_now);
                 }));
               }
-              _upComingTasks.addAll(tasks.where((e) => e.status == 1));
+              _upComingTasks.addAll(tasks);
               _upComingTasks.removeWhere(
                   (e) => _nearestTasks.where((n) => n.id == e.id).isNotEmpty);
-              return ListView(
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                children: [
-                  if (_nearestTasks.isNotEmpty && _upComingTasks.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-                      child: Text(
-                        'Công việc gần nhất',
-                        style: AppTextTheme.mediumHeaderTitle(AppColor.text7),
+              if (_nearestTasks.isNotEmpty && _upComingTasks.isNotEmpty) {
+                return ListView(
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  children: [
+                    if (_nearestTasks.isNotEmpty && _upComingTasks.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+                        child: Text(
+                          'Công việc gần nhất',
+                          style: AppTextTheme.mediumHeaderTitle(AppColor.text7),
+                        ),
                       ),
-                    ),
-                  if (_nearestTasks.isNotEmpty) _buildNearestTasks(),
-                  if (_nearestTasks.isNotEmpty && _upComingTasks.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                      child: Divider(
-                        thickness: 1.5,
-                        color: AppColor.shade1,
+                    if (_nearestTasks.isNotEmpty) _buildNearestTasks(),
+                    if (_nearestTasks.isNotEmpty && _upComingTasks.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                        child: Divider(
+                          thickness: 1.5,
+                          color: AppColor.shade1,
+                        ),
                       ),
-                    ),
-                  if (_nearestTasks.isNotEmpty && _upComingTasks.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-                      child: Text(
-                        'Công việc sắp tới',
-                        style: AppTextTheme.mediumHeaderTitle(AppColor.text7),
+                    if (_nearestTasks.isNotEmpty && _upComingTasks.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+                        child: Text(
+                          'Công việc sắp tới',
+                          style: AppTextTheme.mediumHeaderTitle(AppColor.text7),
+                        ),
                       ),
-                    ),
-                  if (_upComingTasks.isNotEmpty) _buildUpComingTasks(),
-                ],
+                    if (_upComingTasks.isNotEmpty) _buildUpComingTasks(),
+                  ],
+                );
+              }
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Text(
+                    'Chưa nhận công việc nào',
+                    style: AppTextTheme.mediumHeaderTitle(AppColor.text3),
+                  ),
+                ),
               );
             }
             return const JTIndicator();

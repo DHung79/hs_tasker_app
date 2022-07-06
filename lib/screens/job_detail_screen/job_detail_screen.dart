@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
+import '../../core/base/models/upload_image.dart';
 import '../../core/task/task.dart';
 import '../../main.dart';
 import '../../widgets/confirm_dialog.dart';
@@ -23,7 +24,8 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
   final _pageState = PageState();
   final _scrollController = ScrollController();
   final _taskBloc = TaskBloc();
-
+  final completeStatus = 2;
+  
   @override
   void initState() {
     AuthenticationBlocController().authenticationBloc.add(AppLoadedup());
@@ -36,18 +38,6 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     _taskBloc.dispose();
     super.dispose();
   }
-
-  final List<bool> _checkList = [
-    true,
-    true,
-    false,
-  ];
-
-  final List<String> _toDoList = [
-    'Lau ghế rồng',
-    'Lau bình hoa',
-    'Kiểm tra thức ăn cho cún',
-  ];
 
   final isHistory = getCurrentRouteName().startsWith(taskHistoryRoute);
 
@@ -285,7 +275,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                     child: Container(
                       constraints: const BoxConstraints(maxHeight: 26),
                       decoration: BoxDecoration(
-                        color: task.status == 3
+                        color: task.status == completeStatus
                             ? AppColor.shade9
                             : AppColor.others1,
                         borderRadius: BorderRadius.circular(50),
@@ -296,7 +286,9 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                           horizontal: 10,
                         ),
                         child: Text(
-                          task.status == 3 ? 'Hoàn thành' : 'Bị hủy bỏ',
+                          task.status == completeStatus
+                              ? 'Hoàn thành'
+                              : 'Bị hủy bỏ',
                           style: AppTextTheme.mediumHeaderTitle(AppColor.white),
                         ),
                       ),
@@ -378,8 +370,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 padding: const EdgeInsets.only(bottom: 16),
                 child: _buildInfo(
                   headerTitle: 'Danh sách kiểm tra',
-                  toDoList: _toDoList,
-                  checkList: _checkList,
+                  checkList: task.checkList,
                   svgIcon: SvgIcons.listCheck,
                 ),
               ),
@@ -399,8 +390,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     Widget? content,
     IconData? icon,
     SvgIconData? svgIcon,
-    List<String>? toDoList,
-    List<bool>? checkList,
+    List<ToDoModel>? checkList,
   }) {
     return LayoutBuilder(builder: (context, size) {
       return Row(
@@ -443,10 +433,10 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 content ??
                     Column(
                       children: [
-                        for (var i = 0; i < toDoList!.length; i++)
+                        for (var item in checkList!)
                           _infoItem(
-                            title: toDoList[i],
-                            isCheck: checkList![i],
+                            title: item.name,
+                            isCheck: item.status,
                           ),
                       ],
                     ),
@@ -678,17 +668,6 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
   }
 
   Widget _buildResults(TaskModel task) {
-    final beforeImages = [
-      'https://media0.giphy.com/media/3og0IG0skAiznZQLde/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
-      'https://media4.giphy.com/media/xUA7aSwkpZH8IQ2zu0/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
-      'https://media1.giphy.com/media/l4FGpa3DuEFMrghKE/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
-    ];
-    final afterImages = [
-      'https://media3.giphy.com/media/EExJM3NifsBwjJukuF/giphy.gif?cid=790b7611be94e029622cd882a7752ed1ec413dd59d85836a&rid=giphy.gif&ct=s',
-      'https://media1.giphy.com/media/xUPGGecxiqAvxUqd20/giphy.gif?cid=ecf05e4752x0e4lxsk6vkt2c5awftsq419qgm3tqs70g5vu1&rid=giphy.gif&ct=g',
-      'https://media2.giphy.com/media/4TmsyEHp9Ksw8rEyR8/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
-    ];
-
     return LayoutBuilder(builder: (context, size) {
       return Container(
         width: size.maxWidth,
@@ -704,14 +683,12 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 style: AppTextTheme.mediumHeaderTitle(AppColor.black),
               ),
               _buildImages(
-                task: task,
                 title: 'Trước',
-                images: beforeImages,
+                images: task.listPicturesBefore,
               ),
               _buildImages(
-                task: task,
                 title: 'Sau',
-                images: afterImages,
+                images: task.listPicturesAfter,
               ),
             ],
           ),
@@ -721,7 +698,6 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
   }
 
   Widget _buildImages({
-    required TaskModel task,
     required String title,
     required List<String> images,
   }) {
@@ -747,11 +723,16 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 scrollDirection: Axis.horizontal,
                 itemCount: images.length,
                 itemBuilder: (BuildContext context, index) {
-                  final image = images[index];
+                  final url = images[index];
                   final isLast = index != images.length - 1;
                   return Padding(
                     padding: EdgeInsets.only(right: isLast ? 16 : 0),
-                    child: Image.network(image),
+                    child: Image.network(
+                      url,
+                      fit: BoxFit.cover,
+                      height: 100,
+                      width: 100,
+                    ),
                   );
                 },
               ),

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import '../../../../../main.dart';
+import '../../../notification/notification.dart';
 import '../../models/status.dart';
 
 class AuthenticationBloc
@@ -390,13 +391,16 @@ class AuthenticationBloc
 
     on<UserLogOut>((event, emit) async {
       // await authenticationService.signOut({'fcmToken': currentFcmToken});
-      _cleanupCache();
+      await _cleanupCache();
       emit(UserLogoutState());
     });
   }
 
   _cleanupCache() async {
     final SharedPreferences sharedPreferences = await prefs;
+    if (currentFcmToken != null) {
+      await NotificationRepository().removeFcmToken(fcmToken: currentFcmToken!);
+    }
     sharedPreferences.remove('authtoken');
     sharedPreferences.remove('userJson');
     sharedPreferences.remove('login_time');

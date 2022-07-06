@@ -124,13 +124,35 @@ class ApiBaseHelper {
     // ignore: prefer_typing_uninitialized_variables
     var responseJson;
     try {
-      // logDebug('body: $body');
       final response = await http.post(
         Uri.parse(path),
         body: body,
         headers: headers,
       );
-      // logDebug(response.body.toString());
+      if (response.statusCode == 200) {
+        responseJson = true;
+      } else {
+        responseJson = false;
+      }
+    } on SocketException {
+      return false;
+    }
+    return responseJson;
+  }
+
+  Future<bool> removeFcmToken({
+    required String path,
+    dynamic body,
+    Map<String, String>? headers,
+  }) async {
+    // ignore: prefer_typing_uninitialized_variables
+    var responseJson;
+    try {
+      final response = await http.delete(
+        Uri.parse(path),
+        body: body,
+        headers: headers,
+      );
       if (response.statusCode == 200) {
         responseJson = true;
       } else {
@@ -379,14 +401,16 @@ class ApiBaseHelper {
     required String path,
     Map<String, String>? headers,
     required String field,
-    required String filePath,
+    required List<String> filesPath,
   }) async {
     ApiResponse<T> responseJson;
 
     try {
       final request = http.MultipartRequest('PUT', Uri.parse(path));
       request.headers['x-auth-token'] = headers!['x-auth-token']!;
-      request.files.add(await http.MultipartFile.fromPath(field, filePath));
+      for (var path in filesPath) {
+        request.files.add(await http.MultipartFile.fromPath(field, path));
+      }
       final response = await http.Response.fromStream(await request.send());
       responseJson = _returnResponse<T>(response);
     } on SocketException {

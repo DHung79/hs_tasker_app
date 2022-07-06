@@ -140,7 +140,7 @@ class TaskerApiProvider {
       path: path,
       headers: ApiHelper.upload(token),
       field: 'avatar',
-      filePath: image.path!,
+      filesPath: [image.path!],
     );
     return response;
   }

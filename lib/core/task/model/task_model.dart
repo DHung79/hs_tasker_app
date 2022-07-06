@@ -26,6 +26,8 @@ class TaskModel extends BaseModel {
   final int _createdTime;
   final int _updatedTime;
   final int _totalPrice;
+  final List<String> _listPicturesBefore = [];
+  final List<String> _listPicturesAfter = [];
 
   TaskModel.fromJson(Map<String, dynamic> json)
       : _location = BaseModel.map<LocationModel>(
@@ -64,13 +66,33 @@ class TaskModel extends BaseModel {
       json: json,
       key: 'check_list',
     ));
+    if (json['list_pictures_before'] != null) {
+      final jsons = json['list_pictures_before'];
+      if (jsons is List<dynamic>) {
+        for (var item in jsons) {
+          if (item is String) {
+            _listPicturesBefore.add(item);
+          }
+        }
+      }
+    }
+    if (json['list_pictures_after'] != null) {
+      final jsons = json['list_pictures_after'];
+      if (jsons is List<dynamic>) {
+        for (var item in jsons) {
+          if (item is String) {
+            _listPicturesAfter.add(item);
+          }
+        }
+      }
+    }
   }
 
   Map<String, dynamic> toJson() => {
-        // 'location_gps': _location.toJson(),
-        // 'posted_user': _user.toJson(),
-        // 'tasker': _tasker.toJson(),
-        // 'service': _service.toJson(),
+        'location_gps': _location.toJson(),
+        'posted_user': _user.toJson(),
+        'tasker': _tasker.toJson(),
+        'service': _service.toJson(),
         '_id': __id,
         'address': _address,
         'estimate_time': _estimateTime,
@@ -88,6 +110,8 @@ class TaskModel extends BaseModel {
         'created_time': _createdTime,
         'updated_time': _updatedTime,
         'total_price': _totalPrice,
+        'list_pictures_before': _listPicturesBefore,
+        'list_pictures_after': _listPicturesAfter,
       };
   LocationModel get location => _location;
   UserModel get user => _user;
@@ -110,6 +134,8 @@ class TaskModel extends BaseModel {
   int get createdTime => _createdTime;
   int get updatedTime => _updatedTime;
   int get totalPrice => _totalPrice;
+  List<String> get listPicturesBefore => _listPicturesBefore;
+  List<String> get listPicturesAfter => _listPicturesAfter;
 }
 
 class LocationModel extends BaseModel {
@@ -146,45 +172,36 @@ class ToDoModel extends BaseModel {
   bool get status => _status;
 }
 
-class PostedUserModel extends BaseModel {
-  final String __id;
-  final String _name;
-  final int _phoneNumber;
-  final String _address;
-  final String _email;
+class EditToDoModel extends EditBaseModel {
+  String name = '';
+  bool status = false;
 
-  PostedUserModel.fromJson(Map<String, dynamic> json)
-      : __id = json['_id'] ?? '',
-        _name = json['name'],
-        _phoneNumber = json['phoneNumber'],
-        _address = json['address'] ?? '',
-        _email = json['email'];
-
+  EditToDoModel.fromModel(ToDoModel? model) {
+    name = model?.name ?? '';
+    status = model?.status ?? false;
+  }
   Map<String, dynamic> toJson() => {
-        "_id": __id,
-        "name": _name,
-        "phoneNumber": _phoneNumber,
-        "address": _address,
-        "email": _email,
+        "name": name,
+        "status": status,
       };
-
-  String get id => __id;
-  String get name => _name;
-  int get phoneNumber => _phoneNumber;
-  String get address => _address;
-  String get email => _email;
 }
 
 class EditTaskModel extends EditBaseModel {
   String id = ''; // For editing
-
+  List<EditToDoModel> checkList = [];
   EditTaskModel.fromModel(TaskModel? model) {
     id = model?.id ?? '';
+    List<EditToDoModel> _checkList = [];
+    for (var c in model?.checkList ?? []) {
+      _checkList.add(EditToDoModel.fromModel(c));
+    }
+    checkList = _checkList;
   }
 
   Map<String, dynamic> toEditJson() {
     Map<String, dynamic> params = {
       'id': id,
+      'check_list': checkList.map((e) => e.toJson()).toList(),
     };
 
     return params;

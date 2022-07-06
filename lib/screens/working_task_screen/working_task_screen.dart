@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import 'package:hs_tasker_app/screens/working_task_screen/components/warning_dialog.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../core/base/models/upload_image.dart';
 import '../../widgets/confirm_dialog.dart';
 import '../../widgets/cancel_task_dialog.dart';
 import '../../widgets/contact_dialog.dart';
@@ -29,7 +31,8 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
   final _scrollController = ScrollController();
   bool _showList = true;
   final _taskBloc = TaskBloc();
-
+  final List<UploadImage> _beforeImages = [];
+  final List<UploadImage> _afterImages = [];
   @override
   void initState() {
     JTToast.init(context);
@@ -43,29 +46,6 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
     _taskBloc.dispose();
     super.dispose();
   }
-
-  final List<bool> _checkList = [
-    true,
-    true,
-    false,
-  ];
-
-  final List<String> _toDoList = [
-    'Lau ghế rồng',
-    'Lau bình hoa',
-    'Kiểm tra thức ăn cho cún',
-  ];
-
-  final List<String> _beforeImages = [
-    'https://media0.giphy.com/media/3og0IG0skAiznZQLde/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
-    'https://media4.giphy.com/media/xUA7aSwkpZH8IQ2zu0/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
-    'https://media1.giphy.com/media/l4FGpa3DuEFMrghKE/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
-    'https://media3.giphy.com/media/EExJM3NifsBwjJukuF/giphy.gif?cid=790b7611be94e029622cd882a7752ed1ec413dd59d85836a&rid=giphy.gif&ct=s',
-  ];
-  final List<String> _afterImages = [
-    'https://media1.giphy.com/media/xUPGGecxiqAvxUqd20/giphy.gif?cid=ecf05e4752x0e4lxsk6vkt2c5awftsq419qgm3tqs70g5vu1&rid=giphy.gif&ct=g',
-    'https://media2.giphy.com/media/4TmsyEHp9Ksw8rEyR8/200.webp?cid=ecf05e47jpwyb8bywm1jbtbwf4yuxbx87f52djutkvy6xqwl&rid=200.webp&ct=g',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +75,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
       builder: (context, AsyncSnapshot<ApiResponse<TaskModel?>> snapshot) {
         if (snapshot.hasData) {
           final task = snapshot.data!.model!;
+
           return Scaffold(
             backgroundColor: AppColor.shade1,
             appBar: PreferredSize(
@@ -206,8 +187,6 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
               ),
               _actions(
                 task: task,
-                beforeImages: _beforeImages,
-                afterImages: _afterImages,
               ),
             ],
           ),
@@ -406,10 +385,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
               child: JTTaskDetail.taskDetailList(
                 svgIcon: SvgIcons.listCheck,
                 headerTitle: 'Danh sách kiểm tra',
-                contentList: _jobList(
-                  toDoList: _toDoList,
-                  checkList: _checkList,
-                ),
+                contentList: _jobList(task),
                 backgroundColor: AppColor.shade2,
                 showList: _showList,
                 onTap: () {
@@ -424,48 +400,49 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
     );
   }
 
-  _jobList({
-    List<String>? toDoList,
-    List<bool>? checkList,
-  }) {
-    return Column(
-      children: [
-        for (var i = 0; i < toDoList!.length; i++)
-          Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: Container(
-              constraints: const BoxConstraints(minHeight: 24),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 18,
-                    height: 18,
-                    child: Checkbox(
-                      checkColor: AppColor.white,
-                      activeColor: AppColor.shade9,
-                      value: checkList![i],
-                      onChanged: (value) {
-                        setState(() {
-                          checkList[i] = !checkList[i];
-                        });
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4),
-                    child: Text(
-                      toDoList[i],
-                      style: AppTextTheme.mediumBodyText(
-                        AppColor.black,
+  _jobList(TaskModel task) {
+    final _editModel = EditTaskModel.fromModel(task);
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+      return Column(
+        children: [
+          for (var item in _editModel.checkList)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Container(
+                constraints: const BoxConstraints(minHeight: 24),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: Checkbox(
+                        checkColor: AppColor.white,
+                        activeColor: AppColor.shade9,
+                        value: item.status,
+                        onChanged: (value) {
+                          setState(() {
+                            item.status = value!;
+                          });
+                        },
                       ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4),
+                      child: Text(
+                        item.name,
+                        style: AppTextTheme.mediumBodyText(
+                          AppColor.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-      ],
-    );
+        ],
+      );
+    });
   }
 
   Widget _buildResults(TaskModel task) {
@@ -490,13 +467,16 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
           ),
           _buildImages(
             title: 'Trước',
+            task: task,
             images: _beforeImages,
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: _buildImages(
               title: 'Sau',
+              task: task,
               images: _afterImages,
+              isBefore: false,
             ),
           ),
         ],
@@ -506,70 +486,142 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
 
   Widget _buildImages({
     required String title,
-    required List<String> images,
+    required List<UploadImage> images,
+    required TaskModel task,
+    bool isBefore = true,
   }) {
     return LayoutBuilder(builder: (context, size) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Text(
-                title,
-                style: AppTextTheme.mediumHeaderTitle(AppColor.black),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: SizedBox(
-                height: 100,
-                width: size.maxWidth,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: AppButtonTheme.outlineRounded(
-                        constraints: const BoxConstraints(
-                          minHeight: 100,
-                          minWidth: 100,
-                        ),
-                        color: AppColor.white,
-                        outlineColor: AppColor.black,
-                        borderRadius: BorderRadius.circular(4),
-                        child: Icon(
-                          Icons.add,
-                          size: 40,
-                          color: AppColor.black,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        physics: const ClampingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: images.length,
-                        itemBuilder: (BuildContext context, index) {
-                          final image = images[index];
-                          final isLast = index != images.length - 1;
-                          return Padding(
-                            padding: EdgeInsets.only(right: isLast ? 16 : 0),
-                            child: Image.network(image),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+      return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text(
+                  title,
+                  style: AppTextTheme.mediumHeaderTitle(AppColor.black),
                 ),
               ),
-            ),
-          ],
-        ),
-      );
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: SizedBox(
+                  height: 100,
+                  width: size.maxWidth,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: AppButtonTheme.outlineRounded(
+                          constraints: const BoxConstraints(
+                            minHeight: 100,
+                            minWidth: 100,
+                          ),
+                          color: AppColor.white,
+                          outlineColor: AppColor.black,
+                          borderRadius: BorderRadius.circular(4),
+                          child: Icon(
+                            Icons.add,
+                            size: 40,
+                            color: AppColor.black,
+                          ),
+                          onPressed: () {
+                            _pickImage(isBefore: isBefore);
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          physics: const ClampingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: images.length,
+                          itemBuilder: (BuildContext context, index) {
+                            final image = images[index];
+                            final isLast = index != images.length - 1;
+                            return Padding(
+                              padding: EdgeInsets.only(right: isLast ? 16 : 0),
+                              child: Stack(
+                                children: [
+                                  Image.memory(
+                                    image.imageData!,
+                                    fit: BoxFit.cover,
+                                    height: 100,
+                                    width: 100,
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    child: InkWell(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColor.white,
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SvgIcon(
+                                            SvgIcons.close,
+                                            color: AppColor.primary1,
+                                            size: 24,
+                                          ),
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          images.remove(image);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      });
     });
+  }
+
+  _pickImage({bool isBefore = true}) async {
+    List<XFile>? imagesPicked = [];
+    final ImagePicker _picker = ImagePicker();
+    imagesPicked = await _picker.pickMultiImage();
+    if (imagesPicked != null) {
+      final images = imagesPicked.map((image) async {
+        final imageType = image.path.split(".").last;
+        if (imageType != 'webp') {
+          return UploadImage(
+            key: '${DateTime.now().millisecondsSinceEpoch}-${image.name}',
+            name: image.name,
+            path: image.path,
+            imageData: await image.readAsBytes(),
+          );
+        }
+      }).toList();
+      for (var i in images) {
+        final image = await i;
+        if (image != null) {
+          setState(() {
+            if (isBefore) {
+              _beforeImages.add(image);
+            } else {
+              _afterImages.add(image);
+            }
+          });
+        }
+      }
+    }
   }
 
   _showContact(TaskModel task) {
@@ -609,22 +661,17 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
         .cancelTask(task.id)
         .then((value) => navigateTo(homeRoute))
         .onError((ApiError error, stackTrace) {
-      setState(() {
-        JTToast.errorToast(message: showError(error.errorCode, context));
-      });
+      JTToast.errorToast(message: showError(error.errorCode, context));
     }).catchError(
       (error, stackTrace) {
-        setState(() {
-          JTToast.errorToast(message: error.toString());
-        });
+        JTToast.errorToast(message: error.toString());
+        logDebug('error $error');
       },
     );
   }
 
   Widget _actions({
     required TaskModel task,
-    required List<String> beforeImages,
-    required List<String> afterImages,
   }) {
     return LayoutBuilder(builder: (context, size) {
       return Container(
@@ -668,7 +715,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                     ],
                   ),
                   onPressed: () {
-                    if (beforeImages.isEmpty || afterImages.isEmpty) {
+                    if (_beforeImages.isEmpty || _afterImages.isEmpty) {
                       _warningDialog();
                     } else {
                       showDialog(
@@ -676,7 +723,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                         barrierDismissible: false,
                         barrierColor: Colors.black12,
                         builder: (BuildContext context) {
-                          return _finishJobDialog();
+                          return _finishJobDialog(task);
                         },
                       );
                     }
@@ -704,7 +751,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
         });
   }
 
-  _finishJobDialog() {
+  _finishJobDialog(TaskModel task) {
     return JTConfirmDialog(
       headerTitle: 'Kết thúc công việc',
       contentText: 'Bạn có chắc chắn kết thúc công việc?',
@@ -737,6 +784,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                _completeTask(task);
               },
             ),
             const SizedBox(height: 16),
@@ -770,6 +818,47 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  _completeTask(TaskModel task) {
+    _taskBloc
+        .uploadListImage(
+      id: task.id,
+      filesPath: _beforeImages.map((e) => e.path!).toList(),
+    )
+        .then((value) {
+      _taskBloc
+          .uploadListImage(
+        id: task.id,
+        isBefore: false,
+        filesPath: _afterImages.map((e) => e.path!).toList(),
+      )
+          .then((value) {
+        _taskBloc.completeTask(id: task.id).then((value) {
+          AuthenticationBlocController().authenticationBloc.add(GetUserData());
+          navigateTo(homeRoute);
+          JTToast.successToast(message: ScreenUtil.t(I18nKey.updateSuccess)!);
+        }).onError((ApiError error, stackTrace) {
+          JTToast.errorToast(message: showError(error.errorCode, context));
+        }).catchError(
+          (error, stackTrace) {
+            logDebug('catchError: $error');
+          },
+        );
+      }).onError((ApiError error, stackTrace) {
+        JTToast.errorToast(message: 'Ảnh không đúng định dạng');
+      }).catchError(
+        (error, stackTrace) {
+          logDebug('catchError: $error');
+        },
+      );
+    }).onError((ApiError error, stackTrace) {
+      JTToast.errorToast(message: 'Ảnh không đúng định dạng');
+    }).catchError(
+      (error, stackTrace) {
+        logDebug('catchError: $error');
+      },
     );
   }
 

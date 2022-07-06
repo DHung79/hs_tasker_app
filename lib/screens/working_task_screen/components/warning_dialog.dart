@@ -40,7 +40,7 @@ class _WarningDialogState extends State<WarningDialog> {
                   borderRadius: const BorderRadius.horizontal(
                     left: Radius.circular(10),
                   ),
-                  color: AppColor.others2,
+                  color: AppColor.others1,
                 ),
               ),
               Expanded(

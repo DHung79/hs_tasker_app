@@ -22,7 +22,7 @@ class _NewPostContentState extends State<NewPostContent> {
 
   @override
   void initState() {
-    _taskBloc.fetchAllData({});
+    _taskBloc.fetchAllData({'status': 0});
     super.initState();
   }
 

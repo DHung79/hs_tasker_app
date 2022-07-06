@@ -16,6 +16,7 @@ class TaskApiProvider {
       params.forEach((key, value) => queries.add('$key=$value'));
       path += '?' + queries.join('&');
     }
+    logDebug('path: $path');
     final token = await ApiHelper.getUserToken();
     final response = await RestApiHandlerData.getData<T>(
       path: path,
@@ -100,7 +101,7 @@ class TaskApiProvider {
     final body = convert.jsonEncode({});
     logDebug('path: $path\nbody: $body');
     final token = await ApiHelper.getUserToken();
-    final response = await RestApiHandlerData.putData<T>(
+    final response = await RestApiHandlerData.postData<T>(
       path: path,
       body: body,
       headers: ApiHelper.headers(token),
@@ -118,9 +119,8 @@ class TaskApiProvider {
         ApiConstants.tasker +
         '/$id';
     final body = convert.jsonEncode({});
-    logDebug('path: $path');
     final token = await ApiHelper.getUserToken();
-    final response = await RestApiHandlerData.deleteData<T>(
+    final response = await RestApiHandlerData.putData<T>(
       path: path,
       body: body,
       headers: ApiHelper.headers(token),
@@ -141,6 +141,49 @@ class TaskApiProvider {
     logDebug('path: $path\nbody: $body');
     final token = await ApiHelper.getUserToken();
     final response = await RestApiHandlerData.putData<T>(
+      path: path,
+      body: body,
+      headers: ApiHelper.headers(token),
+    );
+    return response;
+  }
+
+  Future<ApiResponse<T?>> uploadListImage<T extends BaseModel>({
+    required String id,
+    required bool isBefore,
+    required List<String> filesPath,
+  }) async {
+    final apiKey = isBefore ? '/upload-before' : '/upload-after';
+    final path = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.tasks +
+        apiKey +
+        '/$id';
+    final body = convert.jsonEncode({});
+    logDebug('path: $path\nbody: $body');
+    final token = await ApiHelper.getUserToken();
+    final response = await RestApiHandlerData.putUpload<T>(
+      path: path,
+      headers: ApiHelper.upload(token),
+      field: isBefore ? 'list_pictures_before' : 'list_pictures_after',
+      filesPath: filesPath,
+    );
+    return response;
+  }
+
+  Future<ApiResponse<T?>> completeTask<T extends BaseModel>({
+    required String id,
+  }) async {
+    final path = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.tasks +
+        ApiConstants.tasker +
+        '/complete' +
+        '/$id';
+    final body = convert.jsonEncode({});
+    logDebug('path: $path\nbody: $body');
+    final token = await ApiHelper.getUserToken();
+    final response = await RestApiHandlerData.postData<T>(
       path: path,
       body: body,
       headers: ApiHelper.headers(token),

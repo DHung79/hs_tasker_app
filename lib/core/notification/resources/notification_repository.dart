@@ -25,4 +25,9 @@ class NotificationRepository {
 
   Future<ApiResponse<T?>> notiReadAll<T extends BaseModel>() =>
       _provider.notiReadAll<T>();
+
+  Future<bool> removeFcmToken<T extends BaseModel>({
+    required String fcmToken,
+  }) =>
+      _provider.removeFcmToken(fcmToken: fcmToken);
 }

@@ -106,7 +106,6 @@ void registerNotification({
   }
 
   //Get FCM token
-  logDebug(_messaging.app.options.iosBundleId);
   _messaging.getToken().then(
     (fcmToken) {
       logDebug('fcmToken: $fcmToken');
