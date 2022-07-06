@@ -75,7 +75,6 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
       builder: (context, AsyncSnapshot<ApiResponse<TaskModel?>> snapshot) {
         if (snapshot.hasData) {
           final task = snapshot.data!.model!;
-
           return Scaffold(
             backgroundColor: AppColor.shade1,
             appBar: PreferredSize(

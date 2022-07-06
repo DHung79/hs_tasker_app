@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
-import '../../core/base/models/upload_image.dart';
 import '../../core/task/task.dart';
 import '../../main.dart';
 import '../../widgets/confirm_dialog.dart';
