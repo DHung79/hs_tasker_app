@@ -93,7 +93,7 @@ class AuthenticationBloc
     );
 
     on<TokenExpired>((event, emit) async {
-      _cleanupCache();
+      await _cleanupCache();
       emit(UserTokenExpired());
     });
 
@@ -113,7 +113,7 @@ class AuthenticationBloc
       final SharedPreferences sharedPreferences = await prefs;
       final token = sharedPreferences.getString('authtoken');
       if (token == null || token.isEmpty) {
-        _cleanupCache();
+        await _cleanupCache();
         emit(AuthenticationStart());
       } else {
         await sharedPreferences.reload();
@@ -132,10 +132,7 @@ class AuthenticationBloc
           }
         }
         if (_isExpired) {
-          // if (currentFcmToken != null && currentFcmToken!.isNotEmpty) {
-          //   await authenticationService.removeFcmToken(currentFcmToken!);
-          // }
-          _cleanupCache();
+          await _cleanupCache();
           emit(UserTokenExpired());
         } else {
           final userJson = sharedPreferences.getString('userJson');
@@ -168,7 +165,7 @@ class AuthenticationBloc
             final account = await TaskerBloc().getProfile();
             // ignore: unnecessary_null_comparison
             if (account == null) {
-              _cleanupCache();
+              await _cleanupCache();
               emit(UserTokenExpired());
             } else {
               final json = account.toJson();
