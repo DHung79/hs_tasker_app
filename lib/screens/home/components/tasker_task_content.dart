@@ -67,7 +67,7 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
               _upComingTasks.addAll(tasks);
               _upComingTasks.removeWhere(
                   (e) => _nearestTasks.where((n) => n.id == e.id).isNotEmpty);
-              if (_nearestTasks.isNotEmpty && _upComingTasks.isNotEmpty) {
+              if (_nearestTasks.isNotEmpty || _upComingTasks.isNotEmpty) {
                 return ListView(
                   shrinkWrap: true,
                   physics: const ClampingScrollPhysics(),

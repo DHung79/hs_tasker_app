@@ -351,8 +351,15 @@ class _EditTaskerProfileScreenState extends State<EditTaskerProfileScreen> {
                       });
                     },
                     validator: (value) {
-                      if (value!.trim().isEmpty) {
-                        return ValidatorText.empty(fieldName: 'số điện thoại');
+                      if (value!.isEmpty || value.trim().isEmpty) {
+                        return ValidatorText.empty(
+                            fieldName: ScreenUtil.t(I18nKey.phoneNumber)!);
+                      }
+                      String pattern =
+                          r'^(\+843|\+845|\+847|\+848|\+849|\+841|03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$';
+                      RegExp regExp = RegExp(pattern);
+                      if (!regExp.hasMatch(value)) {
+                        return ScreenUtil.t(I18nKey.invalidPhoneNumber)!;
                       }
                       return null;
                     },

@@ -198,5 +198,6 @@ class TaskBloc {
   dispose() {
     _allDataFetcher.close();
     _allDataState.close();
+    _taskDataFetcher.close();
   }
 }
