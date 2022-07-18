@@ -109,9 +109,6 @@ class _NewPostContentState extends State<NewPostContent> {
   }
 
   Widget _taskContent(TaskModel task) {
-    final start = DateTime.fromMillisecondsSinceEpoch(task.startTime);
-    final end = DateTime.fromMillisecondsSinceEpoch(task.endTime);
-    final estimateTime = end.difference(start).inHours;
     final date = formatFromInt(
       value: task.date,
       context: context,
@@ -119,11 +116,6 @@ class _NewPostContentState extends State<NewPostContent> {
     );
     final startTime = formatFromInt(
       value: task.startTime,
-      context: context,
-      displayedFormat: 'HH:mm',
-    );
-    final endTime = formatFromInt(
-      value: task.endTime,
       context: context,
       displayedFormat: 'HH:mm',
     );
@@ -144,7 +136,8 @@ class _NewPostContentState extends State<NewPostContent> {
                     flex: 1,
                     child: _contentHeader(
                       headerTitle: 'Thời lượng',
-                      contentTitle: '$estimateTime tiếng ($startTime)',
+                      contentTitle:
+                          '${task.selectedOption.quantity} tiếng ($startTime)',
                     ),
                   ),
                   VerticalDivider(
@@ -166,7 +159,7 @@ class _NewPostContentState extends State<NewPostContent> {
         JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.time,
           headerTitle: 'Thời gian làm',
-          contentTitle: '$date, từ $startTime đến $endTime',
+          contentTitle: '$date, từ $startTime',
         ),
         JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.locationOutline,

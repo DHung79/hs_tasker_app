@@ -28,6 +28,7 @@ class TaskModel extends BaseModel {
   final int _totalPrice;
   final List<String> _listPicturesBefore = [];
   final List<String> _listPicturesAfter = [];
+  final OptionModel _selectedOption;
 
   TaskModel.fromJson(Map<String, dynamic> json)
       : _location = BaseModel.map<LocationModel>(
@@ -45,6 +46,10 @@ class TaskModel extends BaseModel {
         _service = BaseModel.map<ServiceModel>(
           json: json,
           key: 'service',
+        ),
+        _selectedOption = BaseModel.map<OptionModel>(
+          json: json,
+          key: 'selected_option',
         ),
         __id = json['_id'] ?? '',
         _address = json['address'] ?? '',
@@ -112,6 +117,7 @@ class TaskModel extends BaseModel {
         'total_price': _totalPrice,
         'list_pictures_before': _listPicturesBefore,
         'list_pictures_after': _listPicturesAfter,
+        'selected_option': _selectedOption.toJson(),
       };
   LocationModel get location => _location;
   UserModel get user => _user;
@@ -136,6 +142,7 @@ class TaskModel extends BaseModel {
   int get totalPrice => _totalPrice;
   List<String> get listPicturesBefore => _listPicturesBefore;
   List<String> get listPicturesAfter => _listPicturesAfter;
+  OptionModel get selectedOption => _selectedOption;
 }
 
 class LocationModel extends BaseModel {

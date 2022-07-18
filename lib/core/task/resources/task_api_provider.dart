@@ -183,7 +183,7 @@ class TaskApiProvider {
     final body = convert.jsonEncode({});
     logDebug('path: $path\nbody: $body');
     final token = await ApiHelper.getUserToken();
-    final response = await RestApiHandlerData.postData<T>(
+    final response = await RestApiHandlerData.putData<T>(
       path: path,
       body: body,
       headers: ApiHelper.headers(token),

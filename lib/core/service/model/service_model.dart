@@ -11,7 +11,7 @@ class ServiceModel extends BaseModel {
   final int _createdTime;
   final int _updatedTime;
   final List<TranslationModel> _translations = [];
-  final List<OptionsModel> _options = [];
+  final List<OptionModel> _options = [];
 
   ServiceModel.fromJson(Map<String, dynamic> json)
       : __id = json['_id'] ?? '',
@@ -29,7 +29,7 @@ class ServiceModel extends BaseModel {
       json: json,
       key: 'translation',
     ));
-    _options.addAll(BaseModel.mapList<OptionsModel>(
+    _options.addAll(BaseModel.mapList<OptionModel>(
       json: json,
       key: 'options',
     ));
@@ -57,7 +57,7 @@ class ServiceModel extends BaseModel {
   int get createdTime => _createdTime;
   int get updatedTime => _updatedTime;
   List<TranslationModel> get translations => _translations;
-  List<OptionsModel> get options => _options;
+  List<OptionModel> get options => _options;
 }
 
 class EditServiceModel extends EditBaseModel {
@@ -70,7 +70,7 @@ class EditServiceModel extends EditBaseModel {
   int createdTime = 0;
   int updatedTime = 0;
   List<TranslationModel> translations = [];
-  List<OptionsModel> options = [];
+  List<OptionModel> options = [];
 
   EditServiceModel.fromModel(ServiceModel? model) {
     id = model?.id ?? '';
@@ -170,7 +170,7 @@ class TranslationModel extends BaseModel {
   String get id => __id;
 }
 
-class OptionsModel extends BaseModel {
+class OptionModel extends BaseModel {
   final String _name;
   final int _price;
   final int _quantity;
@@ -178,7 +178,7 @@ class OptionsModel extends BaseModel {
   final UnitModel _unit;
   final String __id;
 
-  OptionsModel.fromJson(Map<String, dynamic> json)
+  OptionModel.fromJson(Map<String, dynamic> json)
       : _name = json['name'] ?? '',
         _price = json['price'] ?? 0,
         _quantity = json['quantity'] ?? 0,

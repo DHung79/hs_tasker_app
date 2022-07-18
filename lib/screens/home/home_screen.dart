@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:hs_tasker_app/routes/route_names.dart';
-import 'package:hs_tasker_app/screens/home/components/history_content.dart';
-import 'package:hs_tasker_app/screens/home/components/new_post_content.dart';
-import 'package:hs_tasker_app/screens/home/components/tasker_task_content.dart';
+import '/routes/route_names.dart';
+import '/screens/home/components/history_content.dart';
+import '/screens/home/components/new_post_content.dart';
+import '/screens/home/components/tasker_task_content.dart';
 import '../../main.dart';
 import '../../widgets/jt_indicator.dart';
 import '../layout_template/content_screen.dart';

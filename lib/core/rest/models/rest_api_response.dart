@@ -70,8 +70,8 @@ class BaseModel {
     if (T == TranslationModel) {
       return TranslationModel.fromJson(json) as T;
     }
-    if (T == OptionsModel) {
-      return OptionsModel.fromJson(json) as T;
+    if (T == OptionModel) {
+      return OptionModel.fromJson(json) as T;
     }
     if (T == UnitModel) {
       return UnitModel.fromJson(json) as T;
