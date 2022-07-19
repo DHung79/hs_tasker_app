@@ -127,7 +127,13 @@ class _OTPScreenState extends State<OTPScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24),
-                      child: _buildErrorMessage(),
+                      child: Center(
+                        child: Text(
+                          _errorMessage!,
+                          style:
+                              AppTextTheme.normalHeaderTitle(AppColor.others1),
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 6),
@@ -139,6 +145,8 @@ class _OTPScreenState extends State<OTPScreen> {
                         textStyle: AppTextTheme.bigText(AppColor.white),
                         animationType: AnimationType.fade,
                         animationDuration: const Duration(milliseconds: 250),
+                        enablePinAutofill: false,
+                        enableActiveFill: false,
                         autoFocus: true,
                         autoDismissKeyboard: false,
                         cursorColor: AppColor.white,
@@ -265,17 +273,6 @@ class _OTPScreenState extends State<OTPScreen> {
       });
     });
     AuthenticationBlocController().authenticationBloc.add(ResendOTP());
-  }
-
-  Widget _buildErrorMessage() {
-    return _errorMessage != null && _errorMessage!.isNotEmpty
-        ? Center(
-            child: Text(
-              _errorMessage!,
-              style: AppTextTheme.normalHeaderTitle(AppColor.others1),
-            ),
-          )
-        : const SizedBox();
   }
 
   _showError(String errorCode) {

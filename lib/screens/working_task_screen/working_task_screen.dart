@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import 'package:hs_tasker_app/screens/working_task_screen/components/warning_dialog.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import '../../core/base/models/upload_image.dart';
 import '../../widgets/confirm_dialog.dart';
 import '../../widgets/cancel_task_dialog.dart';
@@ -301,7 +302,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
             child: JTTaskDetail.taskDetailBox(
               svgIcon: SvgIcons.locationOutline,
               headerTitle: 'Địa chỉ',
-              contentTitle: task.address,
+              contentTitle: task.address.name,
               boxColor: AppColor.shade2,
               button: AppButtonTheme.fillRounded(
                 constraints: const BoxConstraints(minHeight: 44),
@@ -326,8 +327,8 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
                 ]),
                 onPressed: () {
                   openMap(
-                    lat: double.tryParse(task.location.lat)!,
-                    long: double.tryParse(task.location.long)!,
+                    lat: double.tryParse(task.address.lat)!,
+                    long: double.tryParse(task.address.long)!,
                   );
                 },
               ),
@@ -642,13 +643,15 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
         barrierDismissible: false,
         barrierColor: Colors.black12,
         builder: (BuildContext context) {
+          final price =
+              NumberFormat('#,##0 VND', 'vi').format(task.selectedOption.price);
           return CancelTaskDialog(
               task: task,
               contentHeader: Text(
                 'Bạn có chắc chắn hủy công việc?',
                 style: AppTextTheme.normalText(AppColor.black),
               ),
-              accountBalances: '${task.totalPrice} VND',
+              accountBalances: price,
               onConfirmed: () {
                 _cancelTask(task);
               });
@@ -673,6 +676,8 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
     required TaskModel task,
   }) {
     return LayoutBuilder(builder: (context, size) {
+      final price =
+          NumberFormat('#,##0 VND', 'vi').format(task.selectedOption.price);
       return Container(
         color: AppColor.white,
         child: Column(
@@ -681,7 +686,7 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
               padding: const EdgeInsets.all(16),
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Tổng tiền',
-                contentTitle: task.totalPrice.toString(),
+                contentTitle: price,
                 svgIcon: SvgIcons.dollar,
               ),
             ),

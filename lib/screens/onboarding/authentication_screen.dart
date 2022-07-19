@@ -12,6 +12,7 @@ class AuthenticationScreen extends StatefulWidget {
 }
 
 class _AuthenticationScreenState extends State<AuthenticationScreen> {
+  String? _errorMessage = '';
   @override
   void initState() {
     AuthenticationBlocController().authenticationBloc.add(AppLoadedup());
@@ -42,12 +43,25 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   children: [
                     SizedBox(
                       height: size.maxHeight / 3,
-                      child: Image.asset(
-                        'assets/images/logo.png',
-                        fit: BoxFit.fitWidth,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Center(
+                            child: Image.asset(
+                              'assets/images/logo.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          _buildErrorMessage(),
+                        ],
                       ),
                     ),
-                    LoginForm(state: state),
+                    LoginForm(
+                      state: state,
+                      onError: (error) {
+                        _errorMessage = error;
+                      },
+                    ),
                     const Spacer(),
                   ],
                 );
@@ -59,6 +73,19 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     );
   }
 
+  Widget _buildErrorMessage() {
+    return _errorMessage != null && _errorMessage!.isNotEmpty
+        ? Padding(
+            padding: const EdgeInsets.only(bottom: 24),
+            child: Center(
+              child: Text(
+                _errorMessage!,
+                style: AppTextTheme.normalHeaderTitle(AppColor.others1),
+              ),
+            ),
+          )
+        : const SizedBox();
+  }
   // String _getLanguage() {
   //   switch (App.of(context)!.currentLocale.languageCode) {
   //     case 'vi':

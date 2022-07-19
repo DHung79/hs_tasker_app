@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
+import 'package:intl/intl.dart';
 import '../../core/task/task.dart';
 import '../../main.dart';
 import '../../widgets/confirm_dialog.dart';
@@ -24,7 +25,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
   final _scrollController = ScrollController();
   final _taskBloc = TaskBloc();
   final completeStatus = 2;
-  
+
   @override
   void initState() {
     AuthenticationBlocController().authenticationBloc.add(AppLoadedup());
@@ -243,11 +244,13 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
       context: context,
       displayedFormat: 'HH:mm',
     );
-    final endTime = formatFromInt(
-      value: task.endTime,
-      context: context,
-      displayedFormat: 'HH:mm',
-    );
+    // final endTime = formatFromInt(
+    //   value: task.endTime,
+    //   context: context,
+    //   displayedFormat: 'HH:mm',
+    // );
+    final price =
+        NumberFormat('#,##0 VND', 'vi').format(task.selectedOption.price);
     return Container(
       constraints: const BoxConstraints(minHeight: 352),
       decoration: BoxDecoration(color: AppColor.white),
@@ -300,7 +303,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               padding: const EdgeInsets.only(bottom: 16),
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Tổng tiền',
-                contentTitle: '${task.totalPrice} VND',
+                contentTitle: price,
                 svgIcon: SvgIcons.dollar,
               ),
             ),
@@ -308,7 +311,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               padding: const EdgeInsets.only(bottom: 16),
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Thời gian làm',
-                contentTitle: '$date, từ $startTime đến $endTime',
+                contentTitle: '$date, từ $startTime',
                 svgIcon: SvgIcons.time,
               ),
             ),
@@ -316,7 +319,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               padding: const EdgeInsets.only(bottom: 16),
               child: JTTaskDetail.taskDetail(
                 headerTitle: 'Địa chỉ',
-                contentTitle: task.address,
+                contentTitle: task.address.name,
                 svgIcon: SvgIcons.locationOutline,
               ),
             ),

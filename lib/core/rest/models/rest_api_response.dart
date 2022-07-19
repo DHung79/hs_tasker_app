@@ -64,17 +64,14 @@ class BaseModel {
       return ListServiceModel.fromJson(json) as T;
     }
 
-    if (T == CategoryModel) {
-      return CategoryModel.fromJson(json) as T;
+    if (T == PaymentModel) {
+      return PaymentModel.fromJson(json) as T;
     }
     if (T == TranslationModel) {
       return TranslationModel.fromJson(json) as T;
     }
     if (T == OptionModel) {
       return OptionModel.fromJson(json) as T;
-    }
-    if (T == UnitModel) {
-      return UnitModel.fromJson(json) as T;
     }
     if (T == TaskModel) {
       return TaskModel.fromJson(json) as T;
@@ -109,7 +106,10 @@ class BaseModel {
     if (T == NotificationListModel) {
       return NotificationListModel.fromJson(json) as T;
     }
-    
+    if (T == AddressModel) {
+      return AddressModel.fromJson(json) as T;
+    }
+
     logError("Unknown BaseModel class: $T");
     throw Exception("Unknown BaseModel class: $T");
   }

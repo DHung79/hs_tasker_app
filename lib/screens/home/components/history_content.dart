@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../../routes/route_names.dart';
 import '../../../core/task/task.dart';
 import '../../../main.dart';
@@ -153,34 +154,36 @@ class _HistoryContentState extends State<HistoryContent> {
       context: context,
       displayedFormat: 'HH:mm',
     );
-    final endTime = formatFromInt(
-      value: task.endTime,
-      context: context,
-      displayedFormat: 'HH:mm',
-    );
+    // final endTime = formatFromInt(
+    //   value: task.endTime,
+    //   context: context,
+    //   displayedFormat: 'HH:mm',
+    // );
     final date = formatFromInt(
       value: task.date,
       context: context,
       displayedFormat: 'dd/MM/yyyy',
     );
+    final price =
+        NumberFormat('#,##0 VND', 'vi').format(task.selectedOption.price);
     return Column(
       children: [
         JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.dollar,
           headerTitle: 'Tổng tiền',
-          contentTitle: '${task.totalPrice} VND',
+          contentTitle: price,
           backgroundColor: AppColor.shade2,
         ),
         JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.time,
           headerTitle: 'Thời gian',
-          contentTitle: 'Từ $startTime đến $endTime, $date',
+          contentTitle: 'Từ $startTime, $date',
           backgroundColor: AppColor.shade2,
         ),
         JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.locationOutline,
           headerTitle: 'Địa chỉ',
-          contentTitle: task.address,
+          contentTitle: task.address.name,
           backgroundColor: AppColor.shade2,
         ),
         Padding(

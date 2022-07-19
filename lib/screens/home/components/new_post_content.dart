@@ -7,6 +7,7 @@ import '../../../widgets/display_date_time.dart';
 import '../../../widgets/jt_task_detail.dart';
 import 'home_task.dart';
 import '../../../main.dart';
+import 'package:intl/intl.dart';
 
 class NewPostContent extends StatefulWidget {
   const NewPostContent({
@@ -119,6 +120,11 @@ class _NewPostContentState extends State<NewPostContent> {
       context: context,
       displayedFormat: 'HH:mm',
     );
+    final price =
+        NumberFormat('#,##0 VND', 'vi').format(task.selectedOption.price);
+    final optionType = getOptionType(task.service.optionType).toLowerCase();
+    final startTimeContent =
+        '${task.selectedOption.quantity} $optionType, $startTime';
     return Column(
       children: [
         Container(
@@ -136,8 +142,7 @@ class _NewPostContentState extends State<NewPostContent> {
                     flex: 1,
                     child: _contentHeader(
                       headerTitle: 'Thời lượng',
-                      contentTitle:
-                          '${task.selectedOption.quantity} tiếng ($startTime)',
+                      contentTitle: startTimeContent,
                     ),
                   ),
                   VerticalDivider(
@@ -148,7 +153,7 @@ class _NewPostContentState extends State<NewPostContent> {
                     flex: 1,
                     child: _contentHeader(
                       headerTitle: 'Tổng tiền (VND)',
-                      contentTitle: '${task.totalPrice}',
+                      contentTitle: price,
                     ),
                   ),
                 ],
@@ -164,7 +169,7 @@ class _NewPostContentState extends State<NewPostContent> {
         JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.locationOutline,
           headerTitle: 'Địa chỉ',
-          contentTitle: task.address,
+          contentTitle: task.address.name,
         ),
       ],
     );

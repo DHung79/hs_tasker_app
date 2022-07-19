@@ -90,7 +90,7 @@ String showError(String errorCode, BuildContext context, {String? fieldName}) {
       message = ScreenUtil.t(I18nKey.invalidToken)!;
       break;
     case '1000':
-      message = ScreenUtil.t(I18nKey.invalidEmailOrPassword)!;
+      message = 'Sai tài khoản hoặc mật khẩu';
       break;
     case '1001':
       message = ScreenUtil.t(I18nKey.userNotFound)!;

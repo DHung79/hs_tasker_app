@@ -7,7 +7,12 @@ import '../../widgets/jt_text_form_field.dart';
 
 class LoginForm extends StatefulWidget {
   final AuthenticationState? state;
-  const LoginForm({Key? key, this.state}) : super(key: key);
+  final Function(String?) onError;
+  const LoginForm({
+    Key? key,
+    this.state,
+    required this.onError,
+  }) : super(key: key);
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -65,7 +70,6 @@ class _LoginFormState extends State<LoginForm> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      _buildErrorMessage(),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6),
                         child: JTTextFormField(
@@ -79,6 +83,7 @@ class _LoginFormState extends State<LoginForm> {
                             setState(() {
                               if (_errorMessage!.isNotEmpty) {
                                 _errorMessage = '';
+                                widget.onError(_errorMessage);
                               }
                             });
                           },
@@ -114,6 +119,7 @@ class _LoginFormState extends State<LoginForm> {
                             setState(() {
                               if (_errorMessage!.isNotEmpty) {
                                 _errorMessage = '';
+                                widget.onError(_errorMessage);
                               }
                             });
                           },
@@ -197,6 +203,7 @@ class _LoginFormState extends State<LoginForm> {
   _login() {
     setState(() {
       _errorMessage = '';
+      widget.onError(_errorMessage);
     });
     if (widget.state is AuthenticationLoading) return;
 
@@ -217,23 +224,10 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
-  Widget _buildErrorMessage() {
-    return _errorMessage != null && _errorMessage!.isNotEmpty
-        ? Padding(
-            padding: const EdgeInsets.only(bottom: 24),
-            child: Center(
-              child: Text(
-                _errorMessage!,
-                style: AppTextTheme.normalHeaderTitle(AppColor.others1),
-              ),
-            ),
-          )
-        : const SizedBox();
-  }
-
   _showError(String errorCode) async {
     setState(() {
       _errorMessage = showError(errorCode, context);
+      widget.onError(_errorMessage);
     });
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
+import 'package:intl/intl.dart';
 import '../../widgets/cancel_task_dialog.dart';
 import '../../widgets/contact_dialog.dart';
 import '../../widgets/jt_task_detail.dart';
@@ -266,6 +267,8 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
       context: context,
       displayedFormat: 'HH:mm',
     );
+    final price =
+        NumberFormat('#,##0 VND', 'vi').format(task.selectedOption.price);
     return Container(
       color: AppColor.white,
       child: Column(children: [
@@ -274,7 +277,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
           child: JTTaskDetail.taskDetailBox(
             svgIcon: SvgIcons.locationOutline,
             headerTitle: 'Địa chỉ',
-            contentTitle: task.address,
+            contentTitle: task.address.name,
             boxColor: AppColor.shade2,
             button: AppButtonTheme.fillRounded(
               constraints: const BoxConstraints(minHeight: 44),
@@ -342,7 +345,7 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
           child: JTTaskDetail.taskDetail(
             svgIcon: SvgIcons.dollar,
             headerTitle: 'Tổng tiền',
-            contentTitle: '${task.totalPrice} VND',
+            contentTitle: price,
             backgroundColor: AppColor.shade2,
           ),
         ),
@@ -418,13 +421,15 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
         barrierDismissible: false,
         barrierColor: Colors.black12,
         builder: (BuildContext context) {
+          final price =
+              NumberFormat('#,##0 VND', 'vi').format(task.selectedOption.price);
           return CancelTaskDialog(
               task: task,
               contentHeader: Text(
                 'Bạn có chắc chắn hủy công việc?',
                 style: AppTextTheme.normalText(AppColor.black),
               ),
-              accountBalances: '${task.totalPrice} VND',
+              accountBalances: price,
               onConfirmed: () {
                 _cancelTask(task);
               });

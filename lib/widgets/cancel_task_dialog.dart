@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../../core/task/task.dart';
 import '../../../main.dart';
 import '../../../widgets/jt_dialog.dart';
@@ -25,6 +26,8 @@ class CancelTaskDialog extends StatefulWidget {
 class _CancelTaskDialogState extends State<CancelTaskDialog> {
   @override
   Widget build(BuildContext context) {
+    final price = NumberFormat('#,##0 VND', 'vi')
+        .format(widget.task.selectedOption.price);
     return JTDialog(
       header: Padding(
         padding: const EdgeInsets.only(top: 24),
@@ -66,7 +69,7 @@ class _CancelTaskDialogState extends State<CancelTaskDialog> {
                     ),
                   ),
                   Text(
-                    '${widget.task.totalPrice} VND',
+                    price,
                     style: AppTextTheme.normalText(AppColor.others1),
                   ),
                 ],

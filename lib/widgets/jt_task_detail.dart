@@ -2,6 +2,19 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../main.dart';
 
+String getOptionType(int type) {
+  switch (type) {
+    case 0:
+      return 'Giờ';
+    case 1:
+      return 'Phòng';
+    case 2:
+      return 'Khác';
+    default:
+      return 'Giờ';
+  }
+}
+
 class JTTaskDetail {
   static Widget taskDetail({
     IconData? icon,

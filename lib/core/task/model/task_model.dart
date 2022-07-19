@@ -5,12 +5,11 @@ import '../../tasker/tasker.dart';
 import '../../user/model/user_model.dart';
 
 class TaskModel extends BaseModel {
-  final LocationModel _location;
+  final AddressModel _address;
   final UserModel _user;
   final TaskerModel _tasker;
   final ServiceModel _service;
   final String __id;
-  final String _address;
   final String _estimateTime;
   final int _startTime;
   final int _endTime;
@@ -31,9 +30,9 @@ class TaskModel extends BaseModel {
   final OptionModel _selectedOption;
 
   TaskModel.fromJson(Map<String, dynamic> json)
-      : _location = BaseModel.map<LocationModel>(
+      : _address = BaseModel.map<AddressModel>(
           json: json,
-          key: 'location_gps',
+          key: 'address',
         ),
         _user = BaseModel.map<UserModel>(
           json: json,
@@ -52,7 +51,6 @@ class TaskModel extends BaseModel {
           key: 'selected_option',
         ),
         __id = json['_id'] ?? '',
-        _address = json['address'] ?? '',
         _estimateTime = json['estimate_time'] ?? '',
         _startTime = json['start_time'] ?? 0,
         _endTime = json['end_time'] ?? 0,
@@ -94,12 +92,11 @@ class TaskModel extends BaseModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'location_gps': _location.toJson(),
+        'address': _address.toJson(),
         'posted_user': _user.toJson(),
         'tasker': _tasker.toJson(),
         'service': _service.toJson(),
         '_id': __id,
-        'address': _address,
         'estimate_time': _estimateTime,
         'start_time': _startTime,
         'end_time': _endTime,
@@ -119,12 +116,11 @@ class TaskModel extends BaseModel {
         'list_pictures_after': _listPicturesAfter,
         'selected_option': _selectedOption.toJson(),
       };
-  LocationModel get location => _location;
+  AddressModel get address => _address;
   UserModel get user => _user;
   TaskerModel get tasker => _tasker;
   ServiceModel get service => _service;
   String get id => __id;
-  String get address => _address;
   String get estimateTime => _estimateTime;
   int get startTime => _startTime;
   int get endTime => _endTime;
@@ -143,6 +139,26 @@ class TaskModel extends BaseModel {
   List<String> get listPicturesBefore => _listPicturesBefore;
   List<String> get listPicturesAfter => _listPicturesAfter;
   OptionModel get selectedOption => _selectedOption;
+}
+
+class AddressModel extends BaseModel {
+  String name;
+  String lat;
+  String long;
+  String location;
+
+  AddressModel.fromJson(Map<String, dynamic> json)
+      : name = json['name'] ?? '',
+        lat = json['lat'] ?? '',
+        long = json['long'] ?? '',
+        location = json['location'] ?? '';
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'lat': lat,
+        'long': long,
+        'location': location,
+      };
 }
 
 class LocationModel extends BaseModel {

@@ -60,7 +60,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24),
-                        child: _buildErrorMessage(),
+                        child: Center(
+                          child: Text(
+                            _errorMessage!,
+                            style: AppTextTheme.normalHeaderTitle(
+                                AppColor.others1),
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6),
@@ -177,17 +183,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         _autovalidate = AutovalidateMode.always;
       });
     }
-  }
-
-  Widget _buildErrorMessage() {
-    return _errorMessage != null && _errorMessage!.isNotEmpty
-        ? Center(
-            child: Text(
-              _errorMessage!,
-              style: AppTextTheme.normalHeaderTitle(AppColor.others1),
-            ),
-          )
-        : const SizedBox();
   }
 
   _showError(String errorCode) async {

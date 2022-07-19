@@ -102,7 +102,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24),
-                        child: _buildErrorMessage(),
+                        child: Center(
+                          child: Text(
+                            _errorMessage,
+                            style: AppTextTheme.normalHeaderTitle(
+                                AppColor.others1),
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6),
@@ -187,17 +193,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         _autovalidate = AutovalidateMode.always;
       });
     }
-  }
-
-  Widget _buildErrorMessage() {
-    return _errorMessage.isNotEmpty
-        ? Center(
-            child: Text(
-              _errorMessage,
-              style: AppTextTheme.normalHeaderTitle(AppColor.others1),
-            ),
-          )
-        : const SizedBox();
   }
 
   _showError(String errorCode) async {

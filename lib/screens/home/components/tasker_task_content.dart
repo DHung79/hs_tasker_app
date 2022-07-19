@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../../routes/route_names.dart';
 import '../../../widgets/display_date_time.dart';
 import '../../../widgets/jt_indicator.dart';
@@ -287,6 +288,8 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
       context: context,
       displayedFormat: 'E, dd/MM/yyyy',
     );
+    final price =
+        NumberFormat('#,##0 VND', 'vi').format(task.selectedOption.price);
     return Column(
       children: [
         _taskDetail(
@@ -299,11 +302,11 @@ class _TaskerTaskContentState extends State<TaskerTaskContent> {
         ),
         _taskDetail(
           svgIcon: SvgIcons.locationOutline,
-          title: task.address,
+          title: task.address.name,
         ),
         _taskDetail(
           svgIcon: SvgIcons.dollar,
-          title: '${task.totalPrice} VND',
+          title: price,
         ),
       ],
     );
