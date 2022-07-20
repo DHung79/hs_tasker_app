@@ -140,7 +140,7 @@ Widget getStatusText(TaskModel task) {
     case 1:
       final date = DateTime.fromMillisecondsSinceEpoch(task.date);
       if (date.difference(now).inDays <= 0 &&
-          task.startTime <= now.millisecondsSinceEpoch) {
+          task.startTime > now.millisecondsSinceEpoch) {
         return Text(
           'Đã nhận',
           style: AppTextTheme.mediumBodyText(AppColor.text3),

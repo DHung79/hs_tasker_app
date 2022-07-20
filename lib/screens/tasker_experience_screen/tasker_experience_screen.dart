@@ -166,15 +166,22 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
               RatingBar.builder(
                 ignoreGestures: true,
                 allowHalfRating: true,
-                initialRating: 4.5,
+                initialRating: tasker.totalRating,
                 minRating: 1,
                 itemCount: 5,
                 itemSize: 24,
                 direction: Axis.horizontal,
                 itemPadding: const EdgeInsets.symmetric(horizontal: 6),
-                itemBuilder: (context, _) {
+                unratedColor: AppColor.primary2,
+                itemBuilder: (context, index) {
+                  final isOutRate = tasker.totalRating.ceil() < index + 1;
+                  final isHalf = tasker.totalRating.ceil() == index + 1;
                   return SvgIcon(
-                    SvgIcons.star,
+                    isOutRate
+                        ? SvgIcons.starOutline
+                        : isHalf
+                            ? SvgIcons.starHalf
+                            : SvgIcons.star,
                     color: AppColor.primary2,
                   );
                 },

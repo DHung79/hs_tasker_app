@@ -109,7 +109,12 @@ class BaseModel {
     if (T == AddressModel) {
       return AddressModel.fromJson(json) as T;
     }
-
+    if (T == ReviewModel) {
+      return ReviewModel.fromJson(json) as T;
+    }
+    if (T == MedalModel) {
+      return MedalModel.fromJson(json) as T;
+    }
     logError("Unknown BaseModel class: $T");
     throw Exception("Unknown BaseModel class: $T");
   }
@@ -162,18 +167,15 @@ class BaseModel {
 
 class EditBaseModel {
   static T fromModel<T extends EditBaseModel>(BaseModel model) {
+    if (model is EditTaskModel) {
+      return EditTaskModel.fromModel(model as TaskModel) as T;
+    }
     if (T == EditServiceModel) {
       return EditServiceModel.fromModel(model as ServiceModel) as T;
     }
-    // if (model is EditRoleModel) {
-    //   return EditRoleModel.fromModel(model as RoleModel) as T;
-    // }
-    // if (T == EditVehicleModel) {
-    //   return EditVehicleModel.fromModel(model as VehicleEventModel) as T;
-    // }
-    // if (T == EditFaceRoleModel) {
-    //   return EditFaceRoleModel.fromModel(model as FaceUserModel) as T;
-    // }
+    if (T == EditUserModel) {
+      return EditUserModel.fromModel(model as UserModel) as T;
+    }
     logError("Unknown EditBaseModel class: $T");
     throw Exception("Unknown EditBaseModel class: $T");
   }
@@ -182,12 +184,6 @@ class EditBaseModel {
     if (model is EditServiceModel) {
       return model.toCreateJson();
     }
-    // if (model is EditUserModel) {
-    //   return model.toCreateJson();
-    // }
-    // if (model is EditRoleModel) {
-    //   return model.toCreateJson();
-    // }
     return {};
   }
 
