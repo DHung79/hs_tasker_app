@@ -41,8 +41,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: size.maxHeight / 3,
+                    Container(
+                      constraints: const BoxConstraints(minHeight: 200),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -52,15 +52,25 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          _buildErrorMessage(),
+                          Center(
+                            child: Text(
+                              _errorMessage!,
+                              style: AppTextTheme.normalHeaderTitle(
+                                AppColor.others1,
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
-                    LoginForm(
-                      state: state,
-                      onError: (error) {
-                        _errorMessage = error;
-                      },
+                    Padding(
+                      padding: const EdgeInsets.only(top: 24),
+                      child: LoginForm(
+                        state: state,
+                        onError: (error) {
+                          _errorMessage = error;
+                        },
+                      ),
                     ),
                     const Spacer(),
                   ],
@@ -73,19 +83,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     );
   }
 
-  Widget _buildErrorMessage() {
-    return _errorMessage != null && _errorMessage!.isNotEmpty
-        ? Padding(
-            padding: const EdgeInsets.only(bottom: 24),
-            child: Center(
-              child: Text(
-                _errorMessage!,
-                style: AppTextTheme.normalHeaderTitle(AppColor.others1),
-              ),
-            ),
-          )
-        : const SizedBox();
-  }
   // String _getLanguage() {
   //   switch (App.of(context)!.currentLocale.languageCode) {
   //     case 'vi':
