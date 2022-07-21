@@ -143,6 +143,12 @@ String showError(String errorCode, BuildContext context, {String? fieldName}) {
     case '1017':
       message = ScreenUtil.t(I18nKey.emailDoesNotExist)!;
       break;
+    case '1020':
+      message = 'Không thể hoàn thành công việc';
+      break;
+    case '1021':
+      message = 'Bạn đã đánh giá';
+      break;
     case '1100':
       message = ScreenUtil.t(I18nKey.pageAndLimitShouldBeNumberic)!;
       break;
