@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 import '../screens/map_screen/map_screen.dart';
 import '../screens/change_password_screen/change_password_screen.dart';
 import '../screens/tasker_experience_screen/tasker_experience_screen.dart';
@@ -145,6 +146,7 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
   }
 
   void navigateTo(String name) {
+    preRoute = _routePath;
     _routePath = name;
     notifyListeners();
   }

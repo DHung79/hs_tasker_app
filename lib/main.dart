@@ -29,12 +29,17 @@ int notiBadges = 0;
 int homeTabIndex = 0;
 
 String? currentFcmToken;
+String preRoute = '';
 
 Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 GlobalKey globalKey = GlobalKey();
 
 navigateTo(String route) async {
   locator<AppRouterDelegate>().navigateTo(route);
+}
+
+String? getCurrentRoute() {
+  return locator<AppRouterDelegate>().currentConfiguration.name;
 }
 
 final List<Locale> supportedLocales = <Locale>[

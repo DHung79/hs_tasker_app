@@ -115,6 +115,10 @@ class BaseModel {
     if (T == MedalModel) {
       return MedalModel.fromJson(json) as T;
     }
+    if (T == FailureReasonModel) {
+      return FailureReasonModel.fromJson(json) as T;
+    }
+    
     logError("Unknown BaseModel class: $T");
     throw Exception("Unknown BaseModel class: $T");
   }

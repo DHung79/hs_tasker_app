@@ -68,102 +68,118 @@ class _PageTemplateState extends State<PageTemplate> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
-      bloc: _authenticationBloc,
-      listener: (BuildContext context, AuthenticationState state) async {
-        if (state is AuthenticationStart) {
-          navigateTo(authenticationRoute);
-        } else if (state is UserLogoutState) {
-          navigateTo(authenticationRoute);
-        } else if (state is AuthenticationFailure) {
-          _showError(state.errorCode);
-        } else if (state is UserTokenExpired) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                ScreenUtil.t(I18nKey.signInSessionExpired)!,
-              ),
-            ),
-          );
-          navigateTo(authenticationRoute);
-        } else if (state is AppAutheticated) {
-          _authenticationBloc.add(GetUserData());
-        } else if (state is SetUserData<TaskerModel>) {
-          _currentUser = Future.value(state.currentUser);
-          requestPermissionsLocal();
-          registerNotification(
-            getFcmToken: (fcmToken) {
-              currentFcmToken = fcmToken;
-            },
-            notificationInfo: _notificationInfo,
-          );
-          checkForInitialMessage(getNotification: (notification) {
-            setState(() {
-              _notificationInfo = notification;
-              // _totalNotifications++;
-            });
-          });
-          initLocalPushNotification();
-          // For handling notification when the app is in background
-          // but not terminated
-          FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-            PushNotification notification = PushNotification(
-              title: message.notification?.title,
-              body: message.notification?.body,
-              dataTitle: message.data['title'].toString(),
-              dataBody: message.data['body'].toString(),
-            );
-            setState(() {
-              _notificationInfo = notification;
-            });
-          });
+    return WillPopScope(
+      onWillPop: () async {
+        final listPageCanPop = [
+          initialRoute,
+          authenticationRoute,
+          homeRoute,
+        ];
+        final currentRoute = getCurrentRoute();
+        if (preRoute.isNotEmpty && !listPageCanPop.contains(currentRoute)) {
+          navigateTo(preRoute);
         }
+        return false;
       },
-      child: FutureBuilder(
-        future: _currentUser,
-        builder: (context, snapshot) {
-          return Scaffold(
-            key: _key,
-            backgroundColor: AppColor.white,
-            appBar: widget.showAppBar
-                ? PreferredSize(
-                    preferredSize: Size.fromHeight(widget.appBarHeight),
-                    child: widget.appBar ??
-                        AppBar(
-                          backgroundColor: AppColor.white,
-                          flexibleSpace: widget.flexibleSpace,
-                          centerTitle: widget.currentTab != 0,
-                          leading: widget.leading,
-                          actions: widget.actions,
-                          title: widget.tabTitle,
-                          elevation: widget.elevation,
-                        ),
-                  )
-                : null,
-            drawer: widget.drawer,
-            bottomNavigationBar: widget.navItem,
-            body: LayoutBuilder(
-              builder: (context, size) {
-                return BlocListener<AuthenticationBloc, AuthenticationState>(
-                  bloc: AuthenticationBlocController().authenticationBloc,
-                  listener: (BuildContext context, AuthenticationState state) {
-                    if (state is SetUserData<TaskerModel>) {
-                      widget.pageState!.currentUser = Future.value(
-                        state.currentUser,
-                      );
-                      // App.of(context)!.setLocale(
-                      //   supportedLocales.firstWhere(
-                      //       (e) => e.languageCode == state.currentLang),
-                      // );
-                      widget.onUserFetched(state.currentUser);
-                    }
-                  },
-                  child: widget.child,
-                );
+      child: BlocListener<AuthenticationBloc, AuthenticationState>(
+        bloc: _authenticationBloc,
+        listener: (BuildContext context, AuthenticationState state) async {
+          if (state is AuthenticationStart) {
+            navigateTo(authenticationRoute);
+          } else if (state is UserLogoutState) {
+            navigateTo(authenticationRoute);
+          } else if (state is AuthenticationFailure) {
+            _showError(state.errorCode);
+          } else if (state is UserTokenExpired) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  ScreenUtil.t(I18nKey.signInSessionExpired)!,
+                ),
+              ),
+            );
+            navigateTo(authenticationRoute);
+          } else if (state is AppAutheticated) {
+            _authenticationBloc.add(GetUserData());
+          } else if (state is SetUserData<TaskerModel>) {
+            _currentUser = Future.value(state.currentUser);
+            requestPermissionsLocal();
+            registerNotification(
+              getFcmToken: (fcmToken) {
+                currentFcmToken = fcmToken;
               },
-            ),
-          );
+              notificationInfo: _notificationInfo,
+            );
+            checkForInitialMessage(getNotification: (notification) {
+              setState(() {
+                _notificationInfo = notification;
+                // _totalNotifications++;
+              });
+            });
+            initLocalPushNotification();
+            // For handling notification when the app is in background
+            // but not terminated
+            FirebaseMessaging.onMessageOpenedApp
+                .listen((RemoteMessage message) {
+              PushNotification notification = PushNotification(
+                title: message.notification?.title,
+                body: message.notification?.body,
+                dataTitle: message.data['title'].toString(),
+                dataBody: message.data['body'].toString(),
+              );
+              setState(() {
+                _notificationInfo = notification;
+              });
+            });
+          }
         },
+        child: FutureBuilder(
+          future: _currentUser,
+          builder: (context, snapshot) {
+            return Scaffold(
+              key: _key,
+              backgroundColor: AppColor.white,
+              appBar: widget.showAppBar
+                  ? PreferredSize(
+                      preferredSize: Size.fromHeight(widget.appBarHeight),
+                      child: widget.appBar ??
+                          AppBar(
+                            backgroundColor: AppColor.white,
+                            flexibleSpace: widget.flexibleSpace,
+                            centerTitle: widget.currentTab != 0,
+                            leading: widget.leading,
+                            actions: widget.actions,
+                            title: widget.tabTitle,
+                            elevation: widget.elevation,
+                          ),
+                    )
+                  : null,
+              drawer: widget.drawer,
+              bottomNavigationBar: widget.navItem,
+              body: LayoutBuilder(
+                builder: (context, size) {
+                  return BlocListener<AuthenticationBloc, AuthenticationState>(
+                    bloc: AuthenticationBlocController().authenticationBloc,
+                    listener:
+                        (BuildContext context, AuthenticationState state) {
+                      if (state is SetUserData<TaskerModel>) {
+                        widget.pageState!.currentUser = Future.value(
+                          state.currentUser,
+                        );
+                        // App.of(context)!.setLocale(
+                        //   supportedLocales.firstWhere(
+                        //       (e) => e.languageCode == state.currentLang),
+                        // );
+                        widget.onUserFetched(state.currentUser);
+                      }
+                    },
+                    child: widget.child,
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }

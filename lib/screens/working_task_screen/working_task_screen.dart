@@ -660,13 +660,16 @@ class _WorkingTaskScreenState extends State<WorkingTaskScreen> {
 
   _cancelTask(TaskModel task) {
     _taskBloc
-        .cancelTask(task.id)
+        .cancelTask(
+          id: task.id,
+          reason: '',
+        )
         .then((value) => navigateTo(homeRoute))
         .onError((ApiError error, stackTrace) {
+      logDebug('error ${error.errorMessage} /n code: ${error.errorCode}');
       JTToast.errorToast(message: showError(error.errorCode, context));
     }).catchError(
       (error, stackTrace) {
-        JTToast.errorToast(message: error.toString());
         logDebug('error $error');
       },
     );

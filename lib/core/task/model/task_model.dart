@@ -17,7 +17,7 @@ class TaskModel extends BaseModel {
   final String _note;
   final int _status;
   final int _language;
-  final int _failureReason;
+  final FailureReasonModel _failureReason;
   final int _typeHome;
   final List<ToDoModel> _checkList = [];
   final bool _isDeleted;
@@ -50,6 +50,10 @@ class TaskModel extends BaseModel {
           json: json,
           key: 'selected_option',
         ),
+        _failureReason = BaseModel.map<FailureReasonModel>(
+          json: json,
+          key: 'failure_reason',
+        ),
         __id = json['_id'] ?? '',
         _estimateTime = json['estimate_time'] ?? '',
         _startTime = json['start_time'] ?? 0,
@@ -58,7 +62,6 @@ class TaskModel extends BaseModel {
         _note = json['note'] ?? '',
         _status = json['status'] ?? 0,
         _language = json['language'] ?? 0,
-        _failureReason = json['failure_reason'] ?? 0,
         _typeHome = json['type_home'] ?? 0,
         _isDeleted = json['is_deleted'] ?? false,
         _deletedTime = json['deleted_time'] ?? 0,
@@ -128,7 +131,7 @@ class TaskModel extends BaseModel {
   String get note => _note;
   int get status => _status;
   int get language => _language;
-  int get failureReason => _failureReason;
+  FailureReasonModel get failureReason => _failureReason;
   int get typeHome => _typeHome;
   List<ToDoModel> get checkList => _checkList;
   bool get isDeleted => _isDeleted;
@@ -139,6 +142,26 @@ class TaskModel extends BaseModel {
   List<String> get listPicturesBefore => _listPicturesBefore;
   List<String> get listPicturesAfter => _listPicturesAfter;
   OptionModel get selectedOption => _selectedOption;
+}
+
+class FailureReasonModel extends BaseModel {
+  final UserModel? _user;
+  final String _reason;
+
+  FailureReasonModel.fromJson(Map<String, dynamic> json)
+      : _user = BaseModel.map<UserModel>(
+          json: json,
+          key: 'user',
+        ),
+        _reason = json['reason'] ?? '';
+
+  Map<String, dynamic> toJson() => {
+        'posted_user': _user?.toJson(),
+        'reason': _reason,
+      };
+
+  UserModel? get user => _user;
+  String get reason => _reason;
 }
 
 class AddressModel extends BaseModel {

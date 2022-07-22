@@ -199,6 +199,7 @@ class _CancelTaskDialogState extends State<CancelTaskDialog> {
             ),
             accountBalances: '10.000 VND',
             isWarning: true,
+            onConfirmed: widget.onConfirmed,
           );
         });
   }

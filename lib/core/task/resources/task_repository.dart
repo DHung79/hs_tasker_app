@@ -45,8 +45,14 @@ class TaskRepository {
           );
 
   Future<ApiResponse<T?>>
-      cancelTask<T extends BaseModel, K extends EditBaseModel>(String id) =>
-          _provider.cancelTask<T, K>(id: id);
+      cancelTask<T extends BaseModel, K extends EditBaseModel>({
+    required String id,
+    required String reason,
+  }) =>
+          _provider.cancelTask<T, K>(
+            id: id,
+            reason: reason,
+          );
 
   Future<ApiResponse<T?>>
       updateTaskStatus<T extends BaseModel, K extends EditBaseModel>(
@@ -64,7 +70,6 @@ class TaskRepository {
         filesPath: filesPath,
       );
 
-  Future<ApiResponse<T?>>
-      completeTask<T extends BaseModel>(String id) =>
-          _provider.completeTask<T>(id: id);
+  Future<ApiResponse<T?>> completeTask<T extends BaseModel>(String id) =>
+      _provider.completeTask<T>(id: id);
 }

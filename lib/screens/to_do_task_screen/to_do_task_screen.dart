@@ -438,19 +438,17 @@ class _ToDoTaskScreenState extends State<ToDoTaskScreen> {
 
   _cancelTask(TaskModel task) {
     _taskBloc
-        .cancelTask(task.id)
+        .cancelTask(
+          id: task.id,
+          reason: '',
+        )
         .then((value) => navigateTo(homeRoute))
         .onError((ApiError error, stackTrace) {
-      setState(() {
-        logDebug(error.errorMessage);
-        JTToast.errorToast(message: showError(error.errorCode, context));
-      });
+      logDebug('error ${error.errorMessage} \n code: ${error.errorCode}');
+      JTToast.errorToast(message: showError(error.errorCode, context));
     }).catchError(
       (error, stackTrace) {
-        setState(() {
-          logDebug(error.toString());
-          JTToast.errorToast(message: error.toString());
-        });
+        logDebug(error.toString());
       },
     );
   }

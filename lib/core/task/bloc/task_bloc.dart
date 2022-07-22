@@ -120,10 +120,16 @@ class TaskBloc {
     }
   }
 
-  Future<TaskModel> cancelTask(String id) async {
+  Future<TaskModel> cancelTask({
+    required String id,
+    required String reason,
+  }) async {
     try {
       // Await response from server.
-      final data = await _repository.cancelTask<TaskModel, EditTaskModel>(id);
+      final data = await _repository.cancelTask<TaskModel, EditTaskModel>(
+        id: id,
+        reason: reason,
+      );
       if (data.error != null) {
         // Error exist
         return Future.error(data.error!);

@@ -112,15 +112,18 @@ class TaskApiProvider {
   Future<ApiResponse<T?>>
       cancelTask<T extends BaseModel, K extends EditBaseModel>({
     required String id,
+    required String reason,
   }) async {
     final path = ApiConstants.apiDomain +
         ApiConstants.apiVersion +
         ApiConstants.tasks +
         ApiConstants.tasker +
         '/$id';
-    final body = convert.jsonEncode({});
+    final body = convert.jsonEncode({
+      "failure_reason": {"reason": reason}
+    });
     final token = await ApiHelper.getUserToken();
-    final response = await RestApiHandlerData.putData<T>(
+    final response = await RestApiHandlerData.deleteData<T>(
       path: path,
       body: body,
       headers: ApiHelper.headers(token),
