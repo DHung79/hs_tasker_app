@@ -124,7 +124,7 @@ class ApiBaseHelper {
     // ignore: prefer_typing_uninitialized_variables
     var responseJson;
     try {
-      final response = await http.post(
+      final response = await http.put(
         Uri.parse(path),
         body: body,
         headers: headers,
