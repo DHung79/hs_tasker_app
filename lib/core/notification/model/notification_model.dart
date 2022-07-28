@@ -1,72 +1,49 @@
-
 import '../../base/models/common_model.dart';
 import '../../rest/models/rest_api_response.dart';
 
 class NotificationModel extends BaseModel {
-  final MultipleLanguagesBodyModel _multipleLanguagesBody;
-  final String _category;
-  final bool _isValid;
-  final bool _read;
-  final int _createdTime;
   final String __id;
   final String _title;
   final String _body;
   final String _user;
-  final String _createdAt;
+  final String _taskId;
+  final bool _read;
+  final int _createdTime;
+  final int _updatedTime;
+  final int _totalUnreadNoti;
 
   NotificationModel.fromJson(Map<String, dynamic> json)
-      : _multipleLanguagesBody = BaseModel.map<MultipleLanguagesBodyModel>(
-            json: json, key: 'multipleLanguagesBody'),
-        _category = json['category'] ?? '',
-        _isValid = json['isValid'] ?? false,
-        _read = json['read'] ?? false,
-        _createdTime = json['created_time'],
-        __id = json['_id'] ?? '',
+      : __id = json['_id'] ?? '',
         _title = json['title'] ?? '',
         _body = json['body'] ?? '',
         _user = json['user'] ?? '',
-        _createdAt = json['createdAt'] ?? '';
+        _taskId = json['taskId'] ?? '',
+        _read = json['read'] ?? false,
+        _createdTime = json['created_time'] ?? 0,
+        _updatedTime = json['updated_time'] ?? 0,
+        _totalUnreadNoti = json['totalUnreadNoti'] ?? 0;
 
   Map<String, dynamic> toJson() => {
-        'multipleLanguagesBody': _multipleLanguagesBody.toJson(),
-        'category': _category,
-        'isValid': _isValid,
-        'read': _read,
-        'created_time': _createdTime,
         '_id': __id,
         'title': _title,
         'body': _body,
         'user': _user,
-        'createdAt': _createdAt,
+        'taskId': _taskId,
+        'read': _read,
+        'created_time': _createdTime,
+        'updated_time': _updatedTime,
+        'totalUnreadNoti': _totalUnreadNoti,
       };
 
-  MultipleLanguagesBodyModel get multipleLanguagesBody =>
-      _multipleLanguagesBody;
-  String get category => _category;
-  bool get isValid => _isValid;
-  bool get read => _read;
-  int get createdTime => _createdTime;
   String get id => __id;
   String get title => _title;
   String get body => _body;
   String get user => _user;
-  String get createdAt => _createdAt;
-}
-
-class MultipleLanguagesBodyModel extends BaseModel {
-  final String _en;
-  final String _vi;
-
-  MultipleLanguagesBodyModel.fromJson(Map<String, dynamic> json)
-      : _en = json['en'] ?? '',
-        _vi = json['vi'] ?? '';
-
-  Map<String, dynamic> toJson() => {
-        'en': _en,
-        'vi': _vi,
-      };
-  String get en => _en;
-  String get vi => _vi;
+  String get taskId => _taskId;
+  bool get read => _read;
+  int get createdTime => _createdTime;
+  int get updatedTime => _updatedTime;
+  int get totalUnreadNoti => _totalUnreadNoti;
 }
 
 class NotificationListModel extends BaseModel {
@@ -85,16 +62,4 @@ class NotificationListModel extends BaseModel {
 
   List<NotificationModel> get records => _data;
   Paging get meta => _metaData;
-}
-
-class UnreadTotalModel extends BaseModel {
-  final int _total;
-
-  UnreadTotalModel.fromJson(Map<String, dynamic> json)
-      : _total = json['totalUnreadNotifications'] ?? 0;
-
-  Map<String, dynamic> toJson() => {
-        'totalUnreadNotifications': _total,
-      };
-  int get total => _total;
 }

@@ -1,92 +1,96 @@
-import 'package:bloc/bloc.dart';
+import 'package:rxdart/rxdart.dart';
+import '../../../main.dart';
+import '../../base/blocs/block_state.dart';
+import '../../rest/api_helpers/api_exception.dart';
 import '../notification.dart';
 
-class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
-  NotificationBloc() : super(NotificationInitialState()) {
-    final NotificationRepository notificationService = NotificationRepository();
-    on<NotificationFetchEvent>((event, emit) async {
-      emit(NotificationWaitingState());
-      try {
-        final res = await notificationService
-            .fetchAllData<NotificationListModel>(params: event.params!);
-        // ignore: unnecessary_null_comparison
-        if (res != null) {
-          emit(NotificationFetchDoneState(res));
-        } else {
-          emit(const NotificationFetchFailState(message: 'Lỗi không xác định'));
-        }
-      } on Error catch (e) {
-        emit(NotificationFetchFailState(
-          message: e.toString(),
-        ));
+class NotificationBloc {
+  final _repository = NotificationRepository();
+  final _allDataFetcher =
+      BehaviorSubject<ApiResponse<NotificationListModel?>>();
+  final _allDataState = BehaviorSubject<BlocState>();
+
+  Stream<ApiResponse<NotificationListModel?>> get allData =>
+      _allDataFetcher.stream;
+  Stream<BlocState> get allDataState => _allDataState.stream;
+  bool _isFetching = false;
+
+  fetchAllData({required Map<String, dynamic> params}) async {
+    if (_isFetching) return;
+    _isFetching = true;
+    // Start fetching data.
+    _allDataState.sink.add(BlocState.fetching);
+    try {
+      // Await response from server.
+      final data =
+          await _repository.fetchAllData<NotificationListModel>(params: params);
+
+      if (_allDataFetcher.isClosed) return;
+      if (data.error != null) {
+        // Error exist
+        _allDataFetcher.sink.addError(data.error!);
+      } else {
+        // Adding response data.
+        _allDataFetcher.sink.add(data);
       }
-    });
-    on<ReadNotification>((event, emit) async {
-      emit(NotificationWaitingState());
-      try {
-        final res = await notificationService.readNoti<NotificationModel>(
-            params: event.params);
-        // ignore: unnecessary_null_comparison
-        if (res != null) {
-          emit(ReadNotificationDoneState(res));
-        } else {
-          emit(const NotificationFetchFailState(message: 'Lỗi không xác định'));
-        }
-      } on Error catch (e) {
-        emit(NotificationFetchFailState(
-          message: e.toString(),
-        ));
+    } on AppException catch (e) {
+      _allDataFetcher.sink.addError(e);
+    }
+    // Complete fetching.
+    _allDataState.sink.add(BlocState.completed);
+    _isFetching = false;
+  }
+
+  Future<NotificationModel> getTotalUnread() async {
+    try {
+      // Await response from server.
+      final data = await _repository.getTotalUnread<NotificationModel>();
+      if (data.error != null) {
+        // Error exist
+        return Future.error(data.error!);
+      } else {
+        // Adding response data.
+        return Future.value(data.model);
       }
-    });
-    on<ReadAllNotification>((event, emit) async {
-      emit(NotificationWaitingState());
-      try {
-        final res = await notificationService.notiReadAll<UnreadTotalModel>();
-        // ignore: unnecessary_null_comparison
-        if (res != null) {
-          emit(NotificationReadAllDoneState(res));
-        } else {
-          emit(const NotificationFetchFailState(message: 'Lỗi không xác định'));
-        }
-      } on Error catch (e) {
-        emit(NotificationFetchFailState(
-          message: e.toString(),
-        ));
+    } on AppException catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<NotificationModel> readAllNoti() async {
+    try {
+      // Await response from server.
+      final data = await _repository.readAllNoti<NotificationModel>();
+      if (data.error != null) {
+        // Error exist
+        return Future.error(data.error!);
+      } else {
+        // Adding response data.
+        return Future.value(data.model);
       }
-    });
-    on<NotificationUnreadTotal>((event, emit) async {
-      emit(NotificationWaitingState());
-      try {
-        final res =
-            await notificationService.notiUnreadTotal<UnreadTotalModel>();
-        // ignore: unnecessary_null_comparison
-        if (res != null) {
-          emit(NotificationUnreadTotalDoneState(res, event.notiId));
-        } else {
-          emit(const NotificationFetchFailState(message: 'Lỗi không xác định'));
-        }
-      } on Error catch (e) {
-        emit(NotificationFetchFailState(
-          message: e.toString(),
-        ));
+    } on AppException catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<NotificationModel> readNotiById({required String id}) async {
+    try {
+      // Await response from server.
+      final data = await _repository.readNotiById<NotificationModel>(id: id);
+      if (data.error != null) {
+        // Error exist
+        return Future.error(data.error!);
+      } else {
+        // Adding response data.
+        return Future.value(data.model);
       }
-    });
-    on<GetNewNotificationEvent>((event, emit) async {
-      emit(NotificationWaitingState());
-      try {
-        final res = await notificationService
-            .fetchAllData<NotificationListModel>(params: event.params!);
-        // ignore: unnecessary_null_comparison
-        if (res != null) {
-          emit(GetNewNotificationDoneState(res));
-        } else {
-          emit(const NotificationFetchFailState(message: 'Lỗi không xác định'));
-        }
-      } on Error catch (e) {
-        emit(NotificationFetchFailState(
-          message: e.toString(),
-        ));
-      }
-    });
+    } on AppException catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  dispose() {
+    _allDataFetcher.close();
+    _allDataState.close();
   }
 }

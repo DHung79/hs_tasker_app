@@ -97,12 +97,6 @@ class BaseModel {
     if (T == NotificationModel) {
       return NotificationModel.fromJson(json) as T;
     }
-    if (T == MultipleLanguagesBodyModel) {
-      return MultipleLanguagesBodyModel.fromJson(json) as T;
-    }
-    if (T == UnreadTotalModel) {
-      return UnreadTotalModel.fromJson(json) as T;
-    }
     if (T == NotificationListModel) {
       return NotificationListModel.fromJson(json) as T;
     }
@@ -118,7 +112,7 @@ class BaseModel {
     if (T == FailureReasonModel) {
       return FailureReasonModel.fromJson(json) as T;
     }
-    
+
     logError("Unknown BaseModel class: $T");
     throw Exception("Unknown BaseModel class: $T");
   }

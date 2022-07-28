@@ -10,21 +10,21 @@ class NotificationRepository {
   }) =>
       _provider.fetchAllNoti<T>(params: params);
 
+  Future<ApiResponse<T?>> getTotalUnread<T extends BaseModel>() =>
+      _provider.getTotalUnread<T>();
+
+  Future<ApiResponse<T?>> readAllNoti<T extends BaseModel>() =>
+      _provider.readAllNoti<T>();
+
+  Future<ApiResponse<T?>> readNotiById<T extends BaseModel>({
+    required String id,
+  }) =>
+      _provider.readNotiById<T>(id: id);
+
   Future<bool> updateFcmToken({
     Map<String, dynamic>? body,
   }) =>
       _provider.updateFcmToken(body: body);
-
-  Future<ApiResponse<T?>> readNoti<T extends BaseModel>({
-    required Map<String, dynamic> params,
-  }) =>
-      _provider.readNoti<T>(params: params);
-
-  Future<ApiResponse<T?>> notiUnreadTotal<T extends BaseModel>() =>
-      _provider.notiUnreadTotal<T>();
-
-  Future<ApiResponse<T?>> notiReadAll<T extends BaseModel>() =>
-      _provider.notiReadAll<T>();
 
   Future<bool> removeFcmToken<T extends BaseModel>({
     required String fcmToken,

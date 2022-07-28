@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert' as convert;
-import 'package:hs_tasker_app/core/logger/logger.dart';
-
+import '../../../main.dart';
 import '../../constants/api_constants.dart';
 import '../../helpers/api_helper.dart';
-import '../../rest/models/rest_api_response.dart';
 import '../../rest/rest_api_handler_data.dart';
+import 'dart:convert' as convert;
 
 class NotificationApiProvider {
   Future<ApiResponse<T?>> fetchAllNoti<T extends BaseModel>({
@@ -13,14 +11,64 @@ class NotificationApiProvider {
   }) async {
     var path = ApiConstants.apiDomain +
         ApiConstants.apiVersion +
-        ApiConstants.notification;
+        ApiConstants.notifications +
+        ApiConstants.tasker;
     if (params.isNotEmpty) {
       var queries = <String>[];
       params.forEach((key, value) => queries.add('$key=$value'));
       path += '?' + queries.join('&');
     }
+    logDebug('path: $path');
     final token = await ApiHelper.getUserToken();
     final response = await RestApiHandlerData.getData<T>(
+      path: path,
+      headers: ApiHelper.headers(token),
+    );
+    return response;
+  }
+
+  Future<ApiResponse<T?>> getTotalUnread<T extends BaseModel>() async {
+    var path = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.notifications +
+        ApiConstants.tasker +
+        ApiConstants.unread +
+        ApiConstants.total;
+    logDebug('path: $path');
+    final token = await ApiHelper.getUserToken();
+    logDebug('token: $token');
+    final response = await RestApiHandlerData.getData<T>(
+      path: path,
+      headers: ApiHelper.headers(token),
+    );
+    return response;
+  }
+
+  Future<ApiResponse<T?>> readAllNoti<T extends BaseModel>() async {
+    var path = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.notifications +
+        ApiConstants.read +
+        ApiConstants.all;
+    final token = await ApiHelper.getUserToken();
+    final response = await RestApiHandlerData.putData<T>(
+      path: path,
+      headers: ApiHelper.headers(token),
+    );
+    return response;
+  }
+
+  Future<ApiResponse<T?>> readNotiById<T extends BaseModel>({
+    required String id,
+  }) async {
+    var path = ApiConstants.apiDomain +
+        ApiConstants.apiVersion +
+        ApiConstants.notifications +
+        ApiConstants.tasker +
+        ApiConstants.read +
+        '/$id';
+    final token = await ApiHelper.getUserToken();
+    final response = await RestApiHandlerData.putData<T>(
       path: path,
       headers: ApiHelper.headers(token),
     );
@@ -33,59 +81,11 @@ class NotificationApiProvider {
         ApiConstants.fcmToken +
         ApiConstants.tasker;
     final token = await ApiHelper.getUserToken();
+    // logDebug('path: $path\nbody: $body');
     final response = await RestApiHandlerData.updateFcmToken(
       path: path,
       headers: ApiHelper.headers(token),
       body: convert.jsonEncode(body),
-    );
-    return response;
-  }
-
-  Future<ApiResponse<T?>> readNoti<T extends BaseModel>({
-    required Map<String, dynamic> params,
-  }) async {
-    var path = ApiConstants.apiDomain +
-        ApiConstants.apiVersion +
-        ApiConstants.notification +
-        ApiConstants.read;
-    if (params.isNotEmpty) {
-      var queries = <String>[];
-      params.forEach((key, value) => queries.add('$key=$value'));
-      path += '?' + queries.join('&');
-    }
-    final token = await ApiHelper.getUserToken();
-    final body = convert.jsonEncode(params);
-    final response = await RestApiHandlerData.putData<T>(
-      path: path,
-      body: body,
-      headers: ApiHelper.headers(token),
-    );
-    return response;
-  }
-
-  Future<ApiResponse<T?>> notiUnreadTotal<T extends BaseModel>() async {
-    var path = ApiConstants.apiDomain +
-        ApiConstants.apiVersion +
-        ApiConstants.notification +
-        ApiConstants.unreadTotal;
-    final token = await ApiHelper.getUserToken();
-    final response = await RestApiHandlerData.getData<T>(
-      path: path,
-      headers: ApiHelper.headers(token),
-    );
-    return response;
-  }
-
-  Future<ApiResponse<T?>> notiReadAll<T extends BaseModel>() async {
-    var path = ApiConstants.apiDomain +
-        ApiConstants.apiVersion +
-        ApiConstants.notification +
-        ApiConstants.read +
-        ApiConstants.all;
-    final token = await ApiHelper.getUserToken();
-    final response = await RestApiHandlerData.putData<T>(
-      path: path,
-      headers: ApiHelper.headers(token),
     );
     return response;
   }
@@ -99,7 +99,6 @@ class NotificationApiProvider {
         ApiConstants.tasker;
     final body = convert.jsonEncode({'fcm_token': fcmToken});
     final token = await ApiHelper.getUserToken();
-    logDebug('path: $path\nbody: $body\nheaders: ${ApiHelper.headers(token)}');
     final response = await RestApiHandlerData.removeFcmToken(
       path: path,
       body: body,
