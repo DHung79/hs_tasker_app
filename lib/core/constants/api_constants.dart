@@ -11,12 +11,14 @@ class ApiConstants {
   static String forgotPassword = '/forgot-password';
   static String tasks = '/tasks';
   static String otp = '/verify-otp';
-  static String notification = '/notification';
-  static String read = '/read';
-  static String all = '/all';
   static String fcmToken = '/fcm-token';
   static String unreadTotal = '/unreadTotal';
   static String checkEmail = '/check-email';
   static String login = '/login';
   static String upload = '/upload';
+  static String notifications = '/notifications';
+  static String read = '/read';
+  static String all = '/all';
+  static String unread = '/unread';
+  static String total = '/total';
 }
