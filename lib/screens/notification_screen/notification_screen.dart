@@ -161,60 +161,60 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Widget _buildNoti(NotificationModel noti, {bool isLast = false}) {
+    final screenSize = MediaQuery.of(context).size;
     bool isRead = noti.read;
-    final tagColor = isLast ? AppColor.shade9 : AppColor.others1;
-    return Container(
-      constraints: const BoxConstraints(minHeight: 172),
-      decoration: BoxDecoration(
-        border: Border(
-          left: isRead
-              ? BorderSide(
-                  width: 4,
-                  color: tagColor,
-                )
-              : BorderSide.none,
-          bottom: !isLast
-              ? BorderSide(
-                  color: AppColor.shade1,
-                )
-              : BorderSide.none,
-        ),
-      ),
-      child: Column(
-        children: [
-          _notiTag(noti),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 16, 16),
-            child: AppButtonTheme.fillRounded(
-              borderRadius: BorderRadius.circular(4),
-              constraints: const BoxConstraints(minHeight: 44),
-              color: tagColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Xem công việc',
-                    style: AppTextTheme.headerTitle(AppColor.white),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Transform.rotate(
-                      angle: 180 * pi / 180,
-                      child: SvgIcon(
-                        SvgIcons.arrowBackIos,
-                        color: AppColor.white,
-                        size: 24,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              onPressed: () {},
+
+    Color tagColor = AppColor.primary2;
+    switch (noti.notificationType.status) {
+      case 3:
+        tagColor = AppColor.shade9;
+        break;
+      case 4:
+        tagColor = AppColor.others1;
+        break;
+      default:
+        tagColor = AppColor.primary2;
+    }
+
+    return StatefulBuilder(builder: (context, setState) {
+      return InkWell(
+        child: Container(
+          width: screenSize.width,
+          decoration: BoxDecoration(
+            border: Border(
+              left: !isRead
+                  ? BorderSide(
+                      width: 4,
+                      color: tagColor,
+                    )
+                  : BorderSide.none,
+              bottom: !isLast
+                  ? BorderSide(
+                      color: AppColor.shade1,
+                    )
+                  : BorderSide.none,
             ),
           ),
-        ],
-      ),
-    );
+          child: _notiTag(noti),
+        ),
+        onTap: () {
+          if (noti.notificationType.name == 'Notification Task') {
+            if (noti.notificationType.status == 3) {
+              navigateTo(jobDetailRoute + '/${noti.taskId}');
+            } else if (noti.notificationType.status! == 4) {
+              navigateTo(taskHistoryRoute + '/${noti.taskId}');
+            }
+            _notiBloc.readNotiById(id: noti.id);
+          } else {
+            _notiBloc.readNotiById(id: noti.id).then((value) {
+              setState(() {
+                isRead = value.read;
+              });
+            });
+          }
+        },
+      );
+    });
   }
 
   Widget _notiTag(NotificationModel noti) {

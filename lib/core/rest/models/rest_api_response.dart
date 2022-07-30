@@ -100,6 +100,9 @@ class BaseModel {
     if (T == NotificationListModel) {
       return NotificationListModel.fromJson(json) as T;
     }
+    if (T == NotificationType) {
+      return NotificationType.fromJson(json) as T;
+    }
     if (T == AddressModel) {
       return AddressModel.fromJson(json) as T;
     }

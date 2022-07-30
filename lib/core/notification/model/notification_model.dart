@@ -11,6 +11,7 @@ class NotificationModel extends BaseModel {
   final int _createdTime;
   final int _updatedTime;
   final int _totalUnreadNoti;
+  final NotificationType _notificationType;
 
   NotificationModel.fromJson(Map<String, dynamic> json)
       : __id = json['_id'] ?? '',
@@ -21,7 +22,11 @@ class NotificationModel extends BaseModel {
         _read = json['read'] ?? false,
         _createdTime = json['created_time'] ?? 0,
         _updatedTime = json['updated_time'] ?? 0,
-        _totalUnreadNoti = json['totalUnreadNoti'] ?? 0;
+        _totalUnreadNoti = json['totalUnreadNoti'] ?? 0,
+        _notificationType = BaseModel.map<NotificationType>(
+          json: json,
+          key: 'type_notification',
+        );
 
   Map<String, dynamic> toJson() => {
         '_id': __id,
@@ -33,6 +38,7 @@ class NotificationModel extends BaseModel {
         'created_time': _createdTime,
         'updated_time': _updatedTime,
         'totalUnreadNoti': _totalUnreadNoti,
+        'type_notification': _notificationType.toJson(),
       };
 
   String get id => __id;
@@ -44,6 +50,24 @@ class NotificationModel extends BaseModel {
   int get createdTime => _createdTime;
   int get updatedTime => _updatedTime;
   int get totalUnreadNoti => _totalUnreadNoti;
+  NotificationType get notificationType => _notificationType;
+}
+
+class NotificationType extends BaseModel {
+  final String _name;
+  final int? _status;
+
+  NotificationType.fromJson(Map<String, dynamic> json)
+      : _name = json['name'] ?? '',
+        _status = json['status'];
+
+  Map<String, dynamic> toJson() => {
+        'name': _name,
+        'status': _status,
+      };
+
+  String get name => _name;
+  int? get status => _status;
 }
 
 class NotificationListModel extends BaseModel {
