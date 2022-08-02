@@ -87,7 +87,16 @@ class CheckOTP extends AuthenticationEvent {
   List<Object> get props => [otp];
 }
 
-class ResendOTP extends AuthenticationEvent {}
+class SendOTP extends AuthenticationEvent {
+  final String email;
+
+  const SendOTP({
+    required this.email,
+  });
+
+  @override
+  List<Object> get props => [email];
+}
 
 class ChangePassword extends AuthenticationEvent {
   final String password;

@@ -22,7 +22,7 @@ class ResetPasswordDoneState extends AuthenticationState {}
 
 class ForgotPasswordDoneState extends AuthenticationState {}
 
-class ResendDoneState extends AuthenticationState {}
+class SendOTPDoneState extends AuthenticationState {}
 
 class UserTokenExpired extends AuthenticationState {}
 

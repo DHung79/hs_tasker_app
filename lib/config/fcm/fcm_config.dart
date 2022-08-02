@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../core/notification/notification.dart';
 import '../../main.dart';
+import '../../routes/route_names.dart';
 import 'fcm_model.dart';
 
 Future<void> _showNotification({String? title, String? body}) async {
@@ -144,6 +146,17 @@ void checkForInitialMessage(
 }
 
 initLocalPushNotification() async {
+  NotificationModel? noti;
+  NotificationType? notiModel;
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    notiModel = NotificationType.fromJson(
+      jsonDecode(message.data['type_notification']),
+    );
+    noti = NotificationModel.fromJson(message.data);
+    NotificationBloc().getTotalUnread().then((value) {
+      notiBadges = value.totalUnreadNoti;
+    });
+  });
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('launcher_icon');
   final IOSInitializationSettings initializationSettingsIOS =
@@ -163,6 +176,15 @@ initLocalPushNotification() async {
       onSelectNotification: (String? payload) async {
     if (payload != null) {
       logDebug('notification payload: $payload');
+      if (noti != null && notiModel != null && notiModel!.status != null) {
+        if (notiModel!.status == 3) {
+          navigateTo(jobDetailRoute + '/${noti!.taskId}');
+        } else if (notiModel!.status! == 4) {
+          navigateTo(taskHistoryRoute + '/${noti!.taskId}');
+        }
+      } else {
+        navigateTo(notificationRoute);
+      }
     }
     selectedNotificationPayload = payload;
     selectNotificationSubject.add(payload);

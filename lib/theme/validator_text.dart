@@ -186,7 +186,7 @@ String showError(String errorCode, BuildContext context, {String? fieldName}) {
       message = ScreenUtil.t(I18nKey.lockDoorFail)!;
       break;
     default:
-      message = '';
+      message = message = errorCode;
       break;
   }
   return message;

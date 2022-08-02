@@ -25,6 +25,19 @@ class _OTPScreenState extends State<OTPScreen> {
   bool _lockResend = false;
 
   @override
+  void initState() {
+    if (forgotPasswordEmailController.text.isNotEmpty) {
+      AuthenticationBlocController().authenticationBloc.add(
+            SendOTP(
+              email: forgotPasswordEmailController.text,
+            ),
+          );
+    }
+    JTToast.init(context);
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     setState(() {});
@@ -106,6 +119,12 @@ class _OTPScreenState extends State<OTPScreen> {
             _showError(state.errorCode);
           } else if (state is CheckOTPDoneState) {
             navigateTo(resetPasswordRoute);
+          } else if (state is SendOTPDoneState) {
+            JTToast.successToast(
+              width: 327,
+              height: 53,
+              message: ScreenUtil.t(I18nKey.checkYourEmail)!,
+            );
           }
         },
         child: LayoutBuilder(
@@ -148,7 +167,6 @@ class _OTPScreenState extends State<OTPScreen> {
                         enablePinAutofill: false,
                         enableActiveFill: false,
                         autoFocus: true,
-                        autoDismissKeyboard: false,
                         cursorColor: AppColor.white,
                         backgroundColor: AppColor.primary1,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -203,26 +221,25 @@ class _OTPScreenState extends State<OTPScreen> {
                         onPressed: !_processing ? _checkOTP : null,
                       ),
                     ),
-                    if (!_lockResend)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: Center(
-                          child: InkWell(
-                            splashColor: AppColor.transparent,
-                            highlightColor: AppColor.transparent,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Gửi lại',
-                                style: AppTextTheme.normalHeaderTitle(
-                                  AppColor.white,
-                                ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Center(
+                        child: InkWell(
+                          splashColor: AppColor.transparent,
+                          highlightColor: AppColor.transparent,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Gửi lại',
+                              style: AppTextTheme.normalHeaderTitle(
+                                !_lockResend ? AppColor.text2 : AppColor.text6,
                               ),
                             ),
-                            onTap: _resendOTP,
                           ),
+                          onTap: _resendOTP,
                         ),
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -272,7 +289,11 @@ class _OTPScreenState extends State<OTPScreen> {
         }
       });
     });
-    AuthenticationBlocController().authenticationBloc.add(ResendOTP());
+    AuthenticationBlocController().authenticationBloc.add(
+          SendOTP(
+            email: forgotPasswordEmailController.text,
+          ),
+        );
   }
 
   _showError(String errorCode) {

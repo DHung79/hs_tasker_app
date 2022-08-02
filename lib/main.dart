@@ -33,6 +33,7 @@ String preRoute = '';
 
 Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 GlobalKey globalKey = GlobalKey();
+final forgotPasswordEmailController = TextEditingController();
 
 navigateTo(String route) async {
   locator<AppRouterDelegate>().navigateTo(route);

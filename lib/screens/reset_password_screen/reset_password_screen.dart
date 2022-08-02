@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../widgets/jt_toast.dart';
 import '/routes/route_names.dart';
 import '../../main.dart';
 import '../../widgets/jt_text_form_field.dart';
@@ -27,6 +28,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   @override
+  void initState() {
+    JTToast.init(context);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     return Scaffold(
@@ -38,6 +45,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             _showError(state.errorCode);
           } else if (state is ResetPasswordDoneState) {
             navigateTo(authenticationRoute);
+            await Future.delayed(const Duration(milliseconds: 500));
+            JTToast.successToast(
+              width: 327,
+              height: 53,
+              message: 'Đổi mật khẩu thành công',
+            );
           }
         },
         child: LayoutBuilder(
