@@ -85,7 +85,7 @@ class _AppState extends State<App> {
     return Consumer<AppStateNotifier>(
       builder: (context, appState, child) {
         return MaterialApp.router(
-          title: 'Home Service Tasker',
+          title: 'Home Service Partner',
           debugShowCheckedModeBanner: false,
           theme: ThemeConfig.lightTheme,
           darkTheme: ThemeConfig.darkTheme,

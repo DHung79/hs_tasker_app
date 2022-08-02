@@ -41,6 +41,7 @@ dependencies:
   image_picker: ^0.8.5+3
   file_picker: ^4.6.1
   intl: ^0.17.0
+  flutter_launcher_icons: ^0.9.3
 
 dev_dependencies:
   flutter_test:
@@ -52,7 +53,7 @@ flutter_icons:
   ios: true
   image_path: "assets/images/logo.png"
 flutter_launcher_name:
-  name: "Home Service Tasker"
+  name: "Home Service Partner"
 
 flutter:
   uses-material-design: true

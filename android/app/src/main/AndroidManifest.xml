@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.joytech.hstasker">
     <application
-        android:label="Home Service Tasker"
+        android:label="Home Service Partner"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <meta-data 
