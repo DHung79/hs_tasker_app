@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import '../../core/notification/notification.dart';
 import '/routes/route_names.dart';
 import '/screens/home/components/history_content.dart';
 import '/screens/home/components/new_post_content.dart';
@@ -17,6 +18,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _pageState = PageState();
+  final _notiBloc = NotificationBloc();
+
   @override
   void initState() {
     AuthenticationBlocController().authenticationBloc.add(AppLoadedup());
@@ -30,6 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
       pageState: _pageState,
       onUserFetched: (user) => setState(() {}),
       appBarHeight: 0,
+      onFetch: () {
+        _fetchDataOnPage();
+      },
       child: FutureBuilder(
           future: _pageState.currentUser,
           builder: (context, AsyncSnapshot<TaskerModel> snapshot) {
@@ -109,7 +115,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: _buildNoti(),
                         onTap: () {
                           setState(() {
-                            notiBadges = 0;
                             navigateTo(notificationRoute);
                           });
                         },
@@ -130,46 +135,65 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildNoti() {
-    bool hasNoti = notiBadges != 0;
     return Container(
-      width: hasNoti ? 76 : 42,
-      height: 42,
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
         boxShadow: [
           BoxShadow(
             color: AppColor.shadow.withOpacity(0.16),
-            blurRadius: 16,
             blurStyle: BlurStyle.outer,
-          ),
+            blurRadius: 16,
+          )
         ],
-        borderRadius: hasNoti ? BorderRadius.circular(50) : null,
-        shape: hasNoti ? BoxShape.rectangle : BoxShape.circle,
       ),
-      child: hasNoti
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Icon(Icons.notifications_outlined),
-                Container(
-                  width: 26,
-                  height: 26,
-                  decoration: BoxDecoration(
-                    color: AppColor.others1,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      notiBadges > 9 ? '9+' : '$notiBadges',
-                      style: AppTextTheme.mediumBodyText(
-                        AppColor.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )
-          : const Icon(Icons.notifications_outlined),
+      child: TextButton(
+        onPressed: () {
+          navigateTo(notificationRoute);
+        },
+        style: TextButton.styleFrom(
+          primary: AppColor.text2,
+          splashFactory: NoSplash.splashFactory,
+          padding: EdgeInsets.zero,
+          minimumSize: const Size(24, 24),
+          shadowColor: AppColor.shadow.withOpacity(0.16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              SvgIcon(
+                SvgIcons.notifications,
+                color: AppColor.text1,
+                size: 24,
+              ),
+              StreamBuilder(
+                  stream: _notiBloc.getNotiBadges,
+                  builder: (context,
+                      AsyncSnapshot<ApiResponse<NotificationModel?>> snapshot) {
+                    if (snapshot.hasData) {
+                      final notiBadges = snapshot.data!.model!.totalUnreadNoti;
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 13),
+                        child: SizedBox(
+                          width: 26,
+                          height: 26,
+                          child: CircleAvatar(
+                            backgroundColor: AppColor.others1,
+                            child: Text(
+                              notiBadges > 9 ? '9+' : '$notiBadges',
+                              style:
+                                  AppTextTheme.mediumBodyText(AppColor.text2),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    return const SizedBox();
+                  }),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -280,5 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  _fetchDataOnPage() {}
+  _fetchDataOnPage() {
+    _notiBloc.getTotalUnread();
+  }
 }

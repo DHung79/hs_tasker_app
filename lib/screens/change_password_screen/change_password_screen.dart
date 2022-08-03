@@ -135,9 +135,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             _showError(state.errorCode);
           }
           if (state is ChangePasswordDoneState) {
-            await Future.delayed(const Duration(milliseconds: 400));
-            navigateTo(taskerProfileRoute);
-            JTToast.successToast(message: 'Bạn đã đổi mật khẩu thành công');
+            AuthenticationBlocController().authenticationBloc.add(UserLogOut());
           }
         },
         child: SingleChildScrollView(

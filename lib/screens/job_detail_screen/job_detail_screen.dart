@@ -98,7 +98,9 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               size: 24,
               color: AppColor.black,
             ),
-            onPressed: () => navigateTo(homeRoute),
+            onPressed: () {
+              navigateTo(preRoute);
+            },
           ),
           Expanded(
             child: Padding(

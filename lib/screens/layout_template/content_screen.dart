@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../config/fcm/fcm.dart';
 import '../../main.dart';
+import '../../widgets/jt_toast.dart';
 
 class PageTemplate extends StatefulWidget {
   final Widget child;
@@ -20,6 +21,7 @@ class PageTemplate extends StatefulWidget {
   final Widget? flexibleSpace;
   final bool showAppBar;
   final Widget? appBar;
+  final void Function()? onFetch;
 
   const PageTemplate({
     Key? key,
@@ -37,6 +39,7 @@ class PageTemplate extends StatefulWidget {
     this.flexibleSpace,
     this.showAppBar = true,
     this.appBar,
+    this.onFetch,
   }) : super(key: key);
 
   @override
@@ -68,6 +71,7 @@ class _PageTemplateState extends State<PageTemplate> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
+    JTToast.init(context);
     return WillPopScope(
       onWillPop: () async {
         final listPageCanPop = [
@@ -87,6 +91,11 @@ class _PageTemplateState extends State<PageTemplate> {
           if (state is AuthenticationStart) {
             navigateTo(authenticationRoute);
           } else if (state is UserLogoutState) {
+            if (preRoute == taskerProfileRoute) {
+              JTToast.successToast(
+                message: 'Đổi mật khẩu thành công, đăng nhập lại để sử dụng',
+              );
+            }
             navigateTo(authenticationRoute);
           } else if (state is AuthenticationFailure) {
             _showError(state.errorCode);
@@ -109,6 +118,11 @@ class _PageTemplateState extends State<PageTemplate> {
                 currentFcmToken = fcmToken;
               },
               notificationInfo: _notificationInfo,
+              onMessage: () {
+                if (widget.onFetch != null) {
+                  widget.onFetch!();
+                }
+              },
             );
             checkForInitialMessage(getNotification: (notification) {
               setState(() {

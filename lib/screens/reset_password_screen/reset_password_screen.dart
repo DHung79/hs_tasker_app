@@ -47,9 +47,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             navigateTo(authenticationRoute);
             await Future.delayed(const Duration(milliseconds: 500));
             JTToast.successToast(
-              width: 327,
-              height: 53,
-              message: 'Đổi mật khẩu thành công',
+              message: 'Đổi mật khẩu thành công, đăng nhập lại để sử dụng',
             );
           }
         },

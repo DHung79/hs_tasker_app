@@ -149,6 +149,12 @@ String showError(String errorCode, BuildContext context, {String? fieldName}) {
     case '1021':
       message = 'Bạn đã đánh giá';
       break;
+    case '1023':
+      message = 'Mật khẩu mới trùng với mật khẩu cũ';
+      break;
+    case '1024':
+      message = 'Bạn đã yêu cầu gửi OTP quá 5 lần. Vui lòng thử lại sau 24 giờ';
+      break;
     case '1100':
       message = ScreenUtil.t(I18nKey.pageAndLimitShouldBeNumberic)!;
       break;

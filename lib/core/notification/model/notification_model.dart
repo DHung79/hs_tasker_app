@@ -20,8 +20,12 @@ class NotificationModel extends BaseModel {
         _user = json['user'] ?? '',
         _taskId = json['taskId'] ?? '',
         _read = json['read'] ?? false,
-        _createdTime = json['created_time'] ?? 0,
-        _updatedTime = json['updated_time'] ?? 0,
+        _createdTime = json['created_time'] is String
+            ? int.tryParse(json['created_time'])
+            : json['created_time'] ?? 0,
+        _updatedTime = json['updated_time'] is String
+            ? int.tryParse(json['updated_time'])
+            : json['updated_time'] ?? 0,
         _totalUnreadNoti = json['totalUnreadNoti'] ?? 0,
         _notificationType = BaseModel.map<NotificationType>(
           json: json,

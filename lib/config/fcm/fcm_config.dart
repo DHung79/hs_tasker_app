@@ -51,6 +51,7 @@ void requestPermissionsLocal() {
 void registerNotification({
   PushNotification? notificationInfo,
   required Function(String?) getFcmToken,
+  required Function() onMessage,
 }) async {
   await Firebase.initializeApp();
   FirebaseMessaging? _messaging = FirebaseMessaging.instance;
@@ -69,11 +70,6 @@ void registerNotification({
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       // logDebug('onMessage: ${message.data}');
       if (message.data['body'] != null) {
-        // if (notiCountKey.currentState != null) {
-        //   notiCountKey.currentState!.notificationBloc
-        //       .add(NotificationUnreadTotal());
-        // }
-
         // Parse the message received
         PushNotification notification = PushNotification(
           title: message.notification?.title,
@@ -81,6 +77,15 @@ void registerNotification({
           dataTitle: message.data['title'].toString(),
           dataBody: message.data['body'].toString(),
         );
+
+        onMessage();
+
+        if (message.data['type_notification'] != null) {
+          notiModel = NotificationType.fromJson(
+            jsonDecode(message.data['type_notification']),
+          );
+          noti = NotificationModel.fromJson(message.data);
+        }
 
         notificationInfo = notification;
         // _totalNotifications++;
@@ -145,18 +150,10 @@ void checkForInitialMessage(
   }
 }
 
+NotificationModel? noti;
+NotificationType? notiModel;
+
 initLocalPushNotification() async {
-  NotificationModel? noti;
-  NotificationType? notiModel;
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    notiModel = NotificationType.fromJson(
-      jsonDecode(message.data['type_notification']),
-    );
-    noti = NotificationModel.fromJson(message.data);
-    NotificationBloc().getTotalUnread().then((value) {
-      notiBadges = value.totalUnreadNoti;
-    });
-  });
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('launcher_icon');
   final IOSInitializationSettings initializationSettingsIOS =

@@ -8,10 +8,13 @@ class NotificationBloc {
   final _repository = NotificationRepository();
   final _allDataFetcher =
       BehaviorSubject<ApiResponse<NotificationListModel?>>();
+  final _getNotiBadges = BehaviorSubject<ApiResponse<NotificationModel?>>();
   final _allDataState = BehaviorSubject<BlocState>();
 
   Stream<ApiResponse<NotificationListModel?>> get allData =>
       _allDataFetcher.stream;
+  Stream<ApiResponse<NotificationModel?>> get getNotiBadges =>
+      _getNotiBadges.stream;
   Stream<BlocState> get allDataState => _allDataState.stream;
   bool _isFetching = false;
 
@@ -41,20 +44,29 @@ class NotificationBloc {
     _isFetching = false;
   }
 
-  Future<NotificationModel> getTotalUnread() async {
+  getTotalUnread() async {
+    if (_isFetching) return;
+    _isFetching = true;
+    // Start fetching data.
+    _allDataState.sink.add(BlocState.fetching);
     try {
       // Await response from server.
       final data = await _repository.getTotalUnread<NotificationModel>();
+
+      if (_getNotiBadges.isClosed) return;
       if (data.error != null) {
         // Error exist
-        return Future.error(data.error!);
+        _getNotiBadges.sink.addError(data.error!);
       } else {
         // Adding response data.
-        return Future.value(data.model);
+        _getNotiBadges.sink.add(data);
       }
     } on AppException catch (e) {
-      return Future.error(e);
+      _getNotiBadges.sink.addError(e);
     }
+    // Complete fetching.
+    _allDataState.sink.add(BlocState.completed);
+    _isFetching = false;
   }
 
   Future<NotificationModel> readAllNoti() async {
@@ -91,6 +103,7 @@ class NotificationBloc {
 
   dispose() {
     _allDataFetcher.close();
+    _getNotiBadges.close();
     _allDataState.close();
   }
 }
