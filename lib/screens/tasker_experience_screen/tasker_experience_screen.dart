@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hs_tasker_app/core/user/user.dart';
 import 'package:hs_tasker_app/routes/route_names.dart';
 import '../../main.dart';
+import '../../widgets/display_date_time.dart';
 import '../../widgets/jt_indicator.dart';
 import '../layout_template/content_screen.dart';
 
@@ -121,10 +123,10 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
               constraints: const BoxConstraints(minHeight: 128),
               child: _experienceHeader(tasker),
             ),
-            _experienceContent(),
+            _experienceContent(tasker),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 28, 16, 34),
-              child: _userComment(),
+              child: _userComment(tasker),
             ),
           ],
         ),
@@ -175,7 +177,8 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
                 unratedColor: AppColor.primary2,
                 itemBuilder: (context, index) {
                   final isOutRate = tasker.totalRating.ceil() < index + 1;
-                  final isHalf = tasker.totalRating.ceil() == index + 1;
+                  final isHalf = tasker.totalRating < 5 &&
+                      tasker.totalRating.ceil() == index + 1;
                   return SvgIcon(
                     isOutRate
                         ? SvgIcons.starOutline
@@ -190,7 +193,7 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 4),
                 child: Text(
-                  '4.5',
+                  '${tasker.totalRating}',
                   style: AppTextTheme.normalHeaderTitle(AppColor.black),
                 ),
               ),
@@ -200,7 +203,7 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
         Padding(
           padding: const EdgeInsets.only(top: 8, bottom: 16),
           child: Text(
-            '(643 đánh giá)',
+            '(${tasker.numReview} đánh giá)',
             style: AppTextTheme.normalText(AppColor.black),
           ),
         ),
@@ -208,7 +211,18 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
     );
   }
 
-  Widget _experienceContent() {
+  Widget _experienceContent(TaskerModel tasker) {
+    final dayJoin = formatFromInt(
+      displayedFormat: 'MM/yyyy',
+      value: tasker.createdTime,
+      context: context,
+    );
+    double positiveReviews = 0;
+    if (tasker.reviews.isNotEmpty) {
+      positiveReviews = tasker.reviews.where((e) => e.rating > 2.5).length /
+          tasker.reviews.length *
+          100;
+    }
     return Column(
       children: [
         Padding(
@@ -219,7 +233,7 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
               children: [
                 _experienceDetail(
                   header: 'Tham gia từ',
-                  title: '3/2019',
+                  title: dayJoin,
                 ),
                 VerticalDivider(
                   thickness: 1,
@@ -227,7 +241,7 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
                 ),
                 _experienceDetail(
                   header: 'Công việc',
-                  title: '320',
+                  title: '${tasker.totalTask.length}',
                 ),
                 VerticalDivider(
                   thickness: 1,
@@ -235,7 +249,7 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
                 ),
                 _experienceDetail(
                   header: 'Đánh giá tích cực',
-                  title: '90%',
+                  title: '${positiveReviews.ceil()}%',
                 ),
               ],
             ),
@@ -317,19 +331,7 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
     );
   }
 
-  Widget _userComment() {
-    final List<UserComment> userComments = [
-      UserComment(
-        comment: 'Bạn làm rất tốt! Xứng đáng tăng lương',
-        userName: 'Ngo Anh Duong',
-        rated: '4.5',
-      ),
-      UserComment(
-        comment: 'Hôm qua em tuyệt lắm!',
-        userName: 'Chi Nhan',
-        rated: '5.0',
-      ),
-    ];
+  Widget _userComment(TaskerModel tasker) {
     return LayoutBuilder(builder: (context, size) {
       return Column(
         children: [
@@ -355,9 +357,9 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
           ListView.builder(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
-              itemCount: userComments.length,
+              itemCount: tasker.reviews.length,
               itemBuilder: (BuildContext context, index) {
-                final userComment = userComments[index];
+                final review = tasker.reviews[index];
                 return Container(
                   constraints: const BoxConstraints(minHeight: 87),
                   child: Row(
@@ -370,12 +372,12 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 4),
                               child: Text(
-                                userComment.comment,
+                                review.comment,
                                 style: AppTextTheme.normalText(AppColor.black),
                               ),
                             ),
                             Text(
-                              userComment.userName,
+                              review.user.name,
                               style: AppTextTheme.subText(
                                 AppColor.text7,
                               ),
@@ -398,12 +400,12 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(right: 9),
                                     child: SvgIcon(
-                                      SvgIcons.star,
+                                      SvgIcons.starSticker,
                                       size: 24,
                                     ),
                                   ),
                                   Text(
-                                    userComment.rated,
+                                    review.rating.toString(),
                                     style: AppTextTheme.normalText(
                                       AppColor.black,
                                     ),
@@ -428,11 +430,11 @@ class _TaskerExperienceScreenState extends State<TaskerExperienceScreen> {
 
 class UserComment {
   final String comment;
-  final String userName;
-  final String rated;
+  final UserModel user;
+  final double rating;
   UserComment({
     required this.comment,
-    required this.userName,
-    required this.rated,
+    required this.user,
+    required this.rating,
   });
 }

@@ -81,7 +81,11 @@ class _PageTemplateState extends State<PageTemplate> {
         ];
         final currentRoute = getCurrentRoute();
         if (preRoute.isNotEmpty && !listPageCanPop.contains(currentRoute)) {
-          navigateTo(preRoute);
+          if (currentRoute == taskerProfileRoute) {
+            navigateTo(homeRoute);
+          } else {
+            navigateTo(preRoute);
+          }
         }
         return false;
       },

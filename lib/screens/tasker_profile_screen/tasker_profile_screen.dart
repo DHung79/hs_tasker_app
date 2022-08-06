@@ -203,6 +203,7 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
         child: Column(
           children: [
             Container(
+              width: size.maxWidth,
               constraints: const BoxConstraints(minHeight: 128),
               child: _profileHeader(tasker),
             ),
@@ -320,38 +321,40 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                   ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 32),
-          child: Container(
-            constraints: const BoxConstraints(minHeight: 64),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  tasker.name,
-                  style: AppTextTheme.mediumHeaderTitle(AppColor.black),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: Text(
-                    tasker.email,
-                    style: AppTextTheme.mediumBodyText(AppColor.black),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 32, 16, 32),
+            child: Container(
+              constraints: const BoxConstraints(minHeight: 64),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    tasker.name,
+                    style: AppTextTheme.mediumHeaderTitle(AppColor.black),
                   ),
-                ),
-                InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
                     child: Text(
-                      'Đổi mật khẩu',
-                      style: AppTextTheme.normalText(AppColor.primary2),
+                      tasker.email,
+                      style: AppTextTheme.mediumBodyText(AppColor.black),
                     ),
                   ),
-                  onTap: () {
-                    navigateTo(changePasswordRoute);
-                  },
-                ),
-              ],
+                  InkWell(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
+                      child: Text(
+                        'Đổi mật khẩu',
+                        style: AppTextTheme.normalText(AppColor.primary2),
+                      ),
+                    ),
+                    onTap: () {
+                      navigateTo(changePasswordRoute);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -442,9 +445,9 @@ class _TaskerProfileScreenState extends State<TaskerProfileScreen> {
                   ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Center(
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               title,
               style: AppTextTheme.normalText(AppColor.black),

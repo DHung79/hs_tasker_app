@@ -146,10 +146,11 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                       padding: const EdgeInsets.only(bottom: 16),
                       child: _basicInfo(task),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: _customerRequests(task),
-                    ),
+                    if (task.checkList.isNotEmpty && task.note.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: _customerRequests(task),
+                      ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
                       child: Container(
@@ -346,7 +347,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
 
   Widget _customerRequests(TaskModel task) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 296),
+      // constraints: const BoxConstraints(minHeight: 296),
       decoration: BoxDecoration(color: AppColor.white),
       child: Padding(
         padding: const EdgeInsets.all(16),

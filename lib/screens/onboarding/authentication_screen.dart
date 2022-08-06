@@ -35,48 +35,52 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           bloc: AuthenticationBlocController().authenticationBloc,
           builder: (BuildContext context, AuthenticationState state) {
-            return SafeArea(
-              child: LayoutBuilder(builder: (context, size) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      constraints: const BoxConstraints(minHeight: 200),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Center(
-                            child: Image.asset(
-                              'assets/images/logo.png',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Center(
-                            child: Text(
-                              _errorMessage!,
-                              style: AppTextTheme.normalHeaderTitle(
-                                AppColor.others1,
+            return LayoutBuilder(builder: (context, size) {
+              final screenSize = MediaQuery.of(context).size;
+              final bottomHeight = MediaQuery.of(context).viewInsets.bottom;
+              return SizedBox(
+                height: screenSize.height - bottomHeight,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        constraints: const BoxConstraints(minHeight: 200),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Center(
+                              child: Image.asset(
+                                'assets/images/logo.png',
+                                fit: BoxFit.cover,
                               ),
                             ),
-                          )
-                        ],
+                            Center(
+                              child: Text(
+                                _errorMessage!,
+                                style: AppTextTheme.normalHeaderTitle(
+                                  AppColor.others1,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 24),
-                      child: LoginForm(
-                        state: state,
-                        onError: (error) {
-                          _errorMessage = error;
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(top: 24),
+                        child: LoginForm(
+                          state: state,
+                          onError: (error) {
+                            _errorMessage = error;
+                          },
+                        ),
                       ),
-                    ),
-                    const Spacer(),
-                  ],
-                );
-              }),
-            );
+                    ],
+                  ),
+                ),
+              );
+            });
           },
         ),
       ),
