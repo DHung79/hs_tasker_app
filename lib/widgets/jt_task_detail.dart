@@ -22,6 +22,7 @@ class JTTaskDetail {
     String? contentTitle,
     String? headerTitle,
     Color? backgroundColor,
+    Color? textColor,
   }) {
     return LayoutBuilder(builder: (context, size) {
       return Padding(
@@ -69,7 +70,7 @@ class JTTaskDetail {
                   Expanded(
                     child: Text(
                       contentTitle ?? '',
-                      style: AppTextTheme.mediumBodyText(AppColor.text1),
+                      style: AppTextTheme.mediumBodyText(textColor ?? AppColor.text1),
                     ),
                   ),
                 ],

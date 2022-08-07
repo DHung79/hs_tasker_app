@@ -20,7 +20,6 @@ class TaskModel extends BaseModel {
   final FailureReasonModel _failureReason;
   final int _typeHome;
   final List<ToDoModel> _checkList = [];
-  final bool _isDeleted;
   final int _deletedTime;
   final int _createdTime;
   final int _updatedTime;
@@ -28,6 +27,8 @@ class TaskModel extends BaseModel {
   final List<String> _listPicturesBefore = [];
   final List<String> _listPicturesAfter = [];
   final OptionModel _selectedOption;
+  final bool _userDeleted;
+  final bool _taskerDeleted;
 
   TaskModel.fromJson(Map<String, dynamic> json)
       : _address = BaseModel.map<AddressModel>(
@@ -63,11 +64,12 @@ class TaskModel extends BaseModel {
         _status = json['status'] ?? 0,
         _language = json['language'] ?? 0,
         _typeHome = json['type_home'] ?? 0,
-        _isDeleted = json['is_deleted'] ?? false,
         _deletedTime = json['deleted_time'] ?? 0,
         _createdTime = json['created_time'] ?? 0,
         _updatedTime = json['updated_time'] ?? 0,
-        _totalPrice = json['total_price'] ?? 0 {
+        _totalPrice = json['total_price'] ?? 0,
+        _userDeleted = json['user_deleted'] ?? false,
+        _taskerDeleted = json['tasker_deleted'] ?? false {
     _checkList.addAll(BaseModel.mapList<ToDoModel>(
       json: json,
       key: 'check_list',
@@ -110,7 +112,6 @@ class TaskModel extends BaseModel {
         'failure_reason': _failureReason,
         'type_home': _typeHome,
         'check_list': _checkList,
-        'is_deleted': _isDeleted,
         'deleted_time': _deletedTime,
         'created_time': _createdTime,
         'updated_time': _updatedTime,
@@ -118,6 +119,8 @@ class TaskModel extends BaseModel {
         'list_pictures_before': _listPicturesBefore,
         'list_pictures_after': _listPicturesAfter,
         'selected_option': _selectedOption.toJson(),
+        'user_deleted': _userDeleted,
+        'tasker_deleted': _taskerDeleted,
       };
   AddressModel get address => _address;
   UserModel get user => _user;
@@ -134,7 +137,6 @@ class TaskModel extends BaseModel {
   FailureReasonModel get failureReason => _failureReason;
   int get typeHome => _typeHome;
   List<ToDoModel> get checkList => _checkList;
-  bool get isDeleted => _isDeleted;
   int get deletedTime => _deletedTime;
   int get createdTime => _createdTime;
   int get updatedTime => _updatedTime;
@@ -142,6 +144,8 @@ class TaskModel extends BaseModel {
   List<String> get listPicturesBefore => _listPicturesBefore;
   List<String> get listPicturesAfter => _listPicturesAfter;
   OptionModel get selectedOption => _selectedOption;
+  bool get userDeleted => _userDeleted;
+  bool get taskerDeleted => _taskerDeleted;
 }
 
 class FailureReasonModel extends BaseModel {

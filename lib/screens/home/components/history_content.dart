@@ -168,11 +168,20 @@ class _HistoryContentState extends State<HistoryContent> {
         NumberFormat('#,##0 VND', 'vi').format(task.selectedOption.price);
     return Column(
       children: [
+        if (task.status == 3)
+          JTTaskDetail.taskDetail(
+            svgIcon: SvgIcons.time,
+            headerTitle: 'Lý do hủy bỏ',
+            contentTitle: task.failureReason.reason,
+            backgroundColor: AppColor.shade2,
+            textColor: AppColor.others1,
+          ),
         JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.dollar,
-          headerTitle: 'Tổng tiền',
+          headerTitle: task.status == 3 ? 'Số tiền bồi thường' : 'Tổng tiền',
           contentTitle: price,
           backgroundColor: AppColor.shade2,
+          textColor: task.status == 3 ? AppColor.others1 : AppColor.text1,
         ),
         JTTaskDetail.taskDetail(
           svgIcon: SvgIcons.time,
